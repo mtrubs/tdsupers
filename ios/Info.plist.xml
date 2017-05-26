@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
+  <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
@@ -30,30 +31,30 @@
     <true/>
     <key>UIDeviceFamily</key>
     <array>
-        <integer>1</integer>
-        <integer>2</integer>
+      <integer>1</integer>
+      <integer>2</integer>
     </array>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
-        <string>armv7</string>
-        <string>opengles-2</string>
+      <string>armv7</string>
+      <string>opengles-2</string>
     </array>
     <key>UISupportedInterfaceOrientations</key>
     <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
+      <string>UIInterfaceOrientationPortrait</string>
+      <string>UIInterfaceOrientationLandscapeLeft</string>
+      <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
     <key>CFBundleIcons</key>
     <dict>
-        <key>CFBundlePrimaryIcon</key>
-        <dict>
-            <key>CFBundleIconFiles</key>
-            <array>
-                <string>Icon</string>
-                <string>Icon-72</string>
-            </array>
-        </dict>
+      <key>CFBundlePrimaryIcon</key>
+      <dict>
+        <key>CFBundleIconFiles</key>
+        <array>
+          <string>Icon</string>
+          <string>Icon-72</string>
+        </array>
+      </dict>
     </dict>
-</dict>
+  </dict>
 </plist>
