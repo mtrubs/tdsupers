@@ -21,66 +21,66 @@ import java.util.List;
 
 public class GdxTd extends ApplicationAdapter {
 
-    /**
-     * Width of the game world for scaling purposes on different screen sizes.
-     */
-    private static final float WORLD_WIDTH = 800.0F;
-    /**
-     * Height of the game world for scaling purposes on different screen sizes.
-     */
-    private static final float WORLD_HEIGHT = 600.0F;
+  /**
+   * Width of the game world for scaling purposes on different screen sizes.
+   */
+  private static final float WORLD_WIDTH = 800.0F;
+  /**
+   * Height of the game world for scaling purposes on different screen sizes.
+   */
+  private static final float WORLD_HEIGHT = 600.0F;
 
-    private TextureRegionManager textureRegionManager;
-    private Stage levelStage;
-    private Stage hudStage;
+  private TextureRegionManager textureRegionManager;
+  private Stage levelStage;
+  private Stage hudStage;
 
-    @Override
-    public void create() {
-        super.create();
+  @Override
+  public void create() {
+    super.create();
 
-        Tween.registerAccessor(TextureRegionActor.class, new TextureRegionActorAccessor());
+    Tween.registerAccessor(TextureRegionActor.class, new TextureRegionActorAccessor());
 
-        HeroConfig heroes = new HeroConfig();
+    HeroConfig heroes = new HeroConfig();
 
-        List<TowerLevelConfig> towers = new ArrayList<TowerLevelConfig>();
-        towers.add(new TowerLevelConfig(160.0F, 300.0F, 160.0F, 250.0F));
-        towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
-        towers.add(new TowerLevelConfig(300.0F, 140.0F, 300.0F, 190.0F));
-        //towers.add(new TowerLevelConfig(500.0f, 55.0F));
+    List<TowerLevelConfig> towers = new ArrayList<TowerLevelConfig>();
+    towers.add(new TowerLevelConfig(160.0F, 300.0F, 160.0F, 250.0F));
+    towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
+    towers.add(new TowerLevelConfig(300.0F, 140.0F, 300.0F, 190.0F));
+    //towers.add(new TowerLevelConfig(500.0f, 55.0F));
 
-        this.textureRegionManager = new ActiveTextureRegionManager();
-        // the current level
-        this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
-                LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
-                this.textureRegionManager);
-        // the HUD for the level
-        this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-                this.textureRegionManager);
+    this.textureRegionManager = new ActiveTextureRegionManager();
+    // the current level
+    this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
+        LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
+        this.textureRegionManager);
+    // the HUD for the level
+    this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
+        this.textureRegionManager);
 
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(this.levelStage);
-        multiplexer.addProcessor(this.hudStage);
+    InputMultiplexer multiplexer = new InputMultiplexer();
+    multiplexer.addProcessor(this.levelStage);
+    multiplexer.addProcessor(this.hudStage);
 
-        Gdx.input.setInputProcessor(multiplexer);
-    }
+    Gdx.input.setInputProcessor(multiplexer);
+  }
 
-    @Override
-    public void dispose() {
-        this.levelStage.dispose();
-        this.hudStage.dispose();
-        this.textureRegionManager.dispose();
-        super.dispose();
-    }
+  @Override
+  public void dispose() {
+    this.levelStage.dispose();
+    this.hudStage.dispose();
+    this.textureRegionManager.dispose();
+    super.dispose();
+  }
 
-    @Override
-    public void render() {
-        super.render();
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+  @Override
+  public void render() {
+    super.render();
+    Gdx.gl.glClearColor(1, 1, 1, 1);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.levelStage.act(Gdx.graphics.getDeltaTime());
-        this.levelStage.draw();
+    this.levelStage.act(Gdx.graphics.getDeltaTime());
+    this.levelStage.draw();
 
-        this.hudStage.draw();
-    }
+    this.hudStage.draw();
+  }
 }
