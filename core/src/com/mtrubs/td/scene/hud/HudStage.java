@@ -15,8 +15,10 @@ import com.mtrubs.td.scene.TextureRegionActor;
  */
 public class HudStage extends Stage {
 
+  private static final float PAD = 5.0F;
+
   private static final float NORMAL_SPEED = 1.0F;
-  private static final float FAST_SPEED = 1.5F;
+  private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
 
   private float speedFactor = NORMAL_SPEED;
@@ -29,8 +31,6 @@ public class HudStage extends Stage {
     addBottomLeft(textureRegionManager);
     addBottomRight(textureRegionManager);
   }
-
-  private static final float PAD = 5.0F;
 
   private void addTopLeft(TextureRegionManager textureRegionManager) {
     // This is the top left HUD portion; handles player information
@@ -64,17 +64,29 @@ public class HudStage extends Stage {
         pauseTextureOff);
     addActor(pause);
 
-    // TODO: click doesnt seem to register
-    SpeedClickListener pauseClickListener = new SpeedClickListener(pause,
-        pauseTextureOff, pauseTextureOn, NORMAL_SPEED, PAUSE_SPEED);
-    SpeedClickListener fastForwardClickListener = new SpeedClickListener(fastForward,
-        fastForwardTextureOff, fastForwardTextureOn, NORMAL_SPEED, FAST_SPEED);
+    // this is not the cleanest since pause and fast forward are a little intertwined
+    final SpeedToggleListener pauseListener = new SpeedToggleListener(pause,
+        pauseTextureOff, pauseTextureOn);
+    final SpeedToggleListener fastForwardListener = new SpeedToggleListener(fastForward,
+        fastForwardTextureOff, fastForwardTextureOn);
+    pause.addListener(pauseListener);
+    fastForward.addListener(fastForwardListener);
 
-    pauseClickListener.setCounterpart(fastForwardClickListener);
-    fastForwardClickListener.setCounterpart(pauseClickListener);
-
-    pause.addListener(pauseClickListener);
-    fastForward.addListener(fastForwardClickListener);
+    GameStateHandler gameStateHandler = new GameStateHandler() {
+      @Override
+      protected void handle() {
+        if (pauseListener.isOn()) {
+          // TODO: launch menu
+          HudStage.this.speedFactor = PAUSE_SPEED;
+        } else if (fastForwardListener.isOn()) {
+          HudStage.this.speedFactor = FAST_SPEED;
+        } else {
+          HudStage.this.speedFactor = NORMAL_SPEED;
+        }
+      }
+    };
+    pauseListener.gameStateHandler = gameStateHandler;
+    fastForwardListener.gameStateHandler = gameStateHandler;
   }
 
   private void addBottomLeft(TextureRegionManager textureRegionManager) {
@@ -97,56 +109,44 @@ public class HudStage extends Stage {
     return this.speedFactor;
   }
 
-  private void setSpeedFactor(float speedFactor) {
-    this.speedFactor = speedFactor;
-  }
+  /**
+   * Handles the on/off notion of certain actors.  This takes the
+   * on/off textures as well as the actor.
+   */
+  private class SpeedToggleListener extends ClickListener {
 
-  private class SpeedClickListener extends ClickListener {
+    private boolean on = false;
+    private GameStateHandler gameStateHandler;
 
     private final TextureRegionActor actor;
     private final TextureRegion offTexture;
     private final TextureRegion onTexture;
-    private final float offSpeed;
-    private final float onSpeed;
 
-    private boolean on = false;
-    private SpeedClickListener counterpart;
-
-    private SpeedClickListener(TextureRegionActor actor, TextureRegion offTexture, TextureRegion onTexture,
-                               float offSpeed, float onSpeed) {
+    private SpeedToggleListener(TextureRegionActor actor, TextureRegion offTexture, TextureRegion onTexture) {
       this.actor = actor;
       this.offTexture = offTexture;
       this.onTexture = onTexture;
-      this.offSpeed = offSpeed;
-      this.onSpeed = onSpeed;
+    }
+
+    public boolean isOn() {
+      return this.on;
     }
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
       super.clicked(event, x, y);
-      if (this.on) {
-        // turn off
-        System.out.println("On/Off - turn off");
-        this.on = false;
-        this.actor.setTextureRegion(this.offTexture);
-        setSpeedFactor(this.offSpeed);
-      } else {
-        // turn on
-        System.out.println("On/Off - turn on");
-        this.actor.setTextureRegion(this.onTexture);
-        this.counterpart.forceOff();
-        this.on = true;
-        setSpeedFactor(this.onSpeed);
-      }
+      // turn things on/off
+      this.on = !this.on;
+      this.actor.setTextureRegion(this.on ? this.onTexture : this.offTexture);
+      this.gameStateHandler.handle();
     }
+  }
 
-    public void forceOff() {
-      this.on = false;
-      this.actor.setTextureRegion(this.offTexture);
-    }
+  /**
+   * This handles the state of the game based on other factors.
+   */
+  private abstract class GameStateHandler {
 
-    public void setCounterpart(SpeedClickListener counterpart) {
-      this.counterpart = counterpart;
-    }
+    protected abstract void handle();
   }
 }

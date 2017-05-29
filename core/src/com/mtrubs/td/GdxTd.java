@@ -57,9 +57,10 @@ public class GdxTd extends ApplicationAdapter {
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
         this.textureRegionManager);
 
+    // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();
-    multiplexer.addProcessor(this.levelStage);
     multiplexer.addProcessor(this.hudStage);
+    multiplexer.addProcessor(this.levelStage);
 
     Gdx.input.setInputProcessor(multiplexer);
   }
