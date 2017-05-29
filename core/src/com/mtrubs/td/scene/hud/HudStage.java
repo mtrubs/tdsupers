@@ -34,16 +34,27 @@ public class HudStage extends Stage {
 
   private void addTopLeft(TextureRegionManager textureRegionManager) {
     // This is the top left HUD portion; handles player information
-    // TODO: player health - top left
-    // TODO: player currency - next to health
-    // TODO: wave status - under health
     // TODO: needs feedback hooks for current health/currency/wave
+    TextureRegion healthTexture = textureRegionManager.get(HeadsUpDisplay.Health);
+    TextureRegionActor health = new TextureRegionActor(
+        PAD, // left of the world
+        getHeight() - healthTexture.getRegionHeight() - PAD, // top of the world
+        healthTexture);
+    addActor(health);
+
     TextureRegion currencyTexture = textureRegionManager.get(HeadsUpDisplay.Currency);
     TextureRegionActor currency = new TextureRegionActor(
-        PAD, // 0
-        getHeight() - currencyTexture.getRegionHeight() - PAD, // world minus size
+        health.getX() + currencyTexture.getRegionWidth() + PAD, // offset from health
+        health.getY(), // same as health
         currencyTexture);
     addActor(currency);
+
+    TextureRegion waveStatusTexture = textureRegionManager.get(HeadsUpDisplay.WaveStatus);
+    TextureRegionActor waveStatus = new TextureRegionActor(
+        health.getX(), // same as health
+        health.getY() - waveStatusTexture.getRegionHeight() - PAD, // below health
+        waveStatusTexture);
+    addActor(waveStatus);
   }
 
   private void addTopRight(TextureRegionManager textureRegionManager) {
@@ -51,16 +62,16 @@ public class HudStage extends Stage {
     final TextureRegion fastForwardTextureOff = textureRegionManager.get(HeadsUpDisplay.FastForwardOff);
     final TextureRegion fastForwardTextureOn = textureRegionManager.get(HeadsUpDisplay.FastForwardOn);
     final TextureRegionActor fastForward = new TextureRegionActor(
-        getWidth() - fastForwardTextureOff.getRegionWidth() - PAD, // world minus size
-        getHeight() - fastForwardTextureOff.getRegionHeight() - PAD, // world minus size
+        getWidth() - fastForwardTextureOff.getRegionWidth() - PAD, // top of the world
+        getHeight() - fastForwardTextureOff.getRegionHeight() - PAD, // right of the world
         fastForwardTextureOff);
     addActor(fastForward);
 
     final TextureRegion pauseTextureOff = textureRegionManager.get(HeadsUpDisplay.PauseOff);
     final TextureRegion pauseTextureOn = textureRegionManager.get(HeadsUpDisplay.PauseOn);
     final TextureRegionActor pause = new TextureRegionActor(
-        fastForward.getX() - pauseTextureOff.getRegionWidth() - PAD, // offset from fast forward
-        fastForward.getY(), // same height as fast forward
+        fastForward.getX() - pauseTextureOff.getRegionWidth() - PAD, // left of fast forward
+        fastForward.getY(), // same as fast forward
         pauseTextureOff);
     addActor(pause);
 
