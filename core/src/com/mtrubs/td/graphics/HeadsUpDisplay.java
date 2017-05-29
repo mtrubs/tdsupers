@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 public enum HeadsUpDisplay implements TextureReference {
 
     Currency("images/hud/influence.png"),
+    FastForwardOff("images/hud/fastForwardOff.png"),
+    FastForwardOn("images/hud/fastForwardOn.png"),
     Health("images/hud/health.png"),
-    FastForward("images/hud/fastForward.png"),
-    Pause("images/hud/pause.png");
+    PauseOff("images/hud/pauseOff.png"),
+    PauseOn("images/hud/pauseOn.png");
 
     private final String texturePath;
     private final String key;

@@ -91,6 +91,7 @@ public class LevelStage extends Stage {
       @Override
       public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
         super.touchDown(event, x, y, pointer, button);
+        // TODO: remove debug
         System.out.println(String.format("%f,%f", x, y));
       }
 
@@ -155,7 +156,6 @@ public class LevelStage extends Stage {
           if (tower != hit) {
             tower.deselect();
           }
-
         }
       }
     });

@@ -32,7 +32,7 @@ public class GdxTd extends ApplicationAdapter {
 
   private TextureRegionManager textureRegionManager;
   private Stage levelStage;
-  private Stage hudStage;
+  private HudStage hudStage;
 
   @Override
   public void create() {
@@ -78,7 +78,7 @@ public class GdxTd extends ApplicationAdapter {
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    this.levelStage.act(Gdx.graphics.getDeltaTime());
+    this.levelStage.act(Gdx.graphics.getDeltaTime() * this.hudStage.getSpeedFactor());
     this.levelStage.draw();
 
     this.hudStage.draw();
