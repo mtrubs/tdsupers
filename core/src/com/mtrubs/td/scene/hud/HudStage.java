@@ -1,8 +1,11 @@
 package com.mtrubs.td.scene.hud;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
@@ -22,6 +25,13 @@ public class HudStage extends Stage {
   private static final float PAUSE_SPEED = 0.0F;
 
   private float speedFactor = NORMAL_SPEED;
+  private int startHealth = 10; // TODO: constructor input
+  private int currency = 150; // TODO: constructor input
+  private int totalWaves = 5; // TODO: constructor input
+
+  private Label healthLabel;
+  private Label currencyLabel;
+  private Label waveLabel;
 
   public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
@@ -32,9 +42,42 @@ public class HudStage extends Stage {
     addBottomRight(textureRegionManager);
   }
 
+  public void setHealthValue(int healthValue) {
+    this.healthLabel.setText(String.valueOf(healthValue));
+    // TODO: if healthValue == 0 then GAME OVER!
+  }
+
+  public void addCurrency(int amount) {
+    this.currency = this.currency + amount;
+    setCurrency();
+  }
+
+  public void removeCurrency(int amount) {
+    this.currency = this.currency - amount;
+    setCurrency();
+  }
+
+  /**
+   * A tracking of the current currency accumulated.
+   *
+   * @return the current currency amount.
+   */
+  public int getCurrency() {
+    return this.currency;
+    // TODO: limit upgrades based on currency
+  }
+
+  private void setCurrency() {
+    this.currencyLabel.setText(String.valueOf(this.currency));
+  }
+
+  public void setCurrentWave(int currentWave) {
+    this.waveLabel.setText(String.format("%d / %d", currentWave, this.totalWaves));
+    // TODO: display wave announcements
+  }
+
   private void addTopLeft(TextureRegionManager textureRegionManager) {
     // This is the top left HUD portion; handles player information
-    // TODO: needs feedback hooks for current health/currency/wave
     TextureRegion healthTexture = textureRegionManager.get(HeadsUpDisplay.Health);
     TextureRegionActor health = new TextureRegionActor(
         PAD, // left of the world
@@ -42,19 +85,46 @@ public class HudStage extends Stage {
         healthTexture);
     addActor(health);
 
+    Label.LabelStyle style = new Label.LabelStyle();
+    style.font = new BitmapFont();
+    style.fontColor = Color.RED;
+    this.healthLabel = new Label("", style);
+    setHealthValue(this.startHealth);
+    this.healthLabel.setBounds(
+        health.getX() + health.getWidth() + PAD, // offset from health
+        health.getY() + (health.getHeight() / 2.0F), // same as health, middle aligned
+        this.healthLabel.getWidth(), this.healthLabel.getHeight());
+    addActor(this.healthLabel);
+
     TextureRegion currencyTexture = textureRegionManager.get(HeadsUpDisplay.Currency);
     TextureRegionActor currency = new TextureRegionActor(
-        health.getX() + currencyTexture.getRegionWidth() + PAD, // offset from health
+        this.healthLabel.getX() + this.healthLabel.getPrefWidth() + PAD, // offset from health label
         health.getY(), // same as health
         currencyTexture);
     addActor(currency);
 
+    this.currencyLabel = new Label("", style);
+    setCurrency();
+    this.currencyLabel.setBounds(
+        currency.getX() + currency.getWidth() + PAD, // offset from currency
+        currency.getY() + (currency.getHeight() / 2.0F), // same a currency; middle aligned
+        this.currencyLabel.getWidth(), this.currencyLabel.getHeight());
+    addActor(this.currencyLabel);
+
     TextureRegion waveStatusTexture = textureRegionManager.get(HeadsUpDisplay.WaveStatus);
     TextureRegionActor waveStatus = new TextureRegionActor(
         health.getX(), // same as health
-        health.getY() - waveStatusTexture.getRegionHeight() - PAD, // below health
+        health.getY() - health.getHeight() - PAD, // below health
         waveStatusTexture);
     addActor(waveStatus);
+
+    this.waveLabel = new Label("", style);
+    setCurrentWave(0);
+    this.waveLabel.setBounds(
+        waveStatus.getX() + waveStatus.getWidth() + PAD,
+        waveStatus.getY() + (waveStatus.getHeight() / 2.0F),
+        this.waveLabel.getWidth(), this.waveLabel.getHeight());
+    addActor(this.waveLabel);
   }
 
   private void addTopRight(TextureRegionManager textureRegionManager) {
