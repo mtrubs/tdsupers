@@ -1,7 +1,11 @@
 package com.mtrubs.td.scene;
 
 import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.Mob;
 import com.mtrubs.td.graphics.ProjectileType;
 
@@ -11,24 +15,28 @@ import com.mtrubs.td.graphics.ProjectileType;
  */
 public class MobActor extends CombatActor {
 
+  private final Vector2[] path;
+  private final float speed;
+  private final float startDelay;
+  private final Mob type;
+
   private Timeline timeline;
-  private Mob type;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
    *
-   * @param positionX     the x coordinate of this actor.
-   * @param positionY     the y coordinate of this actor.
+   * @param path          the path of this actor.
    * @param textureRegion the texture of this actor.
    */
-  public MobActor(float positionX, float positionY, Mob type, float scale, TextureRegion textureRegion) {
-    super(positionX, positionY, textureRegion);
+  public MobActor(Vector2[] path, Mob type, float scale, float speed, float startDelay,
+                  TextureRegion textureRegion) {
+    super(path[0].x, path[0].y, textureRegion);
     setHitPoints((int) ((float) type.getHealth() * scale));
-    this.type = type;
-  }
 
-  public void setTimeline(Timeline timeline) {
-    this.timeline = timeline;
+    this.path = path;
+    this.speed = speed;
+    this.startDelay = startDelay;
+    this.type = type;
   }
 
   public float getProgress() {
@@ -106,5 +114,22 @@ public class MobActor extends CombatActor {
   @Override
   public int getDamage() {
     return this.type.getDamage();
+  }
+
+  public void start(TweenManager tweenManager) {
+    if (this.timeline != null) {
+      throw new RuntimeException("This mob has already been started"); // TODO: type the exception
+    }
+    this.timeline = Timeline.createSequence().delay(this.startDelay);
+    for (int i = 1; i < this.path.length; i++) {
+      float duration = getDuration(this.path[i - 1], this.path[i]);
+      this.timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY, duration).target(
+        this.path[i].x, this.path[i].y).ease(TweenEquations.easeNone));
+    }
+    this.timeline.start(tweenManager);
+  }
+
+  private float getDuration(Vector2 a, Vector2 b) {
+    return a.dst(b) / this.speed;
   }
 }

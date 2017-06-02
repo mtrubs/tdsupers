@@ -11,9 +11,7 @@ import com.mtrubs.td.config.TowerLevelConfig;
 import com.mtrubs.td.graphics.ActiveTextureRegionManager;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.LevelStage;
-import com.mtrubs.td.scene.TextureRegionActor;
-import com.mtrubs.td.scene.TextureRegionActorAccessor;
+import com.mtrubs.td.scene.*;
 import com.mtrubs.td.scene.hud.HudStage;
 
 import java.util.ArrayList;
@@ -44,23 +42,28 @@ public class GdxTd extends ApplicationAdapter {
 
     int startHealth = 10;
     int startCurrency = 100;
-    int totalWaves = 1; // TODO: based on level input
 
+    this.textureRegionManager = new ActiveTextureRegionManager();
+
+    // Tower plots
     List<TowerLevelConfig> towers = new ArrayList<TowerLevelConfig>();
     towers.add(new TowerLevelConfig(160.0F, 300.0F, 160.0F, 250.0F));
     towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
     towers.add(new TowerLevelConfig(300.0F, 140.0F, 300.0F, 190.0F));
     //towers.add(new TowerLevelConfig(500.0f, 55.0F));
 
-    this.textureRegionManager = new ActiveTextureRegionManager();
-    // the current level
-    // TODO: pass in mobs/paths
-    this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
-        LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
-        this.textureRegionManager);
+    // Wave Setup
+    List<Wave> waves = new ArrayList<Wave>();
+    waves.add(new Wave(this.textureRegionManager));
+    //waves.add(new Wave(this.textureRegionManager));
+
     // the HUD for the level
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-        this.textureRegionManager, startHealth, startCurrency, totalWaves);
+      this.textureRegionManager, startHealth, startCurrency, waves.size());
+    // the current level
+    this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
+      LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
+      this.textureRegionManager, new WaveManager(waves));
 
     // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();
