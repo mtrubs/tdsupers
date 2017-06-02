@@ -25,16 +25,21 @@ public class HudStage extends Stage {
   private static final float PAUSE_SPEED = 0.0F;
 
   private float speedFactor = NORMAL_SPEED;
-  private int startHealth = 10; // TODO: constructor input
-  private int currency = 150; // TODO: constructor input
-  private int totalWaves = 5; // TODO: constructor input
+  private int startHealth;
+  private int currency;
+  private int totalWaves;
 
   private Label healthLabel;
   private Label currencyLabel;
   private Label waveLabel;
 
-  public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager) {
+  public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager,
+                  int startHealth, int startCurrency, int totalWaves) {
     super(new ExtendViewport(worldWidth, worldHeight));
+
+    this.startHealth = startHealth;
+    this.currency = startCurrency;
+    this.totalWaves = totalWaves;
 
     addTopLeft(textureRegionManager);
     addTopRight(textureRegionManager);

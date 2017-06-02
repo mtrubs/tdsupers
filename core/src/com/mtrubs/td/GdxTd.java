@@ -42,6 +42,10 @@ public class GdxTd extends ApplicationAdapter {
 
     HeroConfig heroes = new HeroConfig();
 
+    int startHealth = 10;
+    int startCurrency = 100;
+    int totalWaves = 1; // TODO: based on level input
+
     List<TowerLevelConfig> towers = new ArrayList<TowerLevelConfig>();
     towers.add(new TowerLevelConfig(160.0F, 300.0F, 160.0F, 250.0F));
     towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
@@ -50,15 +54,17 @@ public class GdxTd extends ApplicationAdapter {
 
     this.textureRegionManager = new ActiveTextureRegionManager();
     // the current level
+    // TODO: pass in mobs/paths
     this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
         LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
         this.textureRegionManager);
     // the HUD for the level
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-        this.textureRegionManager);
+        this.textureRegionManager, startHealth, startCurrency, totalWaves);
 
     // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();
+    // the HUD goes first so that it gets the first click
     multiplexer.addProcessor(this.hudStage);
     multiplexer.addProcessor(this.levelStage);
 
