@@ -185,6 +185,12 @@ public class HudStage extends Stage {
     // TODO: hero specials - bottom right
   }
 
+  @Override
+  public void act(float delta) {
+    super.act(delta);
+    // TODO: use delta to time/trigger wave popups
+  }
+
   /**
    * Gets the speed factor as dictated by the HUD. This is used for deriving
    * normal vs fast forward vs paused.
