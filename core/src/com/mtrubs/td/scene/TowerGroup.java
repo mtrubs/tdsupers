@@ -67,12 +67,12 @@ public class TowerGroup extends Group {
     this.selectedPath = startingState.getPath();
     // this is the tower image of this group
     final TextureRegionActor tower = new TextureRegionActor(positionX, positionY,
-        textureRegionManager.get(startingState));
+      textureRegionManager.get(startingState));
     addActor(tower);
 
     if (startingState.hasUnit()) {
       this.unit = new UnitActor(unitPositionX, unitPositionY, startingState.getUnit(),
-          textureRegionManager.get(startingState.getUnit()));
+        textureRegionManager.get(startingState.getUnit()));
     } else {
       this.unit = new UnitActor(unitPositionX, unitPositionY, null, null);
     }
@@ -138,7 +138,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(0), null,
-              TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -164,7 +164,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(1), null,
-              TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -190,7 +190,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(2), null,
-              TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -215,7 +215,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerPath.A,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -239,7 +239,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerPath.B,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -263,7 +263,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerGroup.this.selectedPath,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -413,11 +413,11 @@ public class TowerGroup extends Group {
   private TextureRegionActor addMenuRing(TextureRegionActor tower, TextureRegionManager textureRegionManager) {
     TextureRegion textureRegion = textureRegionManager.get(TowerMenuItem.Ring);
     TextureRegionActor actor = new TextureRegionActor(
-        // offset X and Y by half the size of this region plus half the size of the tower
-        // this way it ends up centered over the tower
-        tower.getX() - textureRegion.getRegionWidth() / 2.0F + tower.getWidth() / 2.0F,
-        tower.getY() - textureRegion.getRegionHeight() / 2.0F + tower.getHeight() / 2.0F,
-        textureRegion
+      // offset X and Y by half the size of this region plus half the size of the tower
+      // this way it ends up centered over the tower
+      tower.getX() - textureRegion.getRegionWidth() / 2.0F + tower.getWidth() / 2.0F,
+      tower.getY() - textureRegion.getRegionHeight() / 2.0F + tower.getHeight() / 2.0F,
+      textureRegion
     );
     this.menuItems.put(TowerMenuItem.Ring, actor);
     return actor;
@@ -481,10 +481,10 @@ public class TowerGroup extends Group {
     float circleX = (float) (radius * Math.cos(degrees * Math.PI / 180.0F)) + ring.getX() + radius;
     float circleY = (float) (radius * Math.sin(degrees * Math.PI / 180.0F)) + ring.getY() + radius;
     TextureRegionActor actor = new TextureRegionActor(
-        // we offset the final results by half the image size
-        circleX - textureRegion.getRegionWidth() / 2.0F,
-        circleY - textureRegion.getRegionHeight() / 2.0F,
-        textureRegion
+      // we offset the final results by half the image size
+      circleX - textureRegion.getRegionWidth() / 2.0F,
+      circleY - textureRegion.getRegionHeight() / 2.0F,
+      textureRegion
     );
     this.menuItems.put(key, actor);
     return actor;

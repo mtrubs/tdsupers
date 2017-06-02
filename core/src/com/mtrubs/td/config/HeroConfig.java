@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class HeroConfig {
 
-    public List<Hero> getHeroTowers() {
-        List<Hero> heroTowers = new ArrayList<Hero>();
-        heroTowers.add(Hero.TestHero);
+  public List<Hero> getHeroTowers() {
+    List<Hero> heroTowers = new ArrayList<Hero>();
+    heroTowers.add(Hero.TestHero);
 //        heroTowers.add(Hero.TestHero);
 //        heroTowers.add(Hero.TestHero);
-        return heroTowers;
-    }
+    return heroTowers;
+  }
 }

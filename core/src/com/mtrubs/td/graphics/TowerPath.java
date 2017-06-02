@@ -6,6 +6,6 @@ package com.mtrubs.td.graphics;
  */
 public enum TowerPath {
 
-    A,
-    B
+  A,
+  B
 }

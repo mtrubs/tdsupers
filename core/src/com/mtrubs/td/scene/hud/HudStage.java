@@ -85,9 +85,9 @@ public class HudStage extends Stage {
     // This is the top left HUD portion; handles player information
     TextureRegion healthTexture = textureRegionManager.get(HeadsUpDisplay.Health);
     TextureRegionActor health = new TextureRegionActor(
-        PAD, // left of the world
-        getHeight() - healthTexture.getRegionHeight() - PAD, // top of the world
-        healthTexture);
+      PAD, // left of the world
+      getHeight() - healthTexture.getRegionHeight() - PAD, // top of the world
+      healthTexture);
     addActor(health);
 
     Label.LabelStyle style = new Label.LabelStyle();
@@ -96,39 +96,39 @@ public class HudStage extends Stage {
     this.healthLabel = new Label("", style);
     setHealthValue(this.startHealth);
     this.healthLabel.setBounds(
-        health.getX() + health.getWidth() + PAD, // offset from health
-        health.getY() + (health.getHeight() / 2.0F), // same as health, middle aligned
-        this.healthLabel.getWidth(), this.healthLabel.getHeight());
+      health.getX() + health.getWidth() + PAD, // offset from health
+      health.getY() + (health.getHeight() / 2.0F), // same as health, middle aligned
+      this.healthLabel.getWidth(), this.healthLabel.getHeight());
     addActor(this.healthLabel);
 
     TextureRegion currencyTexture = textureRegionManager.get(HeadsUpDisplay.Currency);
     TextureRegionActor currency = new TextureRegionActor(
-        this.healthLabel.getX() + this.healthLabel.getPrefWidth() + PAD, // offset from health label
-        health.getY(), // same as health
-        currencyTexture);
+      this.healthLabel.getX() + this.healthLabel.getPrefWidth() + PAD, // offset from health label
+      health.getY(), // same as health
+      currencyTexture);
     addActor(currency);
 
     this.currencyLabel = new Label("", style);
     setCurrency();
     this.currencyLabel.setBounds(
-        currency.getX() + currency.getWidth() + PAD, // offset from currency
-        currency.getY() + (currency.getHeight() / 2.0F), // same a currency; middle aligned
-        this.currencyLabel.getWidth(), this.currencyLabel.getHeight());
+      currency.getX() + currency.getWidth() + PAD, // offset from currency
+      currency.getY() + (currency.getHeight() / 2.0F), // same a currency; middle aligned
+      this.currencyLabel.getWidth(), this.currencyLabel.getHeight());
     addActor(this.currencyLabel);
 
     TextureRegion waveStatusTexture = textureRegionManager.get(HeadsUpDisplay.WaveStatus);
     TextureRegionActor waveStatus = new TextureRegionActor(
-        health.getX(), // same as health
-        health.getY() - health.getHeight() - PAD, // below health
-        waveStatusTexture);
+      health.getX(), // same as health
+      health.getY() - health.getHeight() - PAD, // below health
+      waveStatusTexture);
     addActor(waveStatus);
 
     this.waveLabel = new Label("", style);
     setCurrentWave(0);
     this.waveLabel.setBounds(
-        waveStatus.getX() + waveStatus.getWidth() + PAD,
-        waveStatus.getY() + (waveStatus.getHeight() / 2.0F),
-        this.waveLabel.getWidth(), this.waveLabel.getHeight());
+      waveStatus.getX() + waveStatus.getWidth() + PAD,
+      waveStatus.getY() + (waveStatus.getHeight() / 2.0F),
+      this.waveLabel.getWidth(), this.waveLabel.getHeight());
     addActor(this.waveLabel);
   }
 
@@ -137,24 +137,24 @@ public class HudStage extends Stage {
     final TextureRegion fastForwardTextureOff = textureRegionManager.get(HeadsUpDisplay.FastForwardOff);
     final TextureRegion fastForwardTextureOn = textureRegionManager.get(HeadsUpDisplay.FastForwardOn);
     final TextureRegionActor fastForward = new TextureRegionActor(
-        getWidth() - fastForwardTextureOff.getRegionWidth() - PAD, // top of the world
-        getHeight() - fastForwardTextureOff.getRegionHeight() - PAD, // right of the world
-        fastForwardTextureOff);
+      getWidth() - fastForwardTextureOff.getRegionWidth() - PAD, // top of the world
+      getHeight() - fastForwardTextureOff.getRegionHeight() - PAD, // right of the world
+      fastForwardTextureOff);
     addActor(fastForward);
 
     final TextureRegion pauseTextureOff = textureRegionManager.get(HeadsUpDisplay.PauseOff);
     final TextureRegion pauseTextureOn = textureRegionManager.get(HeadsUpDisplay.PauseOn);
     final TextureRegionActor pause = new TextureRegionActor(
-        fastForward.getX() - pauseTextureOff.getRegionWidth() - PAD, // left of fast forward
-        fastForward.getY(), // same as fast forward
-        pauseTextureOff);
+      fastForward.getX() - pauseTextureOff.getRegionWidth() - PAD, // left of fast forward
+      fastForward.getY(), // same as fast forward
+      pauseTextureOff);
     addActor(pause);
 
     // this is not the cleanest since pause and fast forward are a little intertwined
     final SpeedToggleListener pauseListener = new SpeedToggleListener(pause,
-        pauseTextureOff, pauseTextureOn);
+      pauseTextureOff, pauseTextureOn);
     final SpeedToggleListener fastForwardListener = new SpeedToggleListener(fastForward,
-        fastForwardTextureOff, fastForwardTextureOn);
+      fastForwardTextureOff, fastForwardTextureOn);
     pause.addListener(pauseListener);
     fastForward.addListener(fastForwardListener);
 
@@ -207,12 +207,11 @@ public class HudStage extends Stage {
    */
   private class SpeedToggleListener extends ClickListener {
 
-    private boolean on = false;
-    private GameStateHandler gameStateHandler;
-
     private final TextureRegionActor actor;
     private final TextureRegion offTexture;
     private final TextureRegion onTexture;
+    private boolean on = false;
+    private GameStateHandler gameStateHandler;
 
     private SpeedToggleListener(TextureRegionActor actor, TextureRegion offTexture, TextureRegion onTexture) {
       this.actor = actor;

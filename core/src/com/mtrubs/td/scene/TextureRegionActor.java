@@ -53,7 +53,7 @@ public class TextureRegionActor extends Actor {
     super.draw(batch, alpha);
     if (this.textureRegion != null) {
       batch.draw(this.textureRegion, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(),
-          getScaleX(), getScaleY(), getRotation());
+        getScaleX(), getScaleY(), getRotation());
     }
   }
 

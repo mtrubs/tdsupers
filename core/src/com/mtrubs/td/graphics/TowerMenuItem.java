@@ -30,18 +30,18 @@ public enum TowerMenuItem implements TextureReference {
 
   static {
     TowerMenuItem[] norm = new TowerMenuItem[]{
-        TowerMenuItem.Sell, TowerMenuItem.SetRally,
-        TowerMenuItem.Upgrade, TowerMenuItem.Enhance
+      TowerMenuItem.Sell, TowerMenuItem.SetRally,
+      TowerMenuItem.Upgrade, TowerMenuItem.Enhance
     };
     TOWER_LEVEL_MENUS = new ArrayList<TowerMenuItem[]>();
     // level 0 - select a hero
     TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-        TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3
+      TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3
     });
     // level 1 - choose a path
     TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-        TowerMenuItem.Sell, TowerMenuItem.SetRally,
-        TowerMenuItem.HeroA, TowerMenuItem.HeroB
+      TowerMenuItem.Sell, TowerMenuItem.SetRally,
+      TowerMenuItem.HeroA, TowerMenuItem.HeroB
     });
     // level 2 - upgrade/enhance
     TOWER_LEVEL_MENUS.add(norm);
@@ -49,7 +49,7 @@ public enum TowerMenuItem implements TextureReference {
     TOWER_LEVEL_MENUS.add(norm);
     // level 4 - final
     TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-        TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Enhance
+      TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Enhance
     });
   }
 

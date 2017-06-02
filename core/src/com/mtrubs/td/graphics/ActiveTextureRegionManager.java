@@ -15,32 +15,32 @@ import java.util.Map;
  */
 public class ActiveTextureRegionManager implements TextureRegionManager {
 
-    private final Map<String, TextureRegion> loadedTextures;
+  private final Map<String, TextureRegion> loadedTextures;
 
-    public ActiveTextureRegionManager() {
-        this.loadedTextures = new HashMap<String, TextureRegion>();
-    }
+  public ActiveTextureRegionManager() {
+    this.loadedTextures = new HashMap<String, TextureRegion>();
+  }
 
-    @Override
-    public TextureRegion get(TextureReference type) {
-        if (type == null) {
-            return null;
-        }
-        TextureRegion result = this.loadedTextures.get(type.getKey());
-        if (result == null) {
-            // lazy load
-            Texture texture = new Texture(Gdx.files.internal(type.getTexturePath()));
-            type.setTextureFilter(texture);
-            result = new TextureRegion(texture);
-            this.loadedTextures.put(type.getKey(), result);
-        }
-        return result;
+  @Override
+  public TextureRegion get(TextureReference type) {
+    if (type == null) {
+      return null;
     }
+    TextureRegion result = this.loadedTextures.get(type.getKey());
+    if (result == null) {
+      // lazy load
+      Texture texture = new Texture(Gdx.files.internal(type.getTexturePath()));
+      type.setTextureFilter(texture);
+      result = new TextureRegion(texture);
+      this.loadedTextures.put(type.getKey(), result);
+    }
+    return result;
+  }
 
-    @Override
-    public void dispose() {
-        for (TextureRegion textureRegion : this.loadedTextures.values()) {
-            textureRegion.getTexture().dispose();
-        }
+  @Override
+  public void dispose() {
+    for (TextureRegion textureRegion : this.loadedTextures.values()) {
+      textureRegion.getTexture().dispose();
     }
+  }
 }
