@@ -14,6 +14,7 @@ public enum HeadsUpDisplay implements TextureReference {
   Health("images/hud/health.png"),
   PauseOff("images/hud/pauseOff.png"),
   PauseOn("images/hud/pauseOn.png"),
+  WaveCall("images/hud/waveStatus.png"),
   WaveStatus("images/hud/waveStatus.png");
 
   private final String texturePath;

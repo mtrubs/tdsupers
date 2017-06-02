@@ -54,16 +54,18 @@ public class GdxTd extends ApplicationAdapter {
 
     // Wave Setup
     List<Wave> waves = new ArrayList<Wave>();
-    waves.add(new Wave(this.textureRegionManager));
+    waves.add(new Wave(0.0F, this.textureRegionManager));
     //waves.add(new Wave(this.textureRegionManager));
+    WaveManager waveManager = new WaveManager(waves);
 
+    // TODO: I wonder if these should be one stage and hud is more of a group...
     // the HUD for the level
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-      this.textureRegionManager, startHealth, startCurrency, waves.size());
+      this.textureRegionManager, startHealth, startCurrency, waveManager);
     // the current level
     this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
       LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
-      this.textureRegionManager, new WaveManager(waves));
+      this.textureRegionManager, waveManager);
 
     // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();

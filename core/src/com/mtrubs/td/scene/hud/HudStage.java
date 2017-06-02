@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.WaveManager;
 
 /**
  * @author mrubino
@@ -24,27 +26,49 @@ public class HudStage extends Stage {
   private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
 
+  private final TextureRegionActor waveCaller;
+  private final WaveManager waveManager;
+
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
   private int currency;
-  private int totalWaves;
 
   private Label healthLabel;
   private Label currencyLabel;
   private Label waveLabel;
 
   public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager,
-                  int startHealth, int startCurrency, int totalWaves) {
+                  int startHealth, int startCurrency, WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
 
     this.startHealth = startHealth;
     this.currency = startCurrency;
-    this.totalWaves = totalWaves;
+    this.waveManager = waveManager;
 
     addTopLeft(textureRegionManager);
     addTopRight(textureRegionManager);
     addBottomLeft(textureRegionManager);
     addBottomRight(textureRegionManager);
+
+    TextureRegion waveCallTexture = textureRegionManager.get(HeadsUpDisplay.WaveCall);
+    // TODO: based on wave data
+    this.waveCaller = new TextureRegionActor(50, 300, waveCallTexture);
+    this.waveCaller.addListener(new ClickListener() {
+
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        HudStage.this.waveCaller.setTouchable(Touchable.disabled);
+        HudStage.this.waveCaller.setVisible(false);
+        startNextWave();
+      }
+    });
+    addActor(this.waveCaller);
+  }
+
+  private void startNextWave() {
+    this.waveManager.startWave();
+    updateWaveLabel();
+    // TODO: display wave announcements
   }
 
   public void setHealthValue(int healthValue) {
@@ -76,9 +100,9 @@ public class HudStage extends Stage {
     this.currencyLabel.setText(String.valueOf(this.currency));
   }
 
-  public void setCurrentWave(int currentWave) {
-    this.waveLabel.setText(String.format("%d / %d", currentWave, this.totalWaves));
-    // TODO: display wave announcements
+  public void updateWaveLabel() {
+    this.waveLabel.setText(String.format("%d / %d",
+      this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves()));
   }
 
   private void addTopLeft(TextureRegionManager textureRegionManager) {
@@ -124,11 +148,11 @@ public class HudStage extends Stage {
     addActor(waveStatus);
 
     this.waveLabel = new Label("", style);
-    setCurrentWave(0);
     this.waveLabel.setBounds(
       waveStatus.getX() + waveStatus.getWidth() + PAD,
       waveStatus.getY() + (waveStatus.getHeight() / 2.0F),
       this.waveLabel.getWidth(), this.waveLabel.getHeight());
+    updateWaveLabel();
     addActor(this.waveLabel);
   }
 

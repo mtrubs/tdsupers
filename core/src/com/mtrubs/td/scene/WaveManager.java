@@ -28,6 +28,8 @@ public class WaveManager {
   private final TweenManager tweenManager;
   private final List<Wave> waves;
 
+  private int wave = -1;
+
   /**
    * List of active mobs.
    */
@@ -42,7 +44,6 @@ public class WaveManager {
 
   public void setStage(Stage stage) {
     this.stage = stage;
-    startWave(0); // TODO: tie into HUD inputs
   }
 
   public void remove(MobActor actor) {
@@ -54,17 +55,29 @@ public class WaveManager {
     return this.mobs;
   }
 
-  public void startWave(int wave) {
-    for (MobActor mob : this.waves.get(wave).getMobs()) {
+  public void startWave() {
+    this.wave++;
+    for (MobActor mob : this.waves.get(this.wave).getMobs()) {
       this.stage.addActor(mob);
       this.mobs.add(mob);
       mob.start(this.tweenManager);
     }
   }
 
+  public int getTotalWaves() {
+    return this.waves.size();
+  }
+
+  public int getCurrentWave() {
+    // this is + 1 due to array index starting at 0
+    return this.wave + 1;
+  }
+
   public void update(float delta) {
-    Collections.sort(this.mobs, MOB_COMPARATOR);
-    this.tweenManager.update(delta);
+    if (this.wave >= 0) {
+      Collections.sort(this.mobs, MOB_COMPARATOR);
+      this.tweenManager.update(delta);
+    }
   }
 
   public void dispose() {
