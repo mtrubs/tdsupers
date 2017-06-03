@@ -55,7 +55,9 @@ public class GdxTd extends ApplicationAdapter {
     // Wave Setup
     List<Wave> waves = new ArrayList<Wave>();
     waves.add(new Wave(0.0F, this.textureRegionManager));
-    //waves.add(new Wave(this.textureRegionManager));
+    waves.add(new Wave(1.0F, this.textureRegionManager));
+    waves.add(new Wave(2.0F, this.textureRegionManager));
+    waves.add(new Wave(3.0F, this.textureRegionManager));
     WaveManager waveManager = new WaveManager(waves);
 
     // TODO: I wonder if these should be one stage and hud is more of a group...

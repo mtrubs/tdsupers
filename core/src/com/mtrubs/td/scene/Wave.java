@@ -32,9 +32,11 @@ public class Wave {
    */
   private List<MobActor> mobs;
 
+  private static int count = 0; // TODO: just for test
+
   public Wave(float delay, TextureRegionManager textureRegionManager) {
     // TODO: path moves to be configurable
-    Vector2[] path = new Vector2[]{
+    Vector2[] values = new Vector2[]{
       new Vector2(-100.0F, 289.0F),
       new Vector2(3.0F, 289.0F),
       new Vector2(100.0F, 260.0F),
@@ -50,6 +52,29 @@ public class Wave {
       new Vector2(757.0F, 345.0F),
       new Vector2(1210.0F, 257.0F)
     };
+
+    // TODO: just for test
+    float y2x = 800.0F / 600.0F;
+    float x2y = 600.0F / 800.0F;
+    Vector2[] path = new Vector2[values.length];
+    for (int i = 0; i < values.length; i++) {
+      switch (count) {
+        case 0:
+          // left to right
+          path[i] = new Vector2(values[i].x, values[i].y);
+          break;
+        case 1:
+          // right to left
+          path[i] = new Vector2(800.0F + -values[i].x, 600.0F + -values[i].y);
+          break;
+        case 2:
+          path[i] = new Vector2(values[i].y * y2x, values[i].x * x2y);
+          break;
+        default:
+          path[i] = new Vector2(800.0F + -values[i].y * y2x, 600.0F + -values[i].x * x2y);
+      }
+    }
+    count++;
 
     this.callX = Math.min(Math.max(path[0].x, 0.0F), 800.0F); // TODO: cleaner safe bounds with world
     this.callY = Math.min(Math.max(path[0].y, 0.0F), 600.0F); // TODO: cleaner safe bounds with world
