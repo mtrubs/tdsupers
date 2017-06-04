@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum Mob implements TextureReference {
 
-  TestMob("images/mobs/TestMob.png", 20, 50.0F, 50.0F, 8.0F, 7, ProjectileType.RedBullet);
+  TestMob("images/mobs/TestMob.png", 20, 50.0F, 50.0F, 8.0F, 7, 10, ProjectileType.RedBullet);
 
   private final String texturePath;
   private final String key;
@@ -16,16 +16,18 @@ public enum Mob implements TextureReference {
   private final float attackCoolDown;
   private final int damage;
   private final int health;
+  private final int worth;
   private final ProjectileType projectileType;
 
-  private Mob(String texturePath, int health, float range, float engageRange, float attackCoolDown, int damage,
-              ProjectileType projectileType) {
+  private Mob(String texturePath, int health, float range, float engageRange, float attackCoolDown,
+              int damage, int worth, ProjectileType projectileType) {
     this.texturePath = texturePath;
     this.range = range;
     this.engageRange = engageRange;
     this.attackCoolDown = attackCoolDown;
     this.projectileType = projectileType;
     this.damage = damage;
+    this.worth = worth;
     this.health = health;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }

@@ -11,16 +11,16 @@ import java.util.Map;
  */
 public enum Tower implements TextureReference {
 
-  EmptyPlot("images/towers/plot.png", 0, null, null, null),
+  EmptyPlot("images/towers/plot.png", 0, 0, null, null, null),
 
   // Towers for TestHero
-  TestHero_1("images/towers/TestHero/1.png", 1, Hero.TestHero, null, TowerUnit.TestHeroUnit),
-  TestHeroA2("images/towers/TestHero/a/2.png", 2, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB2("images/towers/TestHero/b/2.png", 2, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
-  TestHeroA3("images/towers/TestHero/a/3.png", 3, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB3("images/towers/TestHero/b/3.png", 3, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
-  TestHeroA4("images/towers/TestHero/a/4.png", 4, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB4("images/towers/TestHero/b/4.png", 4, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit);
+  TestHero_1("images/towers/TestHero/1.png", 1, 25, Hero.TestHero, null, TowerUnit.TestHeroUnit),
+  TestHeroA2("images/towers/TestHero/a/2.png", 2, 30, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
+  TestHeroB2("images/towers/TestHero/b/2.png", 2, 30, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
+  TestHeroA3("images/towers/TestHero/a/3.png", 3, 40, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
+  TestHeroB3("images/towers/TestHero/b/3.png", 3, 40, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
+  TestHeroA4("images/towers/TestHero/a/4.png", 4, 50, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
+  TestHeroB4("images/towers/TestHero/b/4.png", 4, 50, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit);
 
   private static final Map<String, Tower> NAME_MAP;
 
@@ -34,6 +34,7 @@ public enum Tower implements TextureReference {
   private final String texturePath;
   private final String key;
   private final int level;
+  private final int cost;
   private final Hero hero;
   private final TowerPath path;
   private final TowerMenuItem[] visibleItems;
@@ -48,9 +49,10 @@ public enum Tower implements TextureReference {
    * @param path        the path associated with this tower (null for no path).
    * @param unit        what the tower generates for a unit.
    */
-  private Tower(String texturePath, int level, Hero hero, TowerPath path, TowerUnit unit) {
+  private Tower(String texturePath, int level, int cost, Hero hero, TowerPath path, TowerUnit unit) {
     this.texturePath = texturePath;
     this.level = level;
+    this.cost = cost;
     this.hero = hero;
     this.unit = unit;
     this.path = path;
