@@ -128,6 +128,10 @@ public class MobActor extends CombatActor {
     this.timeline.start(tweenManager);
   }
 
+  public int getWorth() {
+    return this.type.getWorth();
+  }
+
   private float getDuration(Vector2 a, Vector2 b) {
     return a.dst(b) / this.speed;
   }

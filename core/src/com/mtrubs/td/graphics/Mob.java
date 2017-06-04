@@ -66,4 +66,8 @@ public enum Mob implements TextureReference {
   public int getHealth() {
     return this.health;
   }
+
+  public int getWorth() {
+    return this.worth;
+  }
 }

@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.HeroConfig;
 import com.mtrubs.td.config.TowerLevelConfig;
+import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
@@ -37,7 +39,8 @@ public class LevelStage extends Stage {
   private static final float PAN_RATE = 0.6F;
 
   private final TextureRegionManager textureRegionManager;
-  private final com.mtrubs.td.config.WaveManager waveManager;
+  private final WaveManager waveManager;
+  private final CurrencyManager currencyManager;
 
   /**
    * List of all tower plots.
@@ -54,10 +57,12 @@ public class LevelStage extends Stage {
    */
   public LevelStage(float worldWidth, float worldHeight,
                     LevelMap levelMap, HeroConfig heroes, TowerLevelConfig[] towers,
-                    TextureRegionManager textureRegionManager, com.mtrubs.td.config.WaveManager waveManager) {
+                    TextureRegionManager textureRegionManager, CurrencyManager currencyManager,
+                    WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
     this.waveManager = waveManager;
+    this.currencyManager = currencyManager;
 
     // add the background image
     final LevelMapActor levelMapActor = new LevelMapActor(this.textureRegionManager.get(levelMap));
@@ -159,6 +164,7 @@ public class LevelStage extends Stage {
 
   public void remove(MobActor actor) {
     deselect(actor);
+    this.currencyManager.add(actor.getWorth());
     this.waveManager.remove(actor);
   }
 

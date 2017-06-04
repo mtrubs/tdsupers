@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
 import com.mtrubs.td.graphics.TextureRegionManager;
@@ -29,10 +30,10 @@ public class HudStage extends Stage {
 
   private final TextureRegionActor waveCaller;
   private final WaveManager waveManager; // disposed elsewhere
+  private final CurrencyManager currencyManager;
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
-  private int currency; // TODO: limit upgrades based on currency
   private float timeToNextWave;
 
   private Label healthLabel;
@@ -40,11 +41,11 @@ public class HudStage extends Stage {
   private Label waveLabel;
 
   public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager,
-                  int startHealth, int startCurrency, WaveManager waveManager) {
+                  int startHealth, CurrencyManager currencyManager, WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
 
     this.startHealth = startHealth;
-    this.currency = startCurrency;
+    this.currencyManager = currencyManager;
     this.waveManager = waveManager;
 
     addTopLeft(textureRegionManager);
@@ -98,10 +99,6 @@ public class HudStage extends Stage {
     // TODO: if healthValue == 0 then GAME OVER!
   }
 
-  private void setCurrency() {
-    this.currencyLabel.setText(String.valueOf(this.currency));
-  }
-
   public void updateWaveLabel() {
     this.waveLabel.setText(String.format((Locale) null, "%d / %d",
       this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves()));
@@ -135,7 +132,6 @@ public class HudStage extends Stage {
     addActor(currency);
 
     this.currencyLabel = new Label("", style);
-    setCurrency();
     this.currencyLabel.setBounds(
       currency.getX() + currency.getWidth() + PAD, // offset from currency
       currency.getY() + (currency.getHeight() / 2.0F), // same a currency; middle aligned
@@ -214,6 +210,7 @@ public class HudStage extends Stage {
   @Override
   public void act(float delta) {
     super.act(delta);
+    this.currencyLabel.setText(String.valueOf(this.currencyManager.getCurrency()));
     // this is how we know if we have started/finished and thus need to track waves
     if (this.waveManager.isActive()) {
       this.timeToNextWave -= delta;

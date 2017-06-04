@@ -4,8 +4,10 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.HeroConfig;
 import com.mtrubs.td.config.TowerLevelConfig;
 import com.mtrubs.td.config.Wave;
@@ -31,6 +33,8 @@ public class GdxTd extends ApplicationAdapter {
    */
   private static final float WORLD_HEIGHT = 600.0F;
 
+  private static final FPSLogger FPS = new FPSLogger();
+
   private TextureRegionManager textureRegionManager;
   private Stage levelStage;
   private HudStage hudStage;
@@ -44,7 +48,6 @@ public class GdxTd extends ApplicationAdapter {
     HeroConfig heroes = new HeroConfig();
 
     int startHealth = 10;
-    int startCurrency = 100;
 
     this.textureRegionManager = new ActiveTextureRegionManager();
 
@@ -54,6 +57,10 @@ public class GdxTd extends ApplicationAdapter {
     towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
     towers.add(new TowerLevelConfig(300.0F, 140.0F, 300.0F, 190.0F));
     //towers.add(new TowerLevelConfig(500.0f, 55.0F));
+
+    // Currency Setup
+    int startCurrency = 100;
+    CurrencyManager currencyManager = new CurrencyManager(startCurrency);
 
     // Wave Setup
     List<Wave> waves = new ArrayList<Wave>();
@@ -66,11 +73,11 @@ public class GdxTd extends ApplicationAdapter {
     // TODO: I wonder if these should be one stage and hud is more of a group...
     // the HUD for the level
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-      this.textureRegionManager, startHealth, startCurrency, waveManager);
+      this.textureRegionManager, startHealth, currencyManager, waveManager);
     // the current level
     this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
       LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
-      this.textureRegionManager, waveManager);
+      this.textureRegionManager, currencyManager, waveManager);
 
     // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();
@@ -91,6 +98,7 @@ public class GdxTd extends ApplicationAdapter {
 
   @Override
   public void render() {
+    FPS.log(); // TODO: for debug
     super.render();
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
