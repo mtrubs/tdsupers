@@ -77,21 +77,35 @@ public class WaveManager {
    * @return the location of the next wave's start point. X coordinate.
    */
   public float getNextStartX() {
-    return this.waves.get(getCurrentWave()).getStartX();
+    int current = getCurrentWave();
+    return current < this.waves.size() ? this.waves.get(current).getStartX() : 0.0F;
   }
 
   /**
    * @return the location of the next wave's start point. Y coordinate.
    */
   public float getNextStartY() {
-    return this.waves.get(getCurrentWave()).getStartY();
+    int current = getCurrentWave();
+    return current < this.waves.size() ? this.waves.get(current).getStartY() : 0.0F;
   }
 
   /**
    * @return the delay until the next wave should start
    */
   public float getNextWaveDelay() {
-    return this.waves.get(getCurrentWave()).getDelay();
+    int current = getCurrentWave();
+    return current < this.waves.size() ? this.waves.get(current).getDelay() : 100.0F;
+  }
+
+  /**
+   * A wave manager is considered active if its first wave has started and its last wave
+   * has not started.
+   *
+   * @return true if we are running the firth through last waves.
+   */
+  public boolean isActive() {
+    int current = getCurrentWave();
+    return current > 0 && current < this.getTotalWaves();
   }
 
   public void update(float delta) {

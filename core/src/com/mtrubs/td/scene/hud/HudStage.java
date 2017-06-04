@@ -29,7 +29,7 @@ public class HudStage extends Stage {
   private static final float PAUSE_SPEED = 0.0F;
 
   private final TextureRegionActor waveCaller;
-  private final WaveManager waveManager;
+  private final WaveManager waveManager; // disposed elsewhere
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
@@ -215,8 +215,8 @@ public class HudStage extends Stage {
   @Override
   public void act(float delta) {
     super.act(delta);
-    // this is how we know if we have started
-    if (this.waveManager.getCurrentWave() > 0) {
+    // this is how we know if we have started/finished and thus need to track waves
+    if (this.waveManager.isActive()) {
       this.timeToNextWave -= delta;
       // if the delay hits zero then we force the wave to start
       // otherwise, when we get close to the start we show the wave caller
