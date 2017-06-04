@@ -3,6 +3,7 @@ package com.mtrubs.td.graphics;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -105,7 +106,8 @@ public enum Tower implements TextureReference {
       return EmptyPlot;
     }
     // can this be better?
-    String name = String.format("%s%s%d", hero.name(), path == null ? "_" : path.name(), this.level + 1);
+    String name = String.format((Locale) null, "%s%s%d",
+      hero.name(), path == null ? "_" : path.name(), this.level + 1);
     return getByName(name);
   }
 

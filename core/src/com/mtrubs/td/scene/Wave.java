@@ -23,9 +23,9 @@ public class Wave {
    */
   private final float startY;
   /**
-   * How much time to delay this way from the next.
+   * How much time, in seconds, until this wave would start.
    */
-  private final float delay;
+  private float delay;
 
   /**
    * The list of mobs associated with this wave.
@@ -107,5 +107,9 @@ public class Wave {
 
   public float getStartY() {
     return this.startY;
+  }
+
+  public float getDelay() {
+    return this.delay;
   }
 }

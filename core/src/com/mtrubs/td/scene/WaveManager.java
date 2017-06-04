@@ -87,6 +87,13 @@ public class WaveManager {
     return this.waves.get(getCurrentWave()).getStartY();
   }
 
+  /**
+   * @return the delay until the next wave should start
+   */
+  public float getNextWaveDelay() {
+    return this.waves.get(getCurrentWave()).getDelay();
+  }
+
   public void update(float delta) {
     if (this.wave >= 0) {
       Collections.sort(this.mobs, MOB_COMPARATOR);

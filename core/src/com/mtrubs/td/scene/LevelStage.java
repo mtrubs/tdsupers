@@ -71,13 +71,6 @@ public class LevelStage extends Stage {
     levelMapActor.addListener(new ActorGestureListener() {
 
       @Override
-      public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        super.touchDown(event, x, y, pointer, button);
-        // TODO: remove debug
-        System.out.println(String.format("%f,%f", x, y));
-      }
-
-      @Override
       public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
         super.pan(event, x, y, deltaX, deltaY);
         // update the camera x,y based on the motion

@@ -14,6 +14,8 @@ import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.WaveManager;
 
+import java.util.Locale;
+
 /**
  * @author mrubino
  * @since 2015-02-21
@@ -31,7 +33,8 @@ public class HudStage extends Stage {
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
-  private int currency;
+  private int currency; // TODO: limit upgrades based on currency
+  private float timeToNextWave;
 
   private Label healthLabel;
   private Label currencyLabel;
@@ -59,8 +62,7 @@ public class HudStage extends Stage {
 
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        HudStage.this.waveCaller.setTouchable(Touchable.disabled);
-        HudStage.this.waveCaller.setVisible(false);
+        // TODO: bonus currency for early click
         startNextWave();
       }
     });
@@ -84,8 +86,11 @@ public class HudStage extends Stage {
   }
 
   private void startNextWave() {
+    this.waveCaller.setTouchable(Touchable.disabled);
+    this.waveCaller.setVisible(false);
     this.waveManager.startWave();
     updateWaveLabel();
+    this.timeToNextWave = this.waveManager.getNextWaveDelay();
     // TODO: display wave announcements
   }
 
@@ -94,32 +99,12 @@ public class HudStage extends Stage {
     // TODO: if healthValue == 0 then GAME OVER!
   }
 
-  public void addCurrency(int amount) {
-    this.currency = this.currency + amount;
-    setCurrency();
-  }
-
-  public void removeCurrency(int amount) {
-    this.currency = this.currency - amount;
-    setCurrency();
-  }
-
-  /**
-   * A tracking of the current currency accumulated.
-   *
-   * @return the current currency amount.
-   */
-  public int getCurrency() {
-    return this.currency;
-    // TODO: limit upgrades based on currency
-  }
-
   private void setCurrency() {
     this.currencyLabel.setText(String.valueOf(this.currency));
   }
 
   public void updateWaveLabel() {
-    this.waveLabel.setText(String.format("%d / %d",
+    this.waveLabel.setText(String.format((Locale) null, "%d / %d",
       this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves()));
   }
 
@@ -230,7 +215,28 @@ public class HudStage extends Stage {
   @Override
   public void act(float delta) {
     super.act(delta);
-    // TODO: use delta to time/trigger wave popups
+    // this is how we know if we have started
+    if (this.waveManager.getCurrentWave() > 0) {
+      this.timeToNextWave -= delta;
+      // if the delay hits zero then we force the wave to start
+      // otherwise, when we get close to the start we show the wave caller
+      if (this.timeToNextWave <= 0.0F) {
+        startNextWave();
+      } else if (!this.waveCaller.isVisible() && this.timeToNextWave <= 10.0F) {
+        this.waveCaller.setX(determineCoordinate(
+          this.waveManager.getNextStartX(),
+          this.waveCaller.getWidth(),
+          getWidth()
+        ));
+        this.waveCaller.setY(determineCoordinate(
+          this.waveManager.getNextStartY(),
+          this.waveCaller.getHeight(),
+          getHeight()
+        ));
+        this.waveCaller.setTouchable(Touchable.enabled);
+        this.waveCaller.setVisible(true);
+      }
+    }
   }
 
   /**
