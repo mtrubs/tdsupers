@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum ProjectileType implements TextureReference {
 
-  RedBullet("images/red.png"),
-  YellowBullet("images/yellow.png");
+  RedBullet("images/projectiles/red.png"),
+  YellowBullet("images/projectiles/yellow.png");
 
   private final String texturePath;
   private final String key;
