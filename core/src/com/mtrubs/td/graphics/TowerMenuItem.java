@@ -29,7 +29,7 @@ public enum TowerMenuItem implements TextureReference {
   private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS;
 
   static {
-    TowerMenuItem[] norm = new TowerMenuItem[]{
+    TowerMenuItem[] norm = {
       TowerMenuItem.Sell, TowerMenuItem.SetRally,
       TowerMenuItem.Upgrade, TowerMenuItem.Enhance
     };

@@ -60,7 +60,7 @@ public class TowerGroup extends Group {
                     final List<Hero> activeHeroes,
                     final TextureRegionManager textureRegionManager,
                     float unitPositionX, float unitPositionY) {
-    this.menuItems = new HashMap<TowerMenuItem, TextureRegionActor>();
+    this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
     this.confirmClicks = new ArrayList<ConfirmClickListener>();
     this.currentState = startingState;
     this.selectedHero = startingState.getHero();
@@ -493,7 +493,7 @@ public class TowerGroup extends Group {
   /**
    * This class handles any sort of confirmation click we might need for the menu items.
    */
-  private static abstract class ConfirmClickListener extends ClickListener {
+  private abstract static class ConfirmClickListener extends ClickListener {
 
     private boolean inConfirm;
 

@@ -253,12 +253,12 @@ public class HudStage extends Stage {
    * Handles the on/off notion of certain actors.  This takes the
    * on/off textures as well as the actor.
    */
-  private class SpeedToggleListener extends ClickListener {
+  private static class SpeedToggleListener extends ClickListener {
 
     private final TextureRegionActor actor;
     private final TextureRegion offTexture;
     private final TextureRegion onTexture;
-    private boolean on = false;
+    private boolean on;
     private GameStateHandler gameStateHandler;
 
     private SpeedToggleListener(TextureRegionActor actor, TextureRegion offTexture, TextureRegion onTexture) {
@@ -284,7 +284,7 @@ public class HudStage extends Stage {
   /**
    * This handles the state of the game based on other factors.
    */
-  private abstract class GameStateHandler {
+  private abstract static class GameStateHandler {
 
     protected abstract void handle();
   }

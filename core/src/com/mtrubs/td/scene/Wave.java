@@ -32,11 +32,11 @@ public class Wave {
    */
   private List<MobActor> mobs;
 
-  private static int count = 0; // TODO: just for test
+  private static int count; // TODO: just for test
 
   public Wave(float delay, TextureRegionManager textureRegionManager) {
     // TODO: path moves to be configurable
-    Vector2[] values = new Vector2[]{
+    Vector2[] values = {
       new Vector2(-100.0F, 289.0F),
       new Vector2(3.0F, 289.0F),
       new Vector2(100.0F, 260.0F),
