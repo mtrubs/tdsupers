@@ -15,13 +15,13 @@ public class Wave {
 
   // TODO: make this a list of X,Y's for more complex maps
   /**
-   * Where the 'call wave' button shows up. X coordinate.
+   * Where the wave starts. X coordinate.
    */
-  private final float callX;
+  private final float startX;
   /**
-   * Where the 'call wave' button shows up. Y coordinate.
+   * Where the wave starts. Y coordinate.
    */
-  private final float callY;
+  private final float startY;
   /**
    * How much time to delay this way from the next.
    */
@@ -68,16 +68,18 @@ public class Wave {
           path[i] = new Vector2(800.0F + -values[i].x, 600.0F + -values[i].y);
           break;
         case 2:
+          // bottom to top
           path[i] = new Vector2(values[i].y * y2x, values[i].x * x2y);
           break;
         default:
+          // top to bottom
           path[i] = new Vector2(800.0F + -values[i].y * y2x, 600.0F + -values[i].x * x2y);
       }
     }
     count++;
 
-    this.callX = Math.min(Math.max(path[0].x, 0.0F), 800.0F); // TODO: cleaner safe bounds with world
-    this.callY = Math.min(Math.max(path[0].y, 0.0F), 600.0F); // TODO: cleaner safe bounds with world
+    this.startX = path[0].x;
+    this.startY = path[0].y;
     this.delay = delay;
 
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
@@ -97,5 +99,13 @@ public class Wave {
 
   public List<MobActor> getMobs() {
     return this.mobs;
+  }
+
+  public float getStartX() {
+    return this.startX;
+  }
+
+  public float getStartY() {
+    return this.startY;
   }
 }

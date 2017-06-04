@@ -50,9 +50,11 @@ public class HudStage extends Stage {
     addBottomLeft(textureRegionManager);
     addBottomRight(textureRegionManager);
 
-    TextureRegion waveCallTexture = textureRegionManager.get(HeadsUpDisplay.WaveCall);
-    // TODO: based on wave data
-    this.waveCaller = new TextureRegionActor(50, 300, waveCallTexture);
+    TextureRegion waveCallerTexture = textureRegionManager.get(HeadsUpDisplay.WaveCaller);
+    this.waveCaller = new TextureRegionActor(
+      determineCoordinate(this.waveManager.getNextStartX(), waveCallerTexture.getRegionWidth(), worldWidth),
+      determineCoordinate(this.waveManager.getNextStartY(), waveCallerTexture.getRegionHeight(), worldHeight),
+      waveCallerTexture);
     this.waveCaller.addListener(new ClickListener() {
 
       @Override
@@ -63,6 +65,22 @@ public class HudStage extends Stage {
       }
     });
     addActor(this.waveCaller);
+  }
+
+  /**
+   * Ensures that the start coordinate falls within acceptable bounds of the world.  This
+   * takes into account the size of the image and applies a pad.
+   *
+   * @param start     the [x,y] coordinate for the image.
+   * @param imageSize the [width,height] of the image.
+   * @param worldSize the [width,height] of the world.
+   * @return the adjusted [x,y] coordinate for the image.
+   */
+  private float determineCoordinate(float start, float imageSize, float worldSize) {
+    float worldStart = PAD + PAD;
+    float worldEnd = worldSize - imageSize - PAD - PAD;
+
+    return Math.min(worldEnd, Math.max(worldStart, start));
   }
 
   private void startNextWave() {

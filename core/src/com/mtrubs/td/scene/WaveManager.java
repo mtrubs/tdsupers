@@ -73,6 +73,20 @@ public class WaveManager {
     return this.wave + 1;
   }
 
+  /**
+   * @return the location of the next wave's start point. X coordinate.
+   */
+  public float getNextStartX() {
+    return this.waves.get(getCurrentWave()).getStartX();
+  }
+
+  /**
+   * @return the location of the next wave's start point. Y coordinate.
+   */
+  public float getNextStartY() {
+    return this.waves.get(getCurrentWave()).getStartY();
+  }
+
   public void update(float delta) {
     if (this.wave >= 0) {
       Collections.sort(this.mobs, MOB_COMPARATOR);
