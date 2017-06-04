@@ -10,9 +10,6 @@ import java.util.*;
 
 /**
  * This represents a tower, its menu items and units.
- *
- * @author mrubino
- * @since 2015-01-27
  */
 public class TowerGroup extends Group {
 

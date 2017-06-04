@@ -20,9 +20,6 @@ import java.util.Collection;
 
 /**
  * This stage represents a given level of the game.
- *
- * @author mrubino
- * @since 2015-01-26
  */
 public class LevelStage extends Stage {
 
@@ -40,7 +37,7 @@ public class LevelStage extends Stage {
   private static final float PAN_RATE = 0.6F;
 
   private final TextureRegionManager textureRegionManager;
-  private final WaveManager waveManager;
+  private final com.mtrubs.td.config.WaveManager waveManager;
 
   /**
    * List of all tower plots.
@@ -57,7 +54,7 @@ public class LevelStage extends Stage {
    */
   public LevelStage(float worldWidth, float worldHeight,
                     LevelMap levelMap, HeroConfig heroes, TowerLevelConfig[] towers,
-                    TextureRegionManager textureRegionManager, WaveManager waveManager) {
+                    TextureRegionManager textureRegionManager, com.mtrubs.td.config.WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
     this.waveManager = waveManager;

@@ -1,8 +1,7 @@
 package com.mtrubs.td.graphics;
 
 /**
- * @author mrubino
- * @since 2015-02-01
+ * This enum represents all the tower upgrade paths.
  */
 public enum TowerPath {
 

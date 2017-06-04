@@ -10,8 +10,7 @@ import com.mtrubs.td.graphics.Mob;
 import com.mtrubs.td.graphics.ProjectileType;
 
 /**
- * @author mrubino
- * @since 2015-02-12
+ * The actor that represents each mob.
  */
 public class MobActor extends CombatActor {
 

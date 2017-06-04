@@ -2,10 +2,6 @@ package com.mtrubs.td.config;
 
 import com.mtrubs.td.graphics.Tower;
 
-/**
- * @author mrubino
- * @since 2015-01-26
- */
 public class TowerLevelConfig {
 
   private final float x;

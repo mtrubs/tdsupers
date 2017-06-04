@@ -1,19 +1,17 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.config;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.Mob;
 import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.scene.MobActor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author mrubino
- * @since 2017-06-02
- */
 public class Wave {
 
   // TODO: make this a list of X,Y's for more complex maps
+  private static int count; // TODO: just for test
   /**
    * Where the wave starts. X coordinate.
    */
@@ -26,13 +24,10 @@ public class Wave {
    * How much time, in seconds, until this wave would start.
    */
   private float delay;
-
   /**
    * The list of mobs associated with this wave.
    */
   private List<MobActor> mobs;
-
-  private static int count; // TODO: just for test
 
   public Wave(float delay, TextureRegionManager textureRegionManager) {
     // TODO: path moves to be configurable

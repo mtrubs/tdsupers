@@ -3,8 +3,7 @@ package com.mtrubs.td.graphics;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * @author mrubino
- * @since 2015-02-02
+ * This enum represents all the mob available.
  */
 public enum Mob implements TextureReference {
 

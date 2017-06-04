@@ -7,8 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * @author mrubino
- * @since 2015-01-26
+ * This enum represents all the towers (and upgrades) available.
  */
 public enum Tower implements TextureReference {
 

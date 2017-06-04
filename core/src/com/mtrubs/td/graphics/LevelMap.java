@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 
 /**
  * This enum represents the various level textures available.
- *
- * @author mrubino
- * @since 2015-01-23
  */
 public enum LevelMap implements TextureReference {
 

@@ -9,16 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.TextureRegionActor;
-import com.mtrubs.td.scene.WaveManager;
 
 import java.util.Locale;
 
 /**
- * @author mrubino
- * @since 2015-02-21
+ * Stage to handle the heads up display (HUD).
  */
 public class HudStage extends Stage {
 

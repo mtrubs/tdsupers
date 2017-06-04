@@ -3,8 +3,7 @@ package com.mtrubs.td.graphics;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * @author mrubino
- * @since 2015-02-11
+ * This enum represents all the tower units.
  */
 public enum TowerUnit implements TextureReference {
 

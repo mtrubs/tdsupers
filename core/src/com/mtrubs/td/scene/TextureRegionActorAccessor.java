@@ -2,10 +2,6 @@ package com.mtrubs.td.scene;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-/**
- * @author mrubino
- * @since 2015-02-02
- */
 public class TextureRegionActorAccessor implements TweenAccessor<TextureRegionActor> {
 
   public static final int POSITION_X = 1;

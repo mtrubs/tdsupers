@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mtrubs.td.config.HeroConfig;
 import com.mtrubs.td.config.TowerLevelConfig;
+import com.mtrubs.td.config.Wave;
 import com.mtrubs.td.graphics.ActiveTextureRegionManager;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.*;
+import com.mtrubs.td.scene.LevelStage;
+import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.TextureRegionActorAccessor;
 import com.mtrubs.td.scene.hud.HudStage;
 
 import java.util.ArrayList;
@@ -58,7 +61,7 @@ public class GdxTd extends ApplicationAdapter {
     waves.add(new Wave(30.0F, this.textureRegionManager));
     waves.add(new Wave(30.0F, this.textureRegionManager));
     waves.add(new Wave(30.0F, this.textureRegionManager));
-    WaveManager waveManager = new WaveManager(waves);
+    com.mtrubs.td.config.WaveManager waveManager = new com.mtrubs.td.config.WaveManager(waves);
 
     // TODO: I wonder if these should be one stage and hud is more of a group...
     // the HUD for the level

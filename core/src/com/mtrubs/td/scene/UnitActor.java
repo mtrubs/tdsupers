@@ -5,8 +5,7 @@ import com.mtrubs.td.graphics.ProjectileType;
 import com.mtrubs.td.graphics.TowerUnit;
 
 /**
- * @author mrubino
- * @since 2015-02-13
+ * Actor to represent each tower unit.
  */
 public class UnitActor extends CombatActor {
 

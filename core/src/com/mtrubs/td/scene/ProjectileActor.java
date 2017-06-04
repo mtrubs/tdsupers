@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * @author mrubino
- * @since 2015-02-18
+ * The actor that represents each projectile.
  */
 public class ProjectileActor extends TextureRegionActor {
 

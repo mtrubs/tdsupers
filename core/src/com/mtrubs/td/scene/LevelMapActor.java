@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * The actor the represents the level map/background.
- *
- * @author mrubino
- * @since 2015-01-26
+ * The actor that represents the level map/background.
  */
 public class LevelMapActor extends Actor {
 

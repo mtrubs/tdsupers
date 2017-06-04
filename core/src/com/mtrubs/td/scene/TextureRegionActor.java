@@ -7,9 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * The actor that represents a particular texture region in the world.
- *
- * @author mrubino
- * @since 2015-01-27
  */
 public class TextureRegionActor extends Actor {
 

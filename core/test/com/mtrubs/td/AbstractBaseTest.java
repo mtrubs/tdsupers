@@ -9,10 +9,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.mockito.Mockito;
 
-/**
- * @author mrubino
- * @since 2017-05-30
- */
 public abstract class AbstractBaseTest {
 
   private static Application application;

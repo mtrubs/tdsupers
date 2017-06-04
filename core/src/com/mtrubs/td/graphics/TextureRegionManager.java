@@ -2,10 +2,6 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-/**
- * @author mrubino
- * @since 2015-01-26
- */
 public interface TextureRegionManager {
 
   /**

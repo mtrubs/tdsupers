@@ -9,9 +9,6 @@ import java.util.Map;
 
 /**
  * This region manager loads each texture region on use and caches it for subsequent calls.
- *
- * @author mrubino
- * @since 2015-01-26
  */
 public class ActiveTextureRegionManager implements TextureRegionManager {
 

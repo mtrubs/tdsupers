@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.ProjectileType;
 
 /**
- * @author mrubino
- * @since 2015-02-19
+ * Base actor that represents anything capable of engaging in combat.
  */
 public abstract class CombatActor extends TextureRegionActor implements Targetable {
 

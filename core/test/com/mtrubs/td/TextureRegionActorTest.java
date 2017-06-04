@@ -8,10 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * @author mrubino
- * @since 2017-05-30
- */
 public class TextureRegionActorTest extends AbstractBaseTest {
 
   @Test

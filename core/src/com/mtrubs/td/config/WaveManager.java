@@ -1,17 +1,14 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.config;
 
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mtrubs.td.scene.MobActor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * @author mrubino
- * @since 2017-06-02
- */
 public class WaveManager {
 
   /**

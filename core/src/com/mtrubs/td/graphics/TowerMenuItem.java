@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author mrubino
- * @since 2015-01-26
+ * This enum represents all the tower menu items available.
  */
 public enum TowerMenuItem implements TextureReference {
 
