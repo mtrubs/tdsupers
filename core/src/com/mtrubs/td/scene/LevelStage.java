@@ -97,7 +97,8 @@ public class LevelStage extends Stage {
     this.towers = new ArrayList<TowerGroup>(towers.length);
     for (TowerLevelConfig tower : towers) {
       TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(), tower.getStartingState(),
-        heroes.getHeroTowers(), this.textureRegionManager, tower.getUnitX(), tower.getUnitY());
+        heroes.getHeroTowers(), this.currencyManager, this.waveManager, this.textureRegionManager,
+        tower.getUnitX(), tower.getUnitY());
       addActor(towerGroup);
       this.towers.add(towerGroup);
     }

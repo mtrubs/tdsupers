@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mtrubs.td.config.CurrencyManager;
+import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.*;
 
 import java.util.*;
@@ -12,6 +14,11 @@ import java.util.*;
  * This represents a tower, its menu items and units.
  */
 public class TowerGroup extends Group {
+
+  /**
+   * How much we discount the tower value by when we sell it.
+   */
+  private static final float SELL_FACTOR = 0.75F;
 
   /**
    * This is a map of all menu items for the tower.
@@ -41,6 +48,10 @@ public class TowerGroup extends Group {
    * Whether or not this tower has been enhanced (upgrade).
    */
   private boolean enhanced;
+  /**
+   * The amount of currency spent on this tower.
+   */
+  private int value;
 
   private UnitActor unit;
 
@@ -51,10 +62,14 @@ public class TowerGroup extends Group {
    * @param positionY            the y coordinate of this tower group's tower.
    * @param startingState        the starting state of this tower group.
    * @param activeHeroes         the list of active heroes for the current level.
+   * @param currencyManager      the currency manager.
+   * @param waveManager          the wave manager.
    * @param textureRegionManager the texture region manager.
    */
   public TowerGroup(float positionX, float positionY, Tower startingState,
                     final List<Hero> activeHeroes,
+                    final CurrencyManager currencyManager,
+                    final WaveManager waveManager,
                     final TextureRegionManager textureRegionManager,
                     float unitPositionX, float unitPositionY) {
     this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
@@ -135,13 +150,14 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(0), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+            currencyManager, waveManager, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
     }
 
-    // when hero1 is clicked, if it exists, we want to upgrade the tower accordingly
+    // when hero2 is clicked, if it exists, we want to upgrade the tower accordingly
     if (hero2 != null) {
       hero2.addListener(new ConfirmClickListener(this.confirmClicks) {
 
@@ -161,7 +177,8 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(1), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+            currencyManager, waveManager, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -187,13 +204,14 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           updateCurrentState(activeHeroes.get(2), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+            currencyManager, waveManager, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
     }
 
-    // if path a is clicked, we want to select that path for the selected hero
+    // if path A is clicked, we want to select that path for the selected hero
     heroA.addListener(new ConfirmClickListener(this.confirmClicks) {
 
       @Override
@@ -212,12 +230,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerPath.A,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+          currencyManager, waveManager, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
 
-    // if path b is clicked, we want to select that path for the selected hero
+    // if path B is clicked, we want to select that path for the selected hero
     heroB.addListener(new ConfirmClickListener(this.confirmClicks) {
 
       @Override
@@ -236,7 +255,8 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerPath.B,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+          currencyManager, waveManager, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -260,7 +280,8 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         updateCurrentState(TowerGroup.this.selectedHero, TowerGroup.this.selectedPath,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit, textureRegionManager);
+          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
+          currencyManager, waveManager, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -285,6 +306,7 @@ public class TowerGroup extends Group {
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.enhanced = true;
         updateTower(tower, textureRegionManager);
+        // TODO: need to pay for this...
         super.handleClick(event, x, y);
       }
     });
@@ -307,7 +329,9 @@ public class TowerGroup extends Group {
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        updateCurrentState(null, null, false, tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(null, null, false,
+          tower, TowerGroup.this.unit,
+          currencyManager, waveManager, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -321,15 +345,33 @@ public class TowerGroup extends Group {
    * @param enhanced             whether or not this tower has been enhanced.
    * @param tower                the tower actor.
    * @param unit                 the unit actor.
+   * @param currencyManager      the currency manager.
+   * @param waveManager          the wave manager.
    * @param textureRegionManager the texture region manager.
    */
   private void updateCurrentState(Hero selectedHero, TowerPath selectedPath, boolean enhanced,
                                   TextureRegionActor tower, UnitActor unit,
+                                  CurrencyManager currencyManager,
+                                  WaveManager waveManager,
                                   TextureRegionManager textureRegionManager) {
     this.currentState = this.currentState.upgrade(selectedHero, selectedPath);
     this.selectedHero = this.currentState.getHero();
     this.selectedPath = this.currentState.getPath();
     this.enhanced = enhanced;
+
+    if (selectedHero == null) {
+      // this means we are selling the tower
+      // if we have not started the first wave yet then sell at full cost
+      int adjusted = waveManager.isActive() ?
+        Math.round(((float) this.value) * SELL_FACTOR) : this.value;
+      currencyManager.add(adjusted);
+      this.value = 0;
+    } else {
+      int cost = this.currentState.getCost();
+      currencyManager.subtract(cost);
+      this.value += cost;
+    }
+
     updateTower(tower, textureRegionManager);
     updateUnit(unit, textureRegionManager);
   }
@@ -473,7 +515,7 @@ public class TowerGroup extends Group {
     float radius = ring.getWidth() / 2.0F;
 
     // circle math to figure out where this menu item belongs
-    // we offset x and y bu the radius of the ring
+    // we offset x and y by the radius of the ring
     // TODO: circle math might need minor tweaking based on width of ring (which I am not sure I can calculate dynamically)
     float circleX = (float) (radius * Math.cos(degrees * Math.PI / 180.0F)) + ring.getX() + radius;
     float circleY = (float) (radius * Math.sin(degrees * Math.PI / 180.0F)) + ring.getY() + radius;
@@ -485,6 +527,12 @@ public class TowerGroup extends Group {
     );
     this.menuItems.put(key, actor);
     return actor;
+  }
+
+  @Override
+  public void act(float delta) {
+    super.act(delta);
+    // TODO: disable menu items we cannot afford
   }
 
   /**

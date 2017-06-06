@@ -147,4 +147,11 @@ public enum Tower implements TextureReference {
   public TowerUnit getUnit() {
     return this.unit;
   }
+
+  /**
+   * @return the amount of currency it costs to do this upgrade.
+   */
+  public int getCost() {
+    return this.cost;
+  }
 }

@@ -19,4 +19,8 @@ public class CurrencyManager {
   public void add(int amount) {
     this.currency += amount;
   }
+
+  public void subtract(int amount) {
+    this.currency -= amount;
+  }
 }
