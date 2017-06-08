@@ -197,7 +197,7 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero3.setTextureRegion(textureRegionManager.get(activeHeroes.get(3)));
+          hero3.setTextureRegion(textureRegionManager.get(activeHeroes.get(2)));
           super.reset();
         }
 
