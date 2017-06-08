@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum Hero implements TextureReference {
 
-  TestHero("images/towers/menu/TestHero.png");
+  TestHero1("images/towers/menu/TestHero1.png"),
+  TestHero2("images/towers/menu/TestHero2.png"),
+  TestHero3("images/towers/menu/TestHero3.png");
 
   private final String texturePath;
   private final String key;

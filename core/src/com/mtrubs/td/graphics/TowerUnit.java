@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum TowerUnit implements TextureReference {
 
-  TestHeroUnit("images/towers/TestHero/Unit1.png", 30, 100.0F, 100.0F, 10.0F, 5.0F, 10, ProjectileType.YellowBullet);
+  TestHeroUnit1("images/towers/TestHero1/Unit1.png", 30, 100.0F, 100.0F, 10.0F, 5.0F, 10, ProjectileType.YellowBullet),
+  TestHeroUnit2("images/towers/TestHero2/Unit1.png", 30, 100.0F, 150.0F, 6.0F, 5.0F, 10, ProjectileType.YellowBullet),
+  TestHeroUnit3("images/towers/TestHero3/Unit1.png", 30, 100.0F, 200.0F, 10.0F, 10.0F, 10, ProjectileType.YellowBullet);
 
   private final String texturePath;
   private final String key;

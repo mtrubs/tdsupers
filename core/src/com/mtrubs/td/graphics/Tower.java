@@ -13,14 +13,32 @@ public enum Tower implements TextureReference {
 
   EmptyPlot("images/towers/plot.png", 0, 0, null, null, null),
 
-  // Towers for TestHero
-  TestHero_1("images/towers/TestHero/1.png", 1, 25, Hero.TestHero, null, TowerUnit.TestHeroUnit),
-  TestHeroA2("images/towers/TestHero/a/2.png", 2, 30, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB2("images/towers/TestHero/b/2.png", 2, 30, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
-  TestHeroA3("images/towers/TestHero/a/3.png", 3, 40, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB3("images/towers/TestHero/b/3.png", 3, 40, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit),
-  TestHeroA4("images/towers/TestHero/a/4.png", 4, 50, Hero.TestHero, TowerPath.A, TowerUnit.TestHeroUnit),
-  TestHeroB4("images/towers/TestHero/b/4.png", 4, 50, Hero.TestHero, TowerPath.B, TowerUnit.TestHeroUnit);
+  // Towers for TestHero1
+  TestHero1_1("images/towers/TestHero1/1.png", 1, 25, Hero.TestHero1, null, TowerUnit.TestHeroUnit1),
+  TestHero1A2("images/towers/TestHero1/a/2.png", 2, 30, Hero.TestHero1, TowerPath.A, TowerUnit.TestHeroUnit1),
+  TestHero1B2("images/towers/TestHero1/b/2.png", 2, 30, Hero.TestHero1, TowerPath.B, TowerUnit.TestHeroUnit1),
+  TestHero1A3("images/towers/TestHero1/a/3.png", 3, 40, Hero.TestHero1, TowerPath.A, TowerUnit.TestHeroUnit1),
+  TestHero1B3("images/towers/TestHero1/b/3.png", 3, 40, Hero.TestHero1, TowerPath.B, TowerUnit.TestHeroUnit1),
+  TestHero1A4("images/towers/TestHero1/a/4.png", 4, 50, Hero.TestHero1, TowerPath.A, TowerUnit.TestHeroUnit1),
+  TestHero1B4("images/towers/TestHero1/b/4.png", 4, 50, Hero.TestHero1, TowerPath.B, TowerUnit.TestHeroUnit1),
+
+  // Towers for TestHero2
+  TestHero2_1("images/towers/TestHero2/1.png", 1, 25, Hero.TestHero2, null, TowerUnit.TestHeroUnit2),
+  TestHero2A2("images/towers/TestHero2/a/2.png", 2, 30, Hero.TestHero2, TowerPath.A, TowerUnit.TestHeroUnit2),
+  TestHero2B2("images/towers/TestHero2/b/2.png", 2, 30, Hero.TestHero2, TowerPath.B, TowerUnit.TestHeroUnit2),
+  TestHero2A3("images/towers/TestHero2/a/3.png", 3, 40, Hero.TestHero2, TowerPath.A, TowerUnit.TestHeroUnit2),
+  TestHero2B3("images/towers/TestHero2/b/3.png", 3, 40, Hero.TestHero2, TowerPath.B, TowerUnit.TestHeroUnit2),
+  TestHero2A4("images/towers/TestHero2/a/4.png", 4, 50, Hero.TestHero2, TowerPath.A, TowerUnit.TestHeroUnit2),
+  TestHero2B4("images/towers/TestHero2/b/4.png", 4, 50, Hero.TestHero2, TowerPath.B, TowerUnit.TestHeroUnit2),
+
+  // Towers for TestHero3
+  TestHero3_1("images/towers/TestHero3/1.png", 1, 25, Hero.TestHero3, null, TowerUnit.TestHeroUnit3),
+  TestHero3A2("images/towers/TestHero3/a/2.png", 2, 30, Hero.TestHero3, TowerPath.A, TowerUnit.TestHeroUnit3),
+  TestHero3B2("images/towers/TestHero3/b/2.png", 2, 30, Hero.TestHero3, TowerPath.B, TowerUnit.TestHeroUnit3),
+  TestHero3A3("images/towers/TestHero3/a/3.png", 3, 40, Hero.TestHero3, TowerPath.A, TowerUnit.TestHeroUnit3),
+  TestHero3B3("images/towers/TestHero3/b/3.png", 3, 40, Hero.TestHero3, TowerPath.B, TowerUnit.TestHeroUnit3),
+  TestHero3A4("images/towers/TestHero3/a/4.png", 4, 50, Hero.TestHero3, TowerPath.A, TowerUnit.TestHeroUnit3),
+  TestHero3B4("images/towers/TestHero3/b/4.png", 4, 50, Hero.TestHero3, TowerPath.B, TowerUnit.TestHeroUnit3);
 
   private static final Map<String, Tower> NAME_MAP;
 
