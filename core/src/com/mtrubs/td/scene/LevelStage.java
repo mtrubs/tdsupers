@@ -96,8 +96,8 @@ public class LevelStage extends Stage {
     // add each tower plot
     this.towers = new ArrayList<TowerGroup>(towers.length);
     for (TowerLevelConfig tower : towers) {
-      TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(), tower.getStartingState(),
-        heroes.getHeroTowers(), this.currencyManager, this.waveManager, this.textureRegionManager,
+      TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(), new TowerState(this.currencyManager),
+        heroes.getHeroTowers(), this.waveManager, this.textureRegionManager,
         tower.getUnitX(), tower.getUnitY());
       addActor(towerGroup);
       this.towers.add(towerGroup);

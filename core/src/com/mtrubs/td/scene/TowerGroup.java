@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.*;
 
@@ -14,11 +13,6 @@ import java.util.*;
  * This represents a tower, its menu items and units.
  */
 public class TowerGroup extends Group {
-
-  /**
-   * How much we discount the tower value by when we sell it.
-   */
-  private static final float SELL_FACTOR = 0.75F;
 
   /**
    * This is a map of all menu items for the tower.
@@ -33,25 +27,14 @@ public class TowerGroup extends Group {
    */
   private final Group menu;
   /**
-   * The texture of the tower at this time.
+   * The level of this current tower.
    */
-  private Tower currentState;
+  private TowerState state;
   /**
-   * The active hero (upgrade) of this tower.
-   */
-  private Hero selectedHero;
-  /**
-   * The active path (upgrade) of this tower.
-   */
-  private TowerPath selectedPath;
-  /**
+   * TODO: move into TowerState, make enum.
    * Whether or not this tower has been enhanced (upgrade).
    */
   private boolean enhanced;
-  /**
-   * The amount of currency spent on this tower.
-   */
-  private int value;
 
   private UnitActor unit;
 
@@ -62,29 +45,26 @@ public class TowerGroup extends Group {
    * @param positionY            the y coordinate of this tower group's tower.
    * @param startingState        the starting state of this tower group.
    * @param activeHeroes         the list of active heroes for the current level.
-   * @param currencyManager      the currency manager.
    * @param waveManager          the wave manager.
    * @param textureRegionManager the texture region manager.
    */
-  public TowerGroup(float positionX, float positionY, Tower startingState,
+  public TowerGroup(float positionX, float positionY, TowerState startingState,
                     final List<Hero> activeHeroes,
-                    final CurrencyManager currencyManager,
                     final WaveManager waveManager,
                     final TextureRegionManager textureRegionManager,
                     float unitPositionX, float unitPositionY) {
     this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
     this.confirmClicks = new ArrayList<ConfirmClickListener>();
-    this.currentState = startingState;
-    this.selectedHero = startingState.getHero();
-    this.selectedPath = startingState.getPath();
+    this.state = startingState;
     // this is the tower image of this group
+    Tower startingTower = startingState.getTower();
     final TextureRegionActor tower = new TextureRegionActor(positionX, positionY,
-      textureRegionManager.get(startingState));
+      textureRegionManager.get(startingTower));
     addActor(tower);
 
-    if (startingState.hasUnit()) {
-      this.unit = new UnitActor(unitPositionX, unitPositionY, startingState.getUnit(),
-        textureRegionManager.get(startingState.getUnit()));
+    if (startingTower.hasUnit()) {
+      this.unit = new UnitActor(unitPositionX, unitPositionY, startingTower.getUnit(),
+        textureRegionManager.get(startingTower.getUnit()));
     } else {
       this.unit = new UnitActor(unitPositionX, unitPositionY, null, null);
     }
@@ -149,9 +129,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          updateCurrentState(activeHeroes.get(0), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-            currencyManager, waveManager, textureRegionManager);
+          TowerGroup.this.state.upgrade(activeHeroes.get(0));
+          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -176,9 +155,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          updateCurrentState(activeHeroes.get(1), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-            currencyManager, waveManager, textureRegionManager);
+          TowerGroup.this.state.upgrade(activeHeroes.get(1));
+          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -203,9 +181,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          updateCurrentState(activeHeroes.get(2), null,
-            TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-            currencyManager, waveManager, textureRegionManager);
+          TowerGroup.this.state.upgrade(activeHeroes.get(2));
+          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
       });
@@ -229,9 +206,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        updateCurrentState(TowerGroup.this.selectedHero, TowerPath.A,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-          currencyManager, waveManager, textureRegionManager);
+        TowerGroup.this.state.upgrade(TowerPath.A);
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -254,9 +230,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        updateCurrentState(TowerGroup.this.selectedHero, TowerPath.B,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-          currencyManager, waveManager, textureRegionManager);
+        TowerGroup.this.state.upgrade(TowerPath.B);
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -279,9 +254,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        updateCurrentState(TowerGroup.this.selectedHero, TowerGroup.this.selectedPath,
-          TowerGroup.this.enhanced, tower, TowerGroup.this.unit,
-          currencyManager, waveManager, textureRegionManager);
+        TowerGroup.this.state.upgrade();
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -305,7 +279,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.enhanced = true;
-        updateTower(tower, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         // TODO: need to pay for this...
         super.handleClick(event, x, y);
       }
@@ -329,9 +303,9 @@ public class TowerGroup extends Group {
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        updateCurrentState(null, null, false,
-          tower, TowerGroup.this.unit,
-          currencyManager, waveManager, textureRegionManager);
+        TowerGroup.this.state.reset(waveManager.isActive());
+        TowerGroup.this.enhanced = false;
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -340,62 +314,40 @@ public class TowerGroup extends Group {
   /**
    * Updates the state of this tower group.
    *
-   * @param selectedHero         the selected hero we have upgraded with.
-   * @param selectedPath         the selected path we have upgraded with.
-   * @param enhanced             whether or not this tower has been enhanced.
-   * @param tower                the tower actor.
-   * @param unit                 the unit actor.
-   * @param currencyManager      the currency manager.
-   * @param waveManager          the wave manager.
+   * @param towerActor           the tower actor.
+   * @param unitActor            the unit actor.
    * @param textureRegionManager the texture region manager.
    */
-  private void updateCurrentState(Hero selectedHero, TowerPath selectedPath, boolean enhanced,
-                                  TextureRegionActor tower, UnitActor unit,
-                                  CurrencyManager currencyManager,
-                                  WaveManager waveManager,
+  private void updateCurrentState(TextureRegionActor towerActor, UnitActor unitActor,
                                   TextureRegionManager textureRegionManager) {
-    this.currentState = this.currentState.upgrade(selectedHero, selectedPath);
-    this.selectedHero = this.currentState.getHero();
-    this.selectedPath = this.currentState.getPath();
-    this.enhanced = enhanced;
-
-    if (selectedHero == null) {
-      // this means we are selling the tower
-      // if we have not started the first wave yet then sell at full cost
-      int adjusted = waveManager.isActive() ?
-        Math.round(((float) this.value) * SELL_FACTOR) : this.value;
-      currencyManager.add(adjusted);
-      this.value = 0;
-    } else {
-      int cost = this.currentState.getCost();
-      currencyManager.subtract(cost);
-      this.value += cost;
-    }
-
-    updateTower(tower, textureRegionManager);
-    updateUnit(unit, textureRegionManager);
+    Tower tower = this.state.getTower();
+    TowerUnit unit = tower.getUnit();
+    updateTower(tower, towerActor, textureRegionManager);
+    updateUnit(unit, unitActor, textureRegionManager);
   }
 
   /**
    * Updates the given tower actor to the current state of this group.
    *
-   * @param tower                the tower actor to upgrade.
+   * @param tower                the tower representation of this group.
+   * @param actor                the tower actor to upgrade.
    * @param textureRegionManager the texture region manager.
    */
-  private void updateTower(TextureRegionActor tower, TextureRegionManager textureRegionManager) {
-    tower.setTextureRegion(textureRegionManager.get(this.currentState));
+  private void updateTower(Tower tower, TextureRegionActor actor, TextureRegionManager textureRegionManager) {
+    actor.setTextureRegion(textureRegionManager.get(tower));
     updateMenuState();
   }
 
   /**
    * Updates the given unit actor to the current state of this group.
    *
-   * @param unit                 the unit actor to upgrade.
+   * @param unit                 the unit representation for this group.
+   * @param actor                the unit actor to upgrade.
    * @param textureRegionManager the texture region manager.
    */
-  private void updateUnit(UnitActor unit, TextureRegionManager textureRegionManager) {
-    unit.setTextureRegion(textureRegionManager.get(this.currentState.getUnit()));
-    unit.setType(this.currentState.getUnit());
+  private void updateUnit(TowerUnit unit, UnitActor actor, TextureRegionManager textureRegionManager) {
+    actor.setTextureRegion(textureRegionManager.get(unit));
+    actor.setType(unit);
   }
 
   /**
@@ -405,7 +357,7 @@ public class TowerGroup extends Group {
     deselect();
     this.menu.clearChildren();
     this.menu.addActor(this.menuItems.get(TowerMenuItem.Ring));
-    for (TowerMenuItem item : this.currentState.getVisibleItems()) {
+    for (TowerMenuItem item : this.state.getVisibleItems()) {
       if (item == TowerMenuItem.Enhance && this.enhanced) {
         // no need to show the enhance option if it has already been done
         continue;

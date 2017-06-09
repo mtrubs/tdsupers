@@ -1,9 +1,5 @@
 package com.mtrubs.td.config;
 
-/**
- * @author mrubino
- * @since 2017-06-04
- */
 public class CurrencyManager {
 
   private int currency;
