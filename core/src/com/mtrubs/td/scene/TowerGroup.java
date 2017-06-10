@@ -3,6 +3,7 @@ package com.mtrubs.td.scene;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.*;
@@ -36,6 +37,7 @@ public class TowerGroup extends Group {
    */
   private boolean enhanced;
 
+  // TODO: make up to 3
   private UnitActor unit;
 
   /**
@@ -44,12 +46,10 @@ public class TowerGroup extends Group {
    * @param positionX            the x coordinate of this tower group's tower.
    * @param positionY            the y coordinate of this tower group's tower.
    * @param startingState        the starting state of this tower group.
-   * @param activeHeroes         the list of active heroes for the current level.
    * @param waveManager          the wave manager.
    * @param textureRegionManager the texture region manager.
    */
   public TowerGroup(float positionX, float positionY, TowerState startingState,
-                    final List<Hero> activeHeroes,
                     final WaveManager waveManager,
                     final TextureRegionManager textureRegionManager,
                     float unitPositionX, float unitPositionY) {
@@ -81,9 +81,9 @@ public class TowerGroup extends Group {
     final TextureRegionActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB, textureRegionManager);
 
     // for now this is hard capped at 3
-    final TextureRegionActor hero1 = addHeroMenuItem(0, activeHeroes, TowerMenuItem.Hero1, ring, textureRegionManager);
-    final TextureRegionActor hero2 = addHeroMenuItem(1, activeHeroes, TowerMenuItem.Hero2, ring, textureRegionManager);
-    final TextureRegionActor hero3 = addHeroMenuItem(2, activeHeroes, TowerMenuItem.Hero3, ring, textureRegionManager);
+    final TextureRegionActor hero1 = addHeroMenuItem(0, TowerMenuItem.Hero1, ring, textureRegionManager);
+    final TextureRegionActor hero2 = addHeroMenuItem(1, TowerMenuItem.Hero2, ring, textureRegionManager);
+    final TextureRegionActor hero3 = addHeroMenuItem(2, TowerMenuItem.Hero3, ring, textureRegionManager);
 
     // the menu itself
     this.menu = new Group();
@@ -123,13 +123,13 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero1.setTextureRegion(textureRegionManager.get(activeHeroes.get(0)));
+          hero1.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(0)));
           super.reset();
         }
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          TowerGroup.this.state.upgrade(activeHeroes.get(0));
+          TowerGroup.this.state.upgrade(0);
           updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
@@ -149,13 +149,13 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero2.setTextureRegion(textureRegionManager.get(activeHeroes.get(1)));
+          hero2.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(1)));
           super.reset();
         }
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          TowerGroup.this.state.upgrade(activeHeroes.get(1));
+          TowerGroup.this.state.upgrade(1);
           updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
@@ -175,13 +175,13 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero3.setTextureRegion(textureRegionManager.get(activeHeroes.get(2)));
+          hero3.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(2)));
           super.reset();
         }
 
         @Override
         public void handleClick(InputEvent event, float x, float y) {
-          TowerGroup.this.state.upgrade(activeHeroes.get(2));
+          TowerGroup.this.state.upgrade(2);
           updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
           super.handleClick(event, x, y);
         }
@@ -418,20 +418,23 @@ public class TowerGroup extends Group {
    * Adds a hero menu item to the menu of this tower group.
    *
    * @param index                the hero we are using in the hero list.
-   * @param activeHeroes         the list of active heroes.
    * @param key                  which tower menu item (generic version) we are associating with this hero.
    * @param ring                 the tower menu ring.
    * @param textureRegionManager the texture region manager.
    * @return the menu actor added.
    */
-  private TextureRegionActor addHeroMenuItem(int index, List<Hero> activeHeroes, TowerMenuItem key,
+  private TextureRegionActor addHeroMenuItem(int index, TowerMenuItem key,
                                              TextureRegionActor ring, TextureRegionManager textureRegionManager) {
-    if (activeHeroes.size() == 1) {
-      return index > 0 ? null : addMenuItem(ring, 90.0F, activeHeroes.get(index), key, textureRegionManager);
-    } else if (activeHeroes.size() == 2) {
-      return index > 1 ? null : addMenuItem(ring, 60.0F + 60.0F * (float) index, activeHeroes.get(index), key, textureRegionManager);
-    } else if (activeHeroes.size() == 3) {
-      return index > 2 ? null : addMenuItem(ring, 30.0F + 60.0F * (float) index, activeHeroes.get(index), key, textureRegionManager);
+    int heroCount = this.state.activeHeroCount();
+    if (heroCount == 1) {
+      return index > 0 ? null : addMenuItem(ring, 90.0F,
+        this.state.getHero(index), key, textureRegionManager);
+    } else if (heroCount == 2) {
+      return index > 1 ? null : addMenuItem(ring, 60.0F + 60.0F * (float) index,
+        this.state.getHero(index), key, textureRegionManager);
+    } else if (heroCount == 3) {
+      return index > 2 ? null : addMenuItem(ring, 30.0F + 60.0F * (float) index,
+        this.state.getHero(index), key, textureRegionManager);
     } else {
       throw new RuntimeException("unexpected hero count");
     }
@@ -481,10 +484,54 @@ public class TowerGroup extends Group {
     return actor;
   }
 
-  @Override
-  public void act(float delta) {
-    super.act(delta);
-    // TODO: disable menu items we cannot afford
+  /**
+   * Handles a currency change event.  In the case of this tower group that means,
+   * enabling/disabling tower menu items.
+   *
+   * @param currency the current currency level.
+   */
+  public void currencyChangeEvent(int currency) {
+    for (TowerMenuItem menuItem : this.state.getVisibleItems()) {
+      int cost;
+      switch (menuItem) {
+        case Hero1:
+          cost = this.state.getCost(0);
+          break;
+        case Hero2:
+          cost = this.state.getCost(1);
+          break;
+        case Hero3:
+          cost = this.state.getCost(2);
+          break;
+        case HeroA:
+          cost = this.state.getCost(TowerPath.A);
+          break;
+        case HeroB:
+          cost = this.state.getCost(TowerPath.B);
+          break;
+        case Upgrade:
+          cost = this.state.getCost();
+          break;
+        default:
+          // any other type we do not care about
+          continue;
+      }
+      // TODO: more elegant of a disablement
+      TextureRegionActor actor = this.menuItems.get(menuItem);
+      if (cost > currency) {
+        // this means we cannot afford it
+        // only disable it if it is enabled
+        if (actor.getTouchable() == Touchable.enabled) {
+          actor.setTouchable(Touchable.disabled);
+        }
+      } else if (cost <= currency) {
+        // this means we can afford it
+        // only enable it if it is disabled
+        if (actor.getTouchable() == Touchable.disabled) {
+          actor.setTouchable(Touchable.enabled);
+        }
+      }
+    }
   }
 
   /**

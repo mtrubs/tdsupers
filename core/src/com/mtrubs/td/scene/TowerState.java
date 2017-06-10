@@ -19,6 +19,7 @@ public class TowerState {
   private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS;
 
   static {
+    // TODO: more dynamic on accounts of enhancements or level restrictions
     TowerMenuItem[] norm = {
       TowerMenuItem.Sell, TowerMenuItem.SetRally,
       TowerMenuItem.Upgrade, TowerMenuItem.Enhance
@@ -44,14 +45,36 @@ public class TowerState {
   }
 
   private final CurrencyManager currencyManager;
+  private final List<Hero> activeHeroes;
   private int level;
   private Hero hero;
   private TowerPath path;
   private int costs;
 
   // TODO: allow setting hero, path, level
-  public TowerState(CurrencyManager currencyManager) {
+  public TowerState(@Nonnull List<Hero> activeHeroes, @Nonnull CurrencyManager currencyManager) {
     this.currencyManager = currencyManager;
+    this.activeHeroes = activeHeroes;
+  }
+
+  private static Tower getTower(Hero hero, TowerPath path, int level) {
+    return hero == null ? Tower.EmptyPlot : hero.getTower(level, path);
+  }
+
+  public int activeHeroCount() {
+    return this.activeHeroes.size();
+  }
+
+  public int getCost(int heroIndex) {
+    return getTower(this.activeHeroes.get(heroIndex), null, this.level + 1).getCost();
+  }
+
+  public int getCost(TowerPath path) {
+    return getTower(this.hero, path, this.level + 1).getCost();
+  }
+
+  public int getCost() {
+    return getTower(this.hero, this.path, this.level + 1).getCost();
   }
 
   public void upgrade() {
@@ -62,8 +85,8 @@ public class TowerState {
     this.costs += costs;
   }
 
-  public void upgrade(@Nonnull Hero hero) {
-    this.hero = hero;
+  public void upgrade(int heroIndex) {
+    this.hero = this.activeHeroes.get(heroIndex);
     upgrade();
   }
 
@@ -73,7 +96,11 @@ public class TowerState {
   }
 
   public Tower getTower() {
-    return this.hero == null ? Tower.EmptyPlot : this.hero.getTower(this.level, this.path);
+    return getTower(this.hero, this.path, this.level);
+  }
+
+  public Hero getHero(int index) {
+    return this.activeHeroes.get(index);
   }
 
   public void reset(boolean active) {

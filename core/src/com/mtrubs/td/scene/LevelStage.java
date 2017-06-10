@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.mtrubs.td.config.CurrencyManager;
-import com.mtrubs.td.config.HeroConfig;
-import com.mtrubs.td.config.TowerLevelConfig;
-import com.mtrubs.td.config.WaveManager;
+import com.mtrubs.td.config.*;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
@@ -23,7 +20,7 @@ import java.util.Collection;
 /**
  * This stage represents a given level of the game.
  */
-public class LevelStage extends Stage {
+public class LevelStage extends Stage implements CurrencyWatcher {
 
   /**
    * The closest we are allowed to zoom in.
@@ -63,6 +60,7 @@ public class LevelStage extends Stage {
     this.textureRegionManager = textureRegionManager;
     this.waveManager = waveManager;
     this.currencyManager = currencyManager;
+    this.currencyManager.setWatcher(this);
 
     // add the background image
     final LevelMapActor levelMapActor = new LevelMapActor(this.textureRegionManager.get(levelMap));
@@ -96,8 +94,9 @@ public class LevelStage extends Stage {
     // add each tower plot
     this.towers = new ArrayList<TowerGroup>(towers.length);
     for (TowerLevelConfig tower : towers) {
-      TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(), new TowerState(this.currencyManager),
-        heroes.getHeroTowers(), this.waveManager, this.textureRegionManager,
+      TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(),
+        new TowerState(heroes.getHeroTowers(), this.currencyManager),
+        this.waveManager, this.textureRegionManager,
         tower.getUnitX(), tower.getUnitY());
       addActor(towerGroup);
       this.towers.add(towerGroup);
@@ -203,5 +202,12 @@ public class LevelStage extends Stage {
 
   public TextureRegion getTextureRegion(TextureReference type) {
     return this.textureRegionManager.get(type);
+  }
+
+  @Override
+  public void currencyChangeEvent() {
+    for (TowerGroup tower : this.towers) {
+      tower.currencyChangeEvent(this.currencyManager.getCurrency());
+    }
   }
 }
