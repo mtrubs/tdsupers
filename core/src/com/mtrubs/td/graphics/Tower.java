@@ -10,31 +10,31 @@ public enum Tower implements TextureReference {
   EmptyPlot("images/towers/plot.png", 0, null),
 
   // Towers for TestHero1
-  TestHero1_1("images/towers/TestHero1/1.png", 25, TowerUnit.TestHero1Unit),
-  TestHero1A2("images/towers/TestHero1/a/2.png", 30, TowerUnit.TestHero1Unit),
-  TestHero1B2("images/towers/TestHero1/b/2.png", 30, TowerUnit.TestHero1Unit),
-  TestHero1A3("images/towers/TestHero1/a/3.png", 40, TowerUnit.TestHero1Unit),
-  TestHero1B3("images/towers/TestHero1/b/3.png", 40, TowerUnit.TestHero1Unit),
-  TestHero1A4("images/towers/TestHero1/a/4.png", 50, TowerUnit.TestHero1Unit),
-  TestHero1B4("images/towers/TestHero1/b/4.png", 50, TowerUnit.TestHero1Unit),
+  TestHero1_1("images/towers/TestHero1/1.png", 21, TowerUnit.TestHero1Unit),
+  TestHero1A2("images/towers/TestHero1/a/2.png", 31, TowerUnit.TestHero1Unit),
+  TestHero1B2("images/towers/TestHero1/b/2.png", 32, TowerUnit.TestHero1Unit),
+  TestHero1A3("images/towers/TestHero1/a/3.png", 41, TowerUnit.TestHero1Unit),
+  TestHero1B3("images/towers/TestHero1/b/3.png", 42, TowerUnit.TestHero1Unit),
+  TestHero1A4("images/towers/TestHero1/a/4.png", 51, TowerUnit.TestHero1Unit),
+  TestHero1B4("images/towers/TestHero1/b/4.png", 52, TowerUnit.TestHero1Unit),
 
   // Towers for TestHero2
-  TestHero2_1("images/towers/TestHero2/1.png", 25, TowerUnit.TestHero2Unit),
-  TestHero2A2("images/towers/TestHero2/a/2.png", 30, TowerUnit.TestHero2Unit),
-  TestHero2B2("images/towers/TestHero2/b/2.png", 30, TowerUnit.TestHero2Unit),
-  TestHero2A3("images/towers/TestHero2/a/3.png", 40, TowerUnit.TestHero2Unit),
-  TestHero2B3("images/towers/TestHero2/b/3.png", 40, TowerUnit.TestHero2Unit),
-  TestHero2A4("images/towers/TestHero2/a/4.png", 50, TowerUnit.TestHero2Unit),
-  TestHero2B4("images/towers/TestHero2/b/4.png", 50, TowerUnit.TestHero2Unit),
+  TestHero2_1("images/towers/TestHero2/1.png", 23, TowerUnit.TestHero2Unit),
+  TestHero2A2("images/towers/TestHero2/a/2.png", 33, TowerUnit.TestHero2Unit),
+  TestHero2B2("images/towers/TestHero2/b/2.png", 34, TowerUnit.TestHero2Unit),
+  TestHero2A3("images/towers/TestHero2/a/3.png", 43, TowerUnit.TestHero2Unit),
+  TestHero2B3("images/towers/TestHero2/b/3.png", 44, TowerUnit.TestHero2Unit),
+  TestHero2A4("images/towers/TestHero2/a/4.png", 53, TowerUnit.TestHero2Unit),
+  TestHero2B4("images/towers/TestHero2/b/4.png", 54, TowerUnit.TestHero2Unit),
 
   // Towers for TestHero3
   TestHero3_1("images/towers/TestHero3/1.png", 25, TowerUnit.TestHero3Unit),
-  TestHero3A2("images/towers/TestHero3/a/2.png", 30, TowerUnit.TestHero3Unit),
-  TestHero3B2("images/towers/TestHero3/b/2.png", 30, TowerUnit.TestHero3Unit),
-  TestHero3A3("images/towers/TestHero3/a/3.png", 40, TowerUnit.TestHero3Unit),
-  TestHero3B3("images/towers/TestHero3/b/3.png", 40, TowerUnit.TestHero3Unit),
-  TestHero3A4("images/towers/TestHero3/a/4.png", 50, TowerUnit.TestHero3Unit),
-  TestHero3B4("images/towers/TestHero3/b/4.png", 50, TowerUnit.TestHero3Unit);
+  TestHero3A2("images/towers/TestHero3/a/2.png", 35, TowerUnit.TestHero3Unit),
+  TestHero3B2("images/towers/TestHero3/b/2.png", 36, TowerUnit.TestHero3Unit),
+  TestHero3A3("images/towers/TestHero3/a/3.png", 45, TowerUnit.TestHero3Unit),
+  TestHero3B3("images/towers/TestHero3/b/3.png", 46, TowerUnit.TestHero3Unit),
+  TestHero3A4("images/towers/TestHero3/a/4.png", 55, TowerUnit.TestHero3Unit),
+  TestHero3B4("images/towers/TestHero3/b/4.png", 56, TowerUnit.TestHero3Unit);
 
   private final String texturePath;
   private final String key;

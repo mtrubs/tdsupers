@@ -45,10 +45,25 @@ public class TowerState {
   }
 
   private final CurrencyManager currencyManager;
+  /**
+   * List of active heroes for this instance.
+   */
   private final List<Hero> activeHeroes;
+  /**
+   * Current level of this tower.
+   */
   private int level;
+  /**
+   * The chosen hero of this tower.
+   */
   private Hero hero;
+  /**
+   * The upgrade path of this tower.
+   */
   private TowerPath path;
+  /**
+   * The total amount of cost invested in this tower.
+   */
   private int costs;
 
   // TODO: allow setting hero, path, level
