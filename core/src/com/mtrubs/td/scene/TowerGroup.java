@@ -32,11 +32,6 @@ public class TowerGroup extends Group {
    * The level of this current tower.
    */
   private TowerState state;
-  /**
-   * TODO: move into TowerState, make enum.
-   * Whether or not this tower has been enhanced (upgrade).
-   */
-  private boolean enhanced;
 
   // TODO: make up to 3
   private UnitActor unit;
@@ -76,8 +71,9 @@ public class TowerGroup extends Group {
     final TowerMenuActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell, textureRegionManager);
     // TODO: set rally
     //final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally, textureRegionManager);
-    final TowerMenuActor upgrade = addMenuItem(ring, 120.0F, TowerMenuItem.Upgrade, textureRegionManager);
-    final TowerMenuActor enhance = addMenuItem(ring, 60.0F, TowerMenuItem.Enhance, textureRegionManager);
+    final TowerMenuActor upgrade = addMenuItem(ring, 30.0F, TowerMenuItem.Upgrade, textureRegionManager);
+    final TowerMenuActor enhanceHero = addMenuItem(ring, 90.0F, TowerMenuItem.EnhanceHero, textureRegionManager);
+    final TowerMenuActor enhancePath = addMenuItem(ring, 150.0F, TowerMenuItem.EnhancePath, textureRegionManager);
     final TowerMenuActor heroA = addMenuItem(ring, 120.0F, TowerMenuItem.HeroA, textureRegionManager);
     final TowerMenuActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB, textureRegionManager);
 
@@ -262,26 +258,49 @@ public class TowerGroup extends Group {
     });
 
     // if enhance is clicked, we want to set that state on this tower
-    enhance.addListener(new ConfirmClickListener(this.confirmClicks) {
+    enhanceHero.addListener(new ConfirmClickListener(this.confirmClicks) {
 
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        enhance.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        enhanceHero.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        enhance.setTextureRegion(textureRegionManager.get(TowerMenuItem.Enhance));
+        enhanceHero.setTextureRegion(textureRegionManager.get(TowerMenuItem.EnhanceHero));
         super.reset();
       }
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        TowerGroup.this.enhanced = true;
+        TowerGroup.this.state.enhanceHero();
         updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
-        // TODO: need to pay for this...
+        super.handleClick(event, x, y);
+      }
+    });
+
+    // if enhance is clicked, we want to set that state on this tower
+    enhancePath.addListener(new ConfirmClickListener(this.confirmClicks) {
+
+      @Override
+      public void handleConfirm(InputEvent event, float x, float y) {
+        resetOthers(TowerGroup.this.confirmClicks);
+        enhancePath.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        super.handleConfirm(event, x, y);
+      }
+
+      @Override
+      public void reset() {
+        enhancePath.setTextureRegion(textureRegionManager.get(TowerMenuItem.EnhancePath));
+        super.reset();
+      }
+
+      @Override
+      public void handleClick(InputEvent event, float x, float y) {
+        TowerGroup.this.state.enhancePath();
+        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
     });
@@ -305,7 +324,6 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.reset(waveManager.isActive());
-        TowerGroup.this.enhanced = false;
         updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
         super.handleClick(event, x, y);
       }
@@ -359,10 +377,6 @@ public class TowerGroup extends Group {
     this.menu.clearChildren();
     this.menu.addActor(this.menuItems.get(TowerMenuItem.Ring));
     for (TowerMenuItem item : this.state.getVisibleItems()) {
-      if (item == TowerMenuItem.Enhance && this.enhanced) {
-        // no need to show the enhance option if it has already been done
-        continue;
-      }
       // TODO: and is available
       TextureRegionActor actor = this.menuItems.get(item);
       if (actor != null) {

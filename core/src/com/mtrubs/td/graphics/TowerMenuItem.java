@@ -13,47 +13,51 @@ public enum TowerMenuItem implements TextureReference {
   Ring(false, "images/towers/menu/ring.png"),
   SetRally(false, "images/towers/menu/rally.png"),
   CostPlaque(false, "images/towers/menu/costPlaque.png"),
-  Upgrade(true, "images/towers/menu/upgrade.png") {
-    public int getCost(TowerState state) {
-      return state.getCost();
-    }
-  },
-  Enhance(true, "images/towers/menu/enhance.png") {
-    public int getCost(TowerState state) {
-      // TODO: implement
-      return super.getCost(state);
-    }
-  },
   Confirm(false, "images/towers/menu/confirm.png"),
 
   // Dynamic Menu Items
   Hero1(true, null) { // dynamic see Hero
 
     public int getCost(TowerState state) {
-      return state.getCost(0);
+      return state.getUpgradeCost(0);
     }
   },
   Hero2(true, null) { // dynamic see Hero
 
     public int getCost(TowerState state) {
-      return state.getCost(1);
+      return state.getUpgradeCost(1);
     }
   },
   Hero3(true, null) { // dynamic see Hero
 
     public int getCost(TowerState state) {
-      return state.getCost(2);
+      return state.getUpgradeCost(2);
     }
   },
   // TODO: make dynamic
   HeroA(true, "images/towers/menu/pathA.png") {
     public int getCost(TowerState state) {
-      return state.getCost(TowerPath.A);
+      return state.getUpgradeCost(TowerPath.A);
     }
   },
   HeroB(true, "images/towers/menu/pathB.png") {
     public int getCost(TowerState state) {
-      return state.getCost(TowerPath.B);
+      return state.getUpgradeCost(TowerPath.B);
+    }
+  },
+  Upgrade(true, "images/towers/menu/upgrade.png") {
+    public int getCost(TowerState state) {
+      return state.getUpgradeCost();
+    }
+  },
+  EnhanceHero(true, "images/towers/menu/enhance.png") {
+    public int getCost(TowerState state) {
+      return state.getEnhanceHeroCost();
+    }
+  },
+  EnhancePath(true, "images/towers/menu/enhance.png") {
+    public int getCost(TowerState state) {
+      return state.getEnhancePathCost();
     }
   };
 

@@ -16,32 +16,46 @@ public class TowerState {
    * How much we discount the tower value by when we sell it.
    */
   private static final float SELL_FACTOR = 0.75F;
-  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS;
+  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_ALL_ENH;
+  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_HERO_ENH;
+  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_PATH_ENH;
+  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_NO_ENH;
 
   static {
-    // TODO: more dynamic on accounts of enhancements or level restrictions
-    TowerMenuItem[] norm = {
-      TowerMenuItem.Sell, TowerMenuItem.SetRally,
-      TowerMenuItem.Upgrade, TowerMenuItem.Enhance
-    };
-    TOWER_LEVEL_MENUS = new ArrayList<TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_ALL_ENH = new ArrayList<TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_HERO_ENH = new ArrayList<TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_PATH_ENH = new ArrayList<TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_NO_ENH = new ArrayList<TowerMenuItem[]>();
+
     // level 0 - select a hero
-    TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-      TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3
-    });
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
+
     // level 1 - choose a path
-    TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-      TowerMenuItem.Sell, TowerMenuItem.SetRally,
-      TowerMenuItem.HeroA, TowerMenuItem.HeroB
-    });
-    // level 2 - upgrade/enhance
-    TOWER_LEVEL_MENUS.add(norm);
-    // level 3 - upgrade/enhance
-    TOWER_LEVEL_MENUS.add(norm);
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
+
+    // level 2 - upgrade + hero enhance
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
+
+    // level 3 - upgrade + path enhance
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero, TowerMenuItem.EnhancePath});
+
     // level 4 - final
-    TOWER_LEVEL_MENUS.add(new TowerMenuItem[]{
-      TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Enhance
-    });
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhanceHero, TowerMenuItem.EnhancePath});
   }
 
   private final CurrencyManager currencyManager;
@@ -53,6 +67,14 @@ public class TowerState {
    * Current level of this tower.
    */
   private int level;
+  /**
+   * Hero enhance state.
+   */
+  private boolean heroEnhanced;
+  /**
+   * Hero path enhance state.
+   */
+  private boolean pathEnhanced;
   /**
    * The chosen hero of this tower.
    */
@@ -80,16 +102,38 @@ public class TowerState {
     return this.activeHeroes.size();
   }
 
-  public int getCost(int heroIndex) {
+  public int getUpgradeCost(int heroIndex) {
     return getTower(this.activeHeroes.get(heroIndex), null, this.level + 1).getCost();
   }
 
-  public int getCost(TowerPath path) {
+  public int getUpgradeCost(TowerPath path) {
     return getTower(this.hero, path, this.level + 1).getCost();
   }
 
-  public int getCost() {
+  public int getUpgradeCost() {
     return getTower(this.hero, this.path, this.level + 1).getCost();
+  }
+
+  public int getEnhanceHeroCost() {
+    return this.hero.getEnhancement(null).getCost();
+  }
+
+  public int getEnhancePathCost() {
+    return this.hero.getEnhancement(this.path).getCost();
+  }
+
+  public void enhanceHero() {
+    this.heroEnhanced = true;
+    int costs = getEnhanceHeroCost();
+    this.currencyManager.subtract(costs);
+    this.costs += costs;
+  }
+
+  public void enhancePath() {
+    this.pathEnhanced = true;
+    int costs = getEnhancePathCost();
+    this.currencyManager.subtract(costs);
+    this.costs += costs;
   }
 
   public void upgrade() {
@@ -122,6 +166,8 @@ public class TowerState {
     // if we have not started the first wave yet then sell at full cost
     this.currencyManager.add(active ? Math.round(((float) this.costs) * SELL_FACTOR) : this.costs);
     this.level = 0;
+    this.heroEnhanced = false;
+    this.pathEnhanced = false;
     this.costs = 0;
     this.hero = null;
     this.path = null;
@@ -133,6 +179,14 @@ public class TowerState {
    * @return the visible menu items for this state.
    */
   public TowerMenuItem[] getVisibleItems() {
-    return TOWER_LEVEL_MENUS.get(this.level);
+    if (this.heroEnhanced && this.pathEnhanced) {
+      return TOWER_LEVEL_MENUS_ALL_ENH.get(this.level);
+    } else if (this.heroEnhanced) {
+      return TOWER_LEVEL_MENUS_HERO_ENH.get(this.level);
+    } else if (this.pathEnhanced) {
+      return TOWER_LEVEL_MENUS_PATH_ENH.get(this.level);
+    } else {
+      return TOWER_LEVEL_MENUS_NO_ENH.get(this.level);
+    }
   }
 }

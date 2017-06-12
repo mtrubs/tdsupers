@@ -59,7 +59,7 @@ public class GdxTd extends ApplicationAdapter {
     //towers.add(new TowerLevelConfig(500.0f, 55.0F));
 
     // Currency Setup
-    int startCurrency = 100;
+    int startCurrency = 250;
     CurrencyManager currencyManager = new CurrencyManager(startCurrency);
 
     // Wave Setup
