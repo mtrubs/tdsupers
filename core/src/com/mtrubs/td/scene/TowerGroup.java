@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.*;
+import com.mtrubs.td.scene.hud.TowerMenuActor;
 
 import java.util.*;
 
@@ -72,18 +73,18 @@ public class TowerGroup extends Group {
 
     // all the menu items
     final TextureRegionActor ring = addMenuRing(tower, textureRegionManager);
-    final TextureRegionActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell, textureRegionManager);
+    final TowerMenuActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell, textureRegionManager);
     // TODO: set rally
-    //final TextureRegionActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally, textureRegionManager);
-    final TextureRegionActor upgrade = addMenuItem(ring, 120.0F, TowerMenuItem.Upgrade, textureRegionManager);
-    final TextureRegionActor enhance = addMenuItem(ring, 60.0F, TowerMenuItem.Enhance, textureRegionManager);
-    final TextureRegionActor heroA = addMenuItem(ring, 120.0F, TowerMenuItem.HeroA, textureRegionManager);
-    final TextureRegionActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB, textureRegionManager);
+    //final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally, textureRegionManager);
+    final TowerMenuActor upgrade = addMenuItem(ring, 120.0F, TowerMenuItem.Upgrade, textureRegionManager);
+    final TowerMenuActor enhance = addMenuItem(ring, 60.0F, TowerMenuItem.Enhance, textureRegionManager);
+    final TowerMenuActor heroA = addMenuItem(ring, 120.0F, TowerMenuItem.HeroA, textureRegionManager);
+    final TowerMenuActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB, textureRegionManager);
 
     // for now this is hard capped at 3
-    final TextureRegionActor hero1 = addHeroMenuItem(0, TowerMenuItem.Hero1, ring, textureRegionManager);
-    final TextureRegionActor hero2 = addHeroMenuItem(1, TowerMenuItem.Hero2, ring, textureRegionManager);
-    final TextureRegionActor hero3 = addHeroMenuItem(2, TowerMenuItem.Hero3, ring, textureRegionManager);
+    final TowerMenuActor hero1 = addHeroMenuItem(0, TowerMenuItem.Hero1, ring, textureRegionManager);
+    final TowerMenuActor hero2 = addHeroMenuItem(1, TowerMenuItem.Hero2, ring, textureRegionManager);
+    final TowerMenuActor hero3 = addHeroMenuItem(2, TowerMenuItem.Hero3, ring, textureRegionManager);
 
     // the menu itself
     this.menu = new Group();
@@ -366,6 +367,9 @@ public class TowerGroup extends Group {
       TextureRegionActor actor = this.menuItems.get(item);
       if (actor != null) {
         this.menu.addActor(actor);
+        if (item.hasCost() && actor instanceof TowerMenuActor) {
+          ((TowerMenuActor) actor).setCost(item.getCost(this.state));
+        }
       }
     }
   }
@@ -423,8 +427,8 @@ public class TowerGroup extends Group {
    * @param textureRegionManager the texture region manager.
    * @return the menu actor added.
    */
-  private TextureRegionActor addHeroMenuItem(int index, TowerMenuItem key,
-                                             TextureRegionActor ring, TextureRegionManager textureRegionManager) {
+  private TowerMenuActor addHeroMenuItem(int index, TowerMenuItem key,
+                                         TextureRegionActor ring, TextureRegionManager textureRegionManager) {
     int heroCount = this.state.activeHeroCount();
     if (heroCount == 1) {
       return index > 0 ? null : addMenuItem(ring, 90.0F,
@@ -449,8 +453,8 @@ public class TowerGroup extends Group {
    * @param textureRegionManager the texture region manager.
    * @return the menu actor added.
    */
-  private TextureRegionActor addMenuItem(TextureRegionActor ring, float degrees, TowerMenuItem item,
-                                         TextureRegionManager textureRegionManager) {
+  private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees, TowerMenuItem item,
+                                     TextureRegionManager textureRegionManager) {
     return addMenuItem(ring, degrees, item, item, textureRegionManager);
   }
 
@@ -464,8 +468,8 @@ public class TowerGroup extends Group {
    * @param textureRegionManager the texture region manager.
    * @return the menu actor added.
    */
-  private TextureRegionActor addMenuItem(TextureRegionActor ring, float degrees, TextureReference item,
-                                         TowerMenuItem key, TextureRegionManager textureRegionManager) {
+  private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees, TextureReference item,
+                                     TowerMenuItem key, TextureRegionManager textureRegionManager) {
     TextureRegion textureRegion = textureRegionManager.get(item);
     float radius = ring.getWidth() / 2.0F;
 
@@ -474,11 +478,12 @@ public class TowerGroup extends Group {
     // TODO: circle math might need minor tweaking based on width of ring (which I am not sure I can calculate dynamically)
     float circleX = (float) (radius * Math.cos(degrees * Math.PI / 180.0F)) + ring.getX() + radius;
     float circleY = (float) (radius * Math.sin(degrees * Math.PI / 180.0F)) + ring.getY() + radius;
-    TextureRegionActor actor = new TextureRegionActor(
+    TowerMenuActor actor = new TowerMenuActor(
       // we offset the final results by half the image size
       circleX - textureRegion.getRegionWidth() / 2.0F,
       circleY - textureRegion.getRegionHeight() / 2.0F,
-      textureRegion
+      textureRegion,
+      key.hasCost() ? textureRegionManager.get(TowerMenuItem.CostPlaque) : null
     );
     this.menuItems.put(key, actor);
     return actor;
@@ -492,43 +497,24 @@ public class TowerGroup extends Group {
    */
   public void currencyChangeEvent(int currency) {
     for (TowerMenuItem menuItem : this.state.getVisibleItems()) {
-      int cost;
-      switch (menuItem) {
-        case Hero1:
-          cost = this.state.getCost(0);
-          break;
-        case Hero2:
-          cost = this.state.getCost(1);
-          break;
-        case Hero3:
-          cost = this.state.getCost(2);
-          break;
-        case HeroA:
-          cost = this.state.getCost(TowerPath.A);
-          break;
-        case HeroB:
-          cost = this.state.getCost(TowerPath.B);
-          break;
-        case Upgrade:
-          cost = this.state.getCost();
-          break;
-        default:
-          // any other type we do not care about
-          continue;
-      }
-      // TODO: more elegant of a disablement
-      TextureRegionActor actor = this.menuItems.get(menuItem);
-      if (cost > currency) {
-        // this means we cannot afford it
-        // only disable it if it is enabled
-        if (actor.getTouchable() == Touchable.enabled) {
-          actor.setTouchable(Touchable.disabled);
-        }
-      } else if (cost <= currency) {
-        // this means we can afford it
-        // only enable it if it is disabled
-        if (actor.getTouchable() == Touchable.disabled) {
-          actor.setTouchable(Touchable.enabled);
+      if (menuItem.hasCost()) {
+        int cost = menuItem.getCost(this.state);
+        TextureRegionActor actor = this.menuItems.get(menuItem);
+        if (actor != null) {
+          // TODO: more elegant of a disablement
+          if (cost > currency) {
+            // this means we cannot afford it
+            // only disable it if it is enabled
+            if (actor.getTouchable() == Touchable.enabled) {
+              actor.setTouchable(Touchable.disabled);
+            }
+          } else if (cost <= currency) {
+            // this means we can afford it
+            // only enable it if it is disabled
+            if (actor.getTouchable() == Touchable.disabled) {
+              actor.setTouchable(Touchable.enabled);
+            }
+          }
         }
       }
     }
