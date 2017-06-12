@@ -58,14 +58,16 @@ public class LevelStage extends Stage implements CurrencyWatcher {
                     WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
+
     this.waveManager = waveManager;
+    this.waveManager.setStage(this);
+
     this.currencyManager = currencyManager;
     this.currencyManager.setWatcher(this);
 
     // add the background image
     final LevelMapActor levelMapActor = new LevelMapActor(this.textureRegionManager.get(levelMap));
     addActor(levelMapActor);
-    this.waveManager.setStage(this); // TODO: move up a few lines once startWave is in the right place
 
     // handle moving around the level and zooming in and out
     levelMapActor.addListener(new ActorGestureListener() {

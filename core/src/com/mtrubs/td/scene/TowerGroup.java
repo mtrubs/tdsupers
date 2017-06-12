@@ -501,7 +501,6 @@ public class TowerGroup extends Group {
         int cost = menuItem.getCost(this.state);
         TextureRegionActor actor = this.menuItems.get(menuItem);
         if (actor != null) {
-          // TODO: more elegant of a disablement
           if (cost > currency) {
             // this means we cannot afford it
             // only disable it if it is enabled
