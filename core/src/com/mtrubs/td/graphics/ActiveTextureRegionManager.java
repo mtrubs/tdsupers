@@ -23,10 +23,14 @@ public class ActiveTextureRegionManager implements TextureRegionManager {
     if (type == null) {
       return null;
     }
+    String texturePath = type.getTexturePath();
+    if (texturePath == null) {
+      return null;
+    }
     TextureRegion result = this.loadedTextures.get(type.getKey());
     if (result == null) {
       // lazy load
-      Texture texture = new Texture(Gdx.files.internal(type.getTexturePath()));
+      Texture texture = new Texture(Gdx.files.internal(texturePath));
       type.setTextureFilter(texture);
       result = new TextureRegion(texture);
       this.loadedTextures.put(type.getKey(), result);

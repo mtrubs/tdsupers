@@ -8,15 +8,15 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum TowerEnhancement implements TextureReference {
 
-  TestHero1("images/towers/menu/enhance.png", 100),
-  TestHero1A("images/towers/menu/enhance.png", 151),
-  TestHero1B("images/towers/menu/enhance.png", 152),
-  TestHero2("images/towers/menu/enhance.png", 103),
-  TestHero2A("images/towers/menu/enhance.png", 153),
-  TestHero2B("images/towers/menu/enhance.png", 154),
-  TestHero3("images/towers/menu/enhance.png", 105),
-  TestHero3A("images/towers/menu/enhance.png", 155),
-  TestHero3B("images/towers/menu/enhance.png", 156);
+  TestHero1("images/towers/TestHero1/enhance.png", 100),
+  TestHero1A("images/towers/TestHero1/a/enhance.png", 151),
+  TestHero1B("images/towers/TestHero1/b/enhance.png", 152),
+  TestHero2("images/towers/TestHero2/enhance.png", 103),
+  TestHero2A("images/towers/TestHero2/a/enhance.png", 153),
+  TestHero2B("images/towers/TestHero2/b/enhance.png", 154),
+  TestHero3("images/towers/TestHero3/enhance.png", 105),
+  TestHero3A("images/towers/TestHero3/a/enhance.png", 155),
+  TestHero3B("images/towers/TestHero3/b/enhance.png", 156);
 
   private static final TowerEnhancement[] NONE = {};
   private final String texturePath;

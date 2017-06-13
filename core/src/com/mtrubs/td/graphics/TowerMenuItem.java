@@ -14,6 +14,11 @@ public enum TowerMenuItem implements TextureReference {
   SetRally(false, "images/towers/menu/rally.png"),
   CostPlaque(false, "images/towers/menu/costPlaque.png"),
   Confirm(false, "images/towers/menu/confirm.png"),
+  Upgrade(true, "images/towers/menu/upgrade.png") {
+    public int getCost(TowerState state) {
+      return state.getUpgradeCost();
+    }
+  },
 
   // Dynamic Menu Items
   Hero1(true, null) { // dynamic see Hero
@@ -45,17 +50,12 @@ public enum TowerMenuItem implements TextureReference {
       return state.getUpgradeCost(TowerPath.B);
     }
   },
-  Upgrade(true, "images/towers/menu/upgrade.png") {
-    public int getCost(TowerState state) {
-      return state.getUpgradeCost();
-    }
-  },
-  EnhanceHero(true, "images/towers/menu/enhance.png") {
+  EnhanceHero(true, null) {
     public int getCost(TowerState state) {
       return state.getEnhanceHeroCost();
     }
   },
-  EnhancePath(true, "images/towers/menu/enhance.png") {
+  EnhancePath(true, null) {
     public int getCost(TowerState state) {
       return state.getEnhancePathCost();
     }

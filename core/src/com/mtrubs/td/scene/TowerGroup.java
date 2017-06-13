@@ -120,7 +120,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero1.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(0)));
+          hero1.setTextureRegion(textureRegionManager.get(
+            TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero1)));
           super.reset();
         }
 
@@ -146,7 +147,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero2.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(1)));
+          hero2.setTextureRegion(textureRegionManager.get(
+            TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero2)));
           super.reset();
         }
 
@@ -172,7 +174,8 @@ public class TowerGroup extends Group {
 
         @Override
         public void reset() {
-          hero3.setTextureRegion(textureRegionManager.get(TowerGroup.this.state.getHero(2)));
+          hero3.setTextureRegion(textureRegionManager.get(
+            TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero3)));
           super.reset();
         }
 
@@ -197,7 +200,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        heroA.setTextureRegion(textureRegionManager.get(TowerMenuItem.HeroA));
+        heroA.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.HeroA)));
         super.reset();
       }
 
@@ -221,7 +225,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        heroB.setTextureRegion(textureRegionManager.get(TowerMenuItem.HeroB));
+        heroB.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.HeroB)));
         super.reset();
       }
 
@@ -245,7 +250,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        upgrade.setTextureRegion(textureRegionManager.get(TowerMenuItem.Upgrade));
+        upgrade.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.Upgrade)));
         super.reset();
       }
 
@@ -269,7 +275,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        enhanceHero.setTextureRegion(textureRegionManager.get(TowerMenuItem.EnhanceHero));
+        enhanceHero.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.EnhanceHero)));
         super.reset();
       }
 
@@ -293,7 +300,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        enhancePath.setTextureRegion(textureRegionManager.get(TowerMenuItem.EnhancePath));
+        enhancePath.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.EnhancePath)));
         super.reset();
       }
 
@@ -317,7 +325,8 @@ public class TowerGroup extends Group {
 
       @Override
       public void reset() {
-        sell.setTextureRegion(textureRegionManager.get(TowerMenuItem.Sell));
+        sell.setTextureRegion(textureRegionManager.get(
+          TowerGroup.this.state.getTextureReference(TowerMenuItem.Sell)));
         super.reset();
       }
 
@@ -446,13 +455,13 @@ public class TowerGroup extends Group {
     int heroCount = this.state.activeHeroCount();
     if (heroCount == 1) {
       return index > 0 ? null : addMenuItem(ring, 90.0F,
-        this.state.getHero(index), key, textureRegionManager);
+        key, textureRegionManager);
     } else if (heroCount == 2) {
       return index > 1 ? null : addMenuItem(ring, 60.0F + 60.0F * (float) index,
-        this.state.getHero(index), key, textureRegionManager);
+        key, textureRegionManager);
     } else if (heroCount == 3) {
       return index > 2 ? null : addMenuItem(ring, 30.0F + 60.0F * (float) index,
-        this.state.getHero(index), key, textureRegionManager);
+        key, textureRegionManager);
     } else {
       throw new RuntimeException("unexpected hero count");
     }
@@ -463,28 +472,13 @@ public class TowerGroup extends Group {
    *
    * @param ring                 the tower menu ring.
    * @param degrees              the degree on the ring we want to position the menu item.
-   * @param item                 the item we are adding.
+   * @param item                 the generic menu item we want to associate the item with.
    * @param textureRegionManager the texture region manager.
    * @return the menu actor added.
    */
-  private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees, TowerMenuItem item,
-                                     TextureRegionManager textureRegionManager) {
-    return addMenuItem(ring, degrees, item, item, textureRegionManager);
-  }
-
-  /**
-   * Adds a menu item to the tower menu group.
-   *
-   * @param ring                 the tower menu ring.
-   * @param degrees              the degree on the ring we want to position the menu item.
-   * @param item                 the item we are adding.
-   * @param key                  the generic menu item we want to associate the item with.
-   * @param textureRegionManager the texture region manager.
-   * @return the menu actor added.
-   */
-  private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees, TextureReference item,
-                                     TowerMenuItem key, TextureRegionManager textureRegionManager) {
-    TextureRegion textureRegion = textureRegionManager.get(item);
+  private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees,
+                                     TowerMenuItem item, TextureRegionManager textureRegionManager) {
+    TextureRegion textureRegion = textureRegionManager.get(this.state.getTextureReference(item));
     float radius = ring.getWidth() / 2.0F;
 
     // circle math to figure out where this menu item belongs
@@ -497,9 +491,9 @@ public class TowerGroup extends Group {
       circleX - textureRegion.getRegionWidth() / 2.0F,
       circleY - textureRegion.getRegionHeight() / 2.0F,
       textureRegion,
-      key.hasCost() ? textureRegionManager.get(TowerMenuItem.CostPlaque) : null
+      item.hasCost() ? textureRegionManager.get(TowerMenuItem.CostPlaque) : null
     );
-    this.menuItems.put(key, actor);
+    this.menuItems.put(item, actor);
     return actor;
   }
 

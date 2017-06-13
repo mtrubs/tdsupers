@@ -1,10 +1,7 @@
 package com.mtrubs.td.scene;
 
 import com.mtrubs.td.config.CurrencyManager;
-import com.mtrubs.td.graphics.Hero;
-import com.mtrubs.td.graphics.Tower;
-import com.mtrubs.td.graphics.TowerMenuItem;
-import com.mtrubs.td.graphics.TowerPath;
+import com.mtrubs.td.graphics.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -158,10 +155,6 @@ public class TowerState {
     return getTower(this.hero, this.path, this.level);
   }
 
-  public Hero getHero(int index) {
-    return this.activeHeroes.get(index);
-  }
-
   public void reset(boolean active) {
     // if we have not started the first wave yet then sell at full cost
     this.currencyManager.add(active ? Math.round(((float) this.costs) * SELL_FACTOR) : this.costs);
@@ -171,6 +164,27 @@ public class TowerState {
     this.costs = 0;
     this.hero = null;
     this.path = null;
+  }
+
+  public TextureReference getTextureReference(TextureReference item) {
+    // TODO: more dynamic
+    if (item == TowerMenuItem.Hero1) {
+      return this.activeHeroes.get(0);
+    } else if (item == TowerMenuItem.Hero2) {
+      return this.activeHeroes.get(1);
+    } else if (item == TowerMenuItem.Hero3) {
+      return this.activeHeroes.get(2);
+    } else if (item == TowerMenuItem.EnhanceHero) {
+      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getEnhancement(null);
+    } else if (item == TowerMenuItem.EnhancePath) {
+      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getEnhancement(this.path);
+    } else if (item == TowerMenuItem.HeroA) {
+      return item;
+    } else if (item == TowerMenuItem.HeroB) {
+      return item;
+    } else {
+      return item;
+    }
   }
 
   /**
