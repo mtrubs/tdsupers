@@ -10,15 +10,15 @@ import javax.annotation.Nullable;
  */
 public enum Hero implements TextureReference {
 
-  TestHero1("images/towers/TestHero1/menu.png",
+  TestHero1("images/towers/TestHero1/menu/icon.png",
     Tower.TestHero1_1, TowerEnhancement.TestHero1,
     HeroPath.TestHero1A, TowerEnhancement.TestHero1A,
     HeroPath.TestHero1B, TowerEnhancement.TestHero1B),
-  TestHero2("images/towers/TestHero2/menu.png",
+  TestHero2("images/towers/TestHero2/menu/icon.png",
     Tower.TestHero2_1, TowerEnhancement.TestHero2,
     HeroPath.TestHero2A, TowerEnhancement.TestHero2A,
     HeroPath.TestHero2B, TowerEnhancement.TestHero2B),
-  TestHero3("images/towers/TestHero3/menu.png",
+  TestHero3("images/towers/TestHero3/menu/icon.png",
     Tower.TestHero3_1, TowerEnhancement.TestHero3,
     HeroPath.TestHero3A, TowerEnhancement.TestHero3A,
     HeroPath.TestHero3B, TowerEnhancement.TestHero3B);
