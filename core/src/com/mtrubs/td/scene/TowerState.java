@@ -179,9 +179,9 @@ public class TowerState {
     } else if (item == TowerMenuItem.EnhancePath) {
       return this.hero == null ? TowerMenuItem.Confirm : this.hero.getEnhancement(this.path);
     } else if (item == TowerMenuItem.HeroA) {
-      return item;
+      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getPathA();
     } else if (item == TowerMenuItem.HeroB) {
-      return item;
+      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getPathB();
     } else {
       return item;
     }

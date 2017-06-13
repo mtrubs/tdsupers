@@ -79,7 +79,7 @@ public class Wave {
 
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
 
-    // TODO: mobs move to be configurable
+    // TODO: mobs move to be configurable; poolable
     this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 0.0F,
       textureRegionManager.get(Mob.TestMob)));
     this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 1.5F,

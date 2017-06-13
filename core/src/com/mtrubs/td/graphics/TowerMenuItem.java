@@ -23,39 +23,49 @@ public enum TowerMenuItem implements TextureReference {
   // Dynamic Menu Items
   Hero1(true, null) { // dynamic see Hero
 
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost(0);
     }
   },
   Hero2(true, null) { // dynamic see Hero
 
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost(1);
     }
   },
   Hero3(true, null) { // dynamic see Hero
 
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost(2);
     }
   },
-  // TODO: make dynamic
-  HeroA(true, "images/towers/menu/pathA.png") {
+  HeroA(true, null) { // dynamic see HeroPath
+
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost(TowerPath.A);
     }
   },
-  HeroB(true, "images/towers/menu/pathB.png") {
+  HeroB(true, null) { // dynamic see HeroPath
+
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost(TowerPath.B);
     }
   },
-  EnhanceHero(true, null) {
+  EnhanceHero(true, null) { // dynamic see TowerEnhancement
+
+    @Override
     public int getCost(TowerState state) {
       return state.getEnhanceHeroCost();
     }
   },
-  EnhancePath(true, null) {
+  EnhancePath(true, null) { // dynamic see TowerEnhancement
+
+    @Override
     public int getCost(TowerState state) {
       return state.getEnhancePathCost();
     }
