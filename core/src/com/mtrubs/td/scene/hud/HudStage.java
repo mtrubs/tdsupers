@@ -10,11 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.CurrencyManager;
+import com.mtrubs.td.config.HeroManager;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
+import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.TextureRegionActor;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -31,6 +34,7 @@ public class HudStage extends Stage {
   private final TextureRegionActor waveCaller;
   private final WaveManager waveManager; // disposed elsewhere
   private final CurrencyManager currencyManager;
+  private final HeroManager heroManager;
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
@@ -41,11 +45,12 @@ public class HudStage extends Stage {
   private Label waveLabel;
 
   public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager,
-                  int startHealth, CurrencyManager currencyManager, WaveManager waveManager) {
+                  int startHealth, CurrencyManager currencyManager, HeroManager heroManager, WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
 
     this.startHealth = startHealth;
     this.currencyManager = currencyManager;
+    this.heroManager = heroManager;
     this.waveManager = waveManager;
 
     addTopLeft(textureRegionManager);
@@ -199,7 +204,12 @@ public class HudStage extends Stage {
 
   private void addBottomLeft(TextureRegionManager textureRegionManager) {
     // This is the bottom left HUD; handles hero info
-    // TODO: hero icons - bottom left
+    List<Hero> heroes = this.heroManager.getActiveHeroes();
+    for (int i = 0; i < heroes.size(); i++) {
+      Hero hero = heroes.get(i);
+      TextureRegion textureRegion = textureRegionManager.get(hero.getThumbnail());
+
+    }
   }
 
   private void addBottomRight(TextureRegionManager textureRegionManager) {

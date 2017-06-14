@@ -10,15 +10,15 @@ import javax.annotation.Nullable;
  */
 public enum Hero implements TextureReference {
 
-  TestHero1("images/towers/TestHero1/menu/icon.png",
+  TestHero1("images/towers/TestHero1/menu/icon.png", HeroThumbnail.TestHero1,
     Tower.TestHero1_1, TowerEnhancement.TestHero1,
     HeroPath.TestHero1A, TowerEnhancement.TestHero1A,
     HeroPath.TestHero1B, TowerEnhancement.TestHero1B),
-  TestHero2("images/towers/TestHero2/menu/icon.png",
+  TestHero2("images/towers/TestHero2/menu/icon.png", HeroThumbnail.TestHero2,
     Tower.TestHero2_1, TowerEnhancement.TestHero2,
     HeroPath.TestHero2A, TowerEnhancement.TestHero2A,
     HeroPath.TestHero2B, TowerEnhancement.TestHero2B),
-  TestHero3("images/towers/TestHero3/menu/icon.png",
+  TestHero3("images/towers/TestHero3/menu/icon.png", HeroThumbnail.TestHero3,
     Tower.TestHero3_1, TowerEnhancement.TestHero3,
     HeroPath.TestHero3A, TowerEnhancement.TestHero3A,
     HeroPath.TestHero3B, TowerEnhancement.TestHero3B);
@@ -26,6 +26,7 @@ public enum Hero implements TextureReference {
   private final String texturePath;
   private final String key;
 
+  private final HeroThumbnail thumbnail;
   private final Tower base;
   private final TowerEnhancement[] enhancementBase;
   private final HeroPath pathA;
@@ -33,12 +34,13 @@ public enum Hero implements TextureReference {
   private final TowerEnhancement[] enhancementA;
   private final TowerEnhancement[] enhancementB;
 
-  private Hero(String texturePath,
+  private Hero(String texturePath, HeroThumbnail thumbnail,
                @Nonnull Tower base, @Nonnull TowerEnhancement enhancementBase,
                @Nonnull HeroPath pathA, @Nonnull TowerEnhancement enhancementA,
                @Nonnull HeroPath pathB, @Nonnull TowerEnhancement enhancementB) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
+    this.thumbnail = thumbnail;
     this.base = base;
     this.enhancementBase = new TowerEnhancement[]{enhancementBase};
     this.pathA = pathA;
