@@ -17,7 +17,6 @@ import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.TextureRegionActor;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -204,24 +203,33 @@ public class HudStage extends Stage {
 
   private void addBottomLeft(TextureRegionManager textureRegionManager) {
     // This is the bottom left HUD; handles hero info
-    List<Hero> heroes = this.heroManager.getActiveHeroes();
     float x = 0.0F;
-    for (Hero hero : heroes) {
+    for (Hero hero : this.heroManager.getActiveHeroes()) {
       TextureRegion textureRegion = textureRegionManager.get(hero.getThumbnail());
       TextureRegionActor actor = new TextureRegionActor(
-        x + PAD, PAD, textureRegion
-      );
+        x + PAD, PAD, textureRegion);
       x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
       addActor(actor);
 
       // TODO: add click event to select hero
       // TODO: add health indicator
+      // TODO: cooldown indicator on death
     }
   }
 
   private void addBottomRight(TextureRegionManager textureRegionManager) {
     // This is the bottom right HUD; handles skills
-    // TODO: hero specials - bottom right
+    float x = getWidth();
+    for (Hero hero : this.heroManager.getActiveHeroes()) {
+      TextureRegion textureRegion = textureRegionManager.get(hero.getSkill());
+      TextureRegionActor actor = new TextureRegionActor(
+        x - PAD - textureRegion.getRegionWidth(), PAD, textureRegion);
+      x = actor.getX();
+      addActor(actor);
+
+      // TODO: add click event to handle skill action
+      // TODO: cooldown indicator
+    }
   }
 
   @Override

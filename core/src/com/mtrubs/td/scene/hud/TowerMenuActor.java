@@ -37,7 +37,7 @@ public class TowerMenuActor extends TextureRegionActor {
       Label.LabelStyle style = new Label.LabelStyle();
       style.font = new BitmapFont();
       style.fontColor = Color.BLACK;
-      this.cost = new Label("999", style);
+      this.cost = new Label("", style);
       this.cost.setX(getCenterX() - (this.cost.getPrefWidth() / 2.0F));
       this.cost.setY(getY() - this.costRegion.getRegionHeight() + OVERLAP);
     }
