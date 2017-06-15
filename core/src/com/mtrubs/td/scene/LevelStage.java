@@ -53,7 +53,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    * @param towers   the tower configurations.
    */
   public LevelStage(float worldWidth, float worldHeight,
-                    LevelMap levelMap, HeroConfig heroes, TowerLevelConfig[] towers,
+                    LevelMap levelMap, HeroManager heroes, TowerLevelConfig[] towers,
                     TextureRegionManager textureRegionManager, CurrencyManager currencyManager,
                     WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
@@ -97,7 +97,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     this.towers = new ArrayList<TowerGroup>(towers.length);
     for (TowerLevelConfig tower : towers) {
       TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(),
-        new TowerState(heroes.getHeroTowers(), this.currencyManager),
+        new TowerState(heroes.getActiveHeroes(), this.currencyManager),
         this.waveManager, this.textureRegionManager,
         tower.getUnitX(), tower.getUnitY());
       addActor(towerGroup);

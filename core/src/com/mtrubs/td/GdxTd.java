@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mtrubs.td.config.CurrencyManager;
-import com.mtrubs.td.config.HeroConfig;
+import com.mtrubs.td.config.HeroManager;
 import com.mtrubs.td.config.TowerLevelConfig;
 import com.mtrubs.td.config.Wave;
 import com.mtrubs.td.graphics.ActiveTextureRegionManager;
+import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.LevelStage;
@@ -45,7 +46,12 @@ public class GdxTd extends ApplicationAdapter {
 
     Tween.registerAccessor(TextureRegionActor.class, new TextureRegionActorAccessor());
 
-    HeroConfig heroes = new HeroConfig();
+    List<Hero> heroes = new ArrayList<Hero>();
+    heroes.add(Hero.TestHero1);
+    heroes.add(Hero.TestHero2);
+    heroes.add(Hero.TestHero3);
+
+    HeroManager heroManager = new HeroManager(heroes);
 
     int startHealth = 10;
 
@@ -73,10 +79,10 @@ public class GdxTd extends ApplicationAdapter {
     // TODO: I wonder if these should be one stage and hud is more of a group...
     // the HUD for the level
     this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-      this.textureRegionManager, startHealth, currencyManager, waveManager);
+      this.textureRegionManager, startHealth, currencyManager, heroManager, waveManager);
     // the current level
     this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
-      LevelMap.TestLevel, heroes, towers.toArray(new TowerLevelConfig[towers.size()]),
+      LevelMap.TestLevel, heroManager, towers.toArray(new TowerLevelConfig[towers.size()]),
       this.textureRegionManager, currencyManager, waveManager);
 
     // order here is important because once a stage 'handles' an event it stops

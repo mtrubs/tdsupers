@@ -2,10 +2,6 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * @author mrubino
- * @since 2017-06-12
- */
 public enum TowerEnhancement implements TextureReference {
 
   TestHero1("images/towers/TestHero1/menu/enhance.png", 100),

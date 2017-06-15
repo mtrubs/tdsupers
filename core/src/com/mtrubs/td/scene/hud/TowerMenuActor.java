@@ -10,10 +10,6 @@ import com.mtrubs.td.scene.TextureRegionActor;
 
 import javax.annotation.Nullable;
 
-/**
- * @author mrubino
- * @since 2017-06-11
- */
 public class TowerMenuActor extends TextureRegionActor {
 
   private static final float OVERLAP = 5.0F;

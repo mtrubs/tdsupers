@@ -99,4 +99,8 @@ public enum Hero implements TextureReference {
   public HeroPath getPathB() {
     return this.pathB;
   }
+
+  public HeroThumbnail getThumbnail() {
+    return this.thumbnail;
+  }
 }

@@ -2,10 +2,6 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * @author mrubino
- * @since 2017-06-13
- */
 public enum HeroThumbnail implements TextureReference {
 
   TestHero1("images/towers/TestHero1/thumbnail.png"),

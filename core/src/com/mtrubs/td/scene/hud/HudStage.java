@@ -205,10 +205,17 @@ public class HudStage extends Stage {
   private void addBottomLeft(TextureRegionManager textureRegionManager) {
     // This is the bottom left HUD; handles hero info
     List<Hero> heroes = this.heroManager.getActiveHeroes();
-    for (int i = 0; i < heroes.size(); i++) {
-      Hero hero = heroes.get(i);
+    float x = 0.0F;
+    for (Hero hero : heroes) {
       TextureRegion textureRegion = textureRegionManager.get(hero.getThumbnail());
+      TextureRegionActor actor = new TextureRegionActor(
+        x + PAD, PAD, textureRegion
+      );
+      x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
+      addActor(actor);
 
+      // TODO: add click event to select hero
+      // TODO: add health indicator
     }
   }
 

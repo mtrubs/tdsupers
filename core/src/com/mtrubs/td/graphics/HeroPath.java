@@ -4,10 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 
 import javax.annotation.Nonnull;
 
-/**
- * @author mrubino
- * @since 2017-06-13
- */
 public enum HeroPath implements TextureReference {
 
   TestHero1A("images/towers/TestHero1/menu/upgradeA.png",
