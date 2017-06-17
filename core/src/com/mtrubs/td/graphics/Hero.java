@@ -1,6 +1,8 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.td.scene.CombatActor;
+import com.mtrubs.td.scene.hero.TestHero1Actor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -10,21 +12,39 @@ import javax.annotation.Nullable;
  */
 public enum Hero implements TextureReference {
 
+  // TODO: start x,y is level configurable
   TestHero1("images/towers/TestHero1/menu/icon.png",
     HeroThumbnail.TestHero1, HeroSkill.TestHero1,
     Tower.TestHero1_1, TowerEnhancement.TestHero1,
     HeroPath.TestHero1A, TowerEnhancement.TestHero1A,
-    HeroPath.TestHero1B, TowerEnhancement.TestHero1B),
+    HeroPath.TestHero1B, TowerEnhancement.TestHero1B) {
+    @Override
+    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+      return new TestHero1Actor(textureRegionManager, 400.0F, 200.0F);
+    }
+  },
   TestHero2("images/towers/TestHero2/menu/icon.png",
     HeroThumbnail.TestHero2, HeroSkill.TestHero2,
     Tower.TestHero2_1, TowerEnhancement.TestHero2,
     HeroPath.TestHero2A, TowerEnhancement.TestHero2A,
-    HeroPath.TestHero2B, TowerEnhancement.TestHero2B),
+    HeroPath.TestHero2B, TowerEnhancement.TestHero2B) {
+    @Override
+    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+      // TODO: TestHero2
+      return new TestHero1Actor(textureRegionManager, 200.0F, 200.0F);
+    }
+  },
   TestHero3("images/towers/TestHero3/menu/icon.png",
     HeroThumbnail.TestHero3, HeroSkill.TestHero3,
     Tower.TestHero3_1, TowerEnhancement.TestHero3,
     HeroPath.TestHero3A, TowerEnhancement.TestHero3A,
-    HeroPath.TestHero3B, TowerEnhancement.TestHero3B);
+    HeroPath.TestHero3B, TowerEnhancement.TestHero3B) {
+    @Override
+    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+      // TODO: TestHero3
+      return new TestHero1Actor(textureRegionManager, 300.0F, 300.0F);
+    }
+  };
 
   private final String texturePath;
   private final String key;
@@ -112,4 +132,6 @@ public enum Hero implements TextureReference {
   public HeroSkill getSkill() {
     return this.skill;
   }
+
+  public abstract CombatActor newActor(TextureRegionManager textureRegionManager);
 }

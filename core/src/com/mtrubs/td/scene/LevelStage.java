@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.*;
+import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
@@ -68,6 +69,10 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     // add the background image
     final LevelMapActor levelMapActor = new LevelMapActor(this.textureRegionManager.get(levelMap));
     addActor(levelMapActor);
+
+    for (Hero hero : heroes.getActiveHeroes()) {
+      addActor(hero.newActor(textureRegionManager));
+    }
 
     // handle moving around the level and zooming in and out
     levelMapActor.addListener(new ActorGestureListener() {

@@ -2,16 +2,16 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public enum HeroSkill implements TextureReference {
+public enum HeroUnit implements TextureReference {
 
-  TestHero1("images/towers/TestHero1/skill.png"),
-  TestHero2("images/towers/TestHero2/skill.png"),
-  TestHero3("images/towers/TestHero3/skill.png");
+  TestHero1("images/towers/TestHero1/heroUnit.png"),
+  TestHero2("images/towers/TestHero2/heroUnit.png"),
+  TestHero3("images/towers/TestHero3/heroUnit.png");
 
   private final String texturePath;
   private final String key;
 
-  private HeroSkill(String texturePath) {
+  private HeroUnit(String texturePath) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }
