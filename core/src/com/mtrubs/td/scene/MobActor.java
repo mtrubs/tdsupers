@@ -115,7 +115,7 @@ public class MobActor extends CombatActor {
     return this.type.getDamage();
   }
 
-  public void start(TweenManager tweenManager) {
+  public void start() {
     if (this.timeline != null) {
       throw new RuntimeException("This mob has already been started"); // TODO: type the exception
     }
@@ -125,7 +125,11 @@ public class MobActor extends CombatActor {
       this.timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY, duration).target(
         this.path[i].x, this.path[i].y).ease(TweenEquations.easeNone));
     }
-    this.timeline.start(tweenManager);
+    this.timeline.start(getTweenManager());
+  }
+
+  private TweenManager getTweenManager() {
+    return ((LevelStage) getStage()).getTweenManager();
   }
 
   public int getWorth() {

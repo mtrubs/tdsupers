@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.*;
 import com.mtrubs.td.scene.hud.TowerMenuActor;
 
@@ -36,54 +35,55 @@ public class TowerGroup extends Group {
   // TODO: make up to 3
   private UnitActor unit;
 
+  public TowerGroup() {
+    this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
+    this.confirmClicks = new ArrayList<ConfirmClickListener>();
+    this.menu = new Group();
+  }
+
   /**
    * Create a new tower group with the given settings.
    *
-   * @param positionX            the x coordinate of this tower group's tower.
-   * @param positionY            the y coordinate of this tower group's tower.
-   * @param startingState        the starting state of this tower group.
-   * @param waveManager          the wave manager.
-   * @param textureRegionManager the texture region manager.
+   * @param positionX     the x coordinate of this tower group's tower.
+   * @param positionY     the y coordinate of this tower group's tower.
+   * @param startingState the starting state of this tower group.
+   * @param unitPositionX the x coordinate for where the units of this tower are centered.
+   * @param unitPositionY the y coordinate for where the units of this tower are centered.
    */
-  public TowerGroup(float positionX, float positionY, TowerState startingState,
-                    final WaveManager waveManager,
-                    final TextureRegionManager textureRegionManager,
-                    float unitPositionX, float unitPositionY) {
-    this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
-    this.confirmClicks = new ArrayList<ConfirmClickListener>();
+  public void init(float positionX, float positionY, TowerState startingState,
+                   float unitPositionX, float unitPositionY) {
     this.state = startingState;
     // this is the tower image of this group
     Tower startingTower = startingState.getTower();
     final TextureRegionActor tower = new TextureRegionActor(positionX, positionY,
-      textureRegionManager.get(startingTower));
+      getTextureRegion(startingTower));
     addActor(tower);
 
     if (startingTower.hasUnit()) {
       this.unit = new UnitActor(unitPositionX, unitPositionY, startingTower.getUnit(),
-        textureRegionManager.get(startingTower.getUnit()));
+        getTextureRegion(startingTower.getUnit()));
     } else {
       this.unit = new UnitActor(unitPositionX, unitPositionY, null, null);
     }
     addActor(this.unit);
 
     // all the menu items
-    final TextureRegionActor ring = addMenuRing(tower, textureRegionManager);
-    final TowerMenuActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell, textureRegionManager);
+    final TextureRegionActor ring = addMenuRing(tower);
+    final TowerMenuActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell);
     // TODO: set rally
-    //final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally, textureRegionManager);
-    final TowerMenuActor upgrade = addMenuItem(ring, 30.0F, TowerMenuItem.Upgrade, textureRegionManager);
-    final TowerMenuActor enhanceHero = addMenuItem(ring, 90.0F, TowerMenuItem.EnhanceHero, textureRegionManager);
-    final TowerMenuActor enhancePath = addMenuItem(ring, 150.0F, TowerMenuItem.EnhancePath, textureRegionManager);
-    final TowerMenuActor heroA = addMenuItem(ring, 120.0F, TowerMenuItem.HeroA, textureRegionManager);
-    final TowerMenuActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB, textureRegionManager);
+    //final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally);
+    final TowerMenuActor upgrade = addMenuItem(ring, 30.0F, TowerMenuItem.Upgrade);
+    final TowerMenuActor enhanceHero = addMenuItem(ring, 90.0F, TowerMenuItem.EnhanceHero);
+    final TowerMenuActor enhancePath = addMenuItem(ring, 150.0F, TowerMenuItem.EnhancePath);
+    final TowerMenuActor heroA = addMenuItem(ring, 120.0F, TowerMenuItem.HeroA);
+    final TowerMenuActor heroB = addMenuItem(ring, 60.0F, TowerMenuItem.HeroB);
 
     // for now this is hard capped at 3
-    final TowerMenuActor hero1 = addHeroMenuItem(0, TowerMenuItem.Hero1, ring, textureRegionManager);
-    final TowerMenuActor hero2 = addHeroMenuItem(1, TowerMenuItem.Hero2, ring, textureRegionManager);
-    final TowerMenuActor hero3 = addHeroMenuItem(2, TowerMenuItem.Hero3, ring, textureRegionManager);
+    final TowerMenuActor hero1 = addHeroMenuItem(0, TowerMenuItem.Hero1, ring);
+    final TowerMenuActor hero2 = addHeroMenuItem(1, TowerMenuItem.Hero2, ring);
+    final TowerMenuActor hero3 = addHeroMenuItem(2, TowerMenuItem.Hero3, ring);
 
     // the menu itself
-    this.menu = new Group();
     addActor(this.menu);
     updateMenuState();
 
@@ -114,13 +114,13 @@ public class TowerGroup extends Group {
         @Override
         public void handleConfirm(InputEvent event, float x, float y) {
           resetOthers(TowerGroup.this.confirmClicks);
-          hero1.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+          hero1.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
           super.handleConfirm(event, x, y);
         }
 
         @Override
         public void reset() {
-          hero1.setTextureRegion(textureRegionManager.get(
+          hero1.setTextureRegion(getTextureRegion(
             TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero1)));
           super.reset();
         }
@@ -128,7 +128,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(0);
-          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+          updateCurrentState(tower, TowerGroup.this.unit);
           super.handleClick(event, x, y);
         }
       });
@@ -141,13 +141,13 @@ public class TowerGroup extends Group {
         @Override
         public void handleConfirm(InputEvent event, float x, float y) {
           resetOthers(TowerGroup.this.confirmClicks);
-          hero2.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+          hero2.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
           super.handleConfirm(event, x, y);
         }
 
         @Override
         public void reset() {
-          hero2.setTextureRegion(textureRegionManager.get(
+          hero2.setTextureRegion(getTextureRegion(
             TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero2)));
           super.reset();
         }
@@ -155,7 +155,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(1);
-          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+          updateCurrentState(tower, TowerGroup.this.unit);
           super.handleClick(event, x, y);
         }
       });
@@ -168,13 +168,13 @@ public class TowerGroup extends Group {
         @Override
         public void handleConfirm(InputEvent event, float x, float y) {
           resetOthers(TowerGroup.this.confirmClicks);
-          hero3.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+          hero3.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
           super.handleConfirm(event, x, y);
         }
 
         @Override
         public void reset() {
-          hero3.setTextureRegion(textureRegionManager.get(
+          hero3.setTextureRegion(getTextureRegion(
             TowerGroup.this.state.getTextureReference(TowerMenuItem.Hero3)));
           super.reset();
         }
@@ -182,7 +182,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(2);
-          updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+          updateCurrentState(tower, TowerGroup.this.unit);
           super.handleClick(event, x, y);
         }
       });
@@ -194,13 +194,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        heroA.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        heroA.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        heroA.setTextureRegion(textureRegionManager.get(
+        heroA.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.HeroA)));
         super.reset();
       }
@@ -208,7 +208,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade(TowerPath.A);
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
@@ -219,13 +219,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        heroB.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        heroB.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        heroB.setTextureRegion(textureRegionManager.get(
+        heroB.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.HeroB)));
         super.reset();
       }
@@ -233,7 +233,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade(TowerPath.B);
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
@@ -244,13 +244,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        upgrade.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        upgrade.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        upgrade.setTextureRegion(textureRegionManager.get(
+        upgrade.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.Upgrade)));
         super.reset();
       }
@@ -258,7 +258,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade();
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
@@ -269,13 +269,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        enhanceHero.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        enhanceHero.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        enhanceHero.setTextureRegion(textureRegionManager.get(
+        enhanceHero.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.EnhanceHero)));
         super.reset();
       }
@@ -283,7 +283,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.enhanceHero();
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
@@ -294,13 +294,13 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        enhancePath.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        enhancePath.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        enhancePath.setTextureRegion(textureRegionManager.get(
+        enhancePath.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.EnhancePath)));
         super.reset();
       }
@@ -308,7 +308,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.enhancePath();
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
@@ -319,62 +319,62 @@ public class TowerGroup extends Group {
       @Override
       public void handleConfirm(InputEvent event, float x, float y) {
         resetOthers(TowerGroup.this.confirmClicks);
-        sell.setTextureRegion(textureRegionManager.get(TowerMenuItem.Confirm));
+        sell.setTextureRegion(getTextureRegion(TowerMenuItem.Confirm));
         super.handleConfirm(event, x, y);
       }
 
       @Override
       public void reset() {
-        sell.setTextureRegion(textureRegionManager.get(
+        sell.setTextureRegion(getTextureRegion(
           TowerGroup.this.state.getTextureReference(TowerMenuItem.Sell)));
         super.reset();
       }
 
       @Override
       public void handleClick(InputEvent event, float x, float y) {
-        TowerGroup.this.state.reset(waveManager.isActive());
-        updateCurrentState(tower, TowerGroup.this.unit, textureRegionManager);
+        TowerGroup.this.state.reset(isActive());
+        updateCurrentState(tower, TowerGroup.this.unit);
         super.handleClick(event, x, y);
       }
     });
   }
 
+  private boolean isActive() {
+    return ((LevelStage) getStage()).isActive();
+  }
+
   /**
    * Updates the state of this tower group.
    *
-   * @param towerActor           the tower actor.
-   * @param unitActor            the unit actor.
-   * @param textureRegionManager the texture region manager.
+   * @param towerActor the tower actor.
+   * @param unitActor  the unit actor.
    */
-  private void updateCurrentState(TextureRegionActor towerActor, UnitActor unitActor,
-                                  TextureRegionManager textureRegionManager) {
+  private void updateCurrentState(TextureRegionActor towerActor, UnitActor unitActor) {
     Tower tower = this.state.getTower();
     TowerUnit unit = tower.getUnit();
-    updateTower(tower, towerActor, textureRegionManager);
-    updateUnit(unit, unitActor, textureRegionManager);
+    updateTower(tower, towerActor);
+    updateUnit(unit, unitActor);
   }
 
   /**
    * Updates the given tower actor to the current state of this group.
    *
-   * @param tower                the tower representation of this group.
-   * @param actor                the tower actor to upgrade.
-   * @param textureRegionManager the texture region manager.
+   * @param tower the tower representation of this group.
+   * @param actor the tower actor to upgrade.
    */
-  private void updateTower(Tower tower, TextureRegionActor actor, TextureRegionManager textureRegionManager) {
-    actor.setTextureRegion(textureRegionManager.get(tower));
+  private void updateTower(Tower tower, TextureRegionActor actor) {
+    actor.setTextureRegion(getTextureRegion(tower));
     updateMenuState();
   }
 
   /**
    * Updates the given unit actor to the current state of this group.
    *
-   * @param unit                 the unit representation for this group.
-   * @param actor                the unit actor to upgrade.
-   * @param textureRegionManager the texture region manager.
+   * @param unit  the unit representation for this group.
+   * @param actor the unit actor to upgrade.
    */
-  private void updateUnit(TowerUnit unit, UnitActor actor, TextureRegionManager textureRegionManager) {
-    actor.setTextureRegion(textureRegionManager.get(unit));
+  private void updateUnit(TowerUnit unit, UnitActor actor) {
+    actor.setTextureRegion(getTextureRegion(unit));
     actor.setType(unit);
   }
 
@@ -428,8 +428,8 @@ public class TowerGroup extends Group {
     return this.unit;
   }
 
-  private TextureRegionActor addMenuRing(TextureRegionActor tower, TextureRegionManager textureRegionManager) {
-    TextureRegion textureRegion = textureRegionManager.get(TowerMenuItem.Ring);
+  private TextureRegionActor addMenuRing(TextureRegionActor tower) {
+    TextureRegion textureRegion = getTextureRegion(TowerMenuItem.Ring);
     TextureRegionActor actor = new TextureRegionActor(
       // offset X and Y by half the size of this region plus half the size of the tower
       // this way it ends up centered over the tower
@@ -444,24 +444,20 @@ public class TowerGroup extends Group {
   /**
    * Adds a hero menu item to the menu of this tower group.
    *
-   * @param index                the hero we are using in the hero list.
-   * @param key                  which tower menu item (generic version) we are associating with this hero.
-   * @param ring                 the tower menu ring.
-   * @param textureRegionManager the texture region manager.
+   * @param index the hero we are using in the hero list.
+   * @param key   which tower menu item (generic version) we are associating with this hero.
+   * @param ring  the tower menu ring.
    * @return the menu actor added.
    */
   private TowerMenuActor addHeroMenuItem(int index, TowerMenuItem key,
-                                         TextureRegionActor ring, TextureRegionManager textureRegionManager) {
+                                         TextureRegionActor ring) {
     int heroCount = this.state.activeHeroCount();
     if (heroCount == 1) {
-      return index > 0 ? null : addMenuItem(ring, 90.0F,
-        key, textureRegionManager);
+      return index > 0 ? null : addMenuItem(ring, 90.0F, key);
     } else if (heroCount == 2) {
-      return index > 1 ? null : addMenuItem(ring, 60.0F + 60.0F * (float) index,
-        key, textureRegionManager);
+      return index > 1 ? null : addMenuItem(ring, 60.0F + 60.0F * (float) index, key);
     } else if (heroCount == 3) {
-      return index > 2 ? null : addMenuItem(ring, 30.0F + 60.0F * (float) index,
-        key, textureRegionManager);
+      return index > 2 ? null : addMenuItem(ring, 30.0F + 60.0F * (float) index, key);
     } else {
       throw new RuntimeException("unexpected hero count");
     }
@@ -470,15 +466,14 @@ public class TowerGroup extends Group {
   /**
    * Adds a menu item to the tower menu group.
    *
-   * @param ring                 the tower menu ring.
-   * @param degrees              the degree on the ring we want to position the menu item.
-   * @param item                 the generic menu item we want to associate the item with.
-   * @param textureRegionManager the texture region manager.
+   * @param ring    the tower menu ring.
+   * @param degrees the degree on the ring we want to position the menu item.
+   * @param item    the generic menu item we want to associate the item with.
    * @return the menu actor added.
    */
   private TowerMenuActor addMenuItem(TextureRegionActor ring, float degrees,
-                                     TowerMenuItem item, TextureRegionManager textureRegionManager) {
-    TextureRegion textureRegion = textureRegionManager.get(this.state.getTextureReference(item));
+                                     TowerMenuItem item) {
+    TextureRegion textureRegion = getTextureRegion(this.state.getTextureReference(item));
     float radius = ring.getWidth() / 2.0F;
 
     // circle math to figure out where this menu item belongs
@@ -491,10 +486,14 @@ public class TowerGroup extends Group {
       circleX - textureRegion.getRegionWidth() / 2.0F,
       circleY - textureRegion.getRegionHeight() / 2.0F,
       textureRegion,
-      item.hasCost() ? textureRegionManager.get(TowerMenuItem.CostPlaque) : null
+      item.hasCost() ? getTextureRegion(TowerMenuItem.CostPlaque) : null
     );
     this.menuItems.put(item, actor);
     return actor;
+  }
+
+  private TextureRegion getTextureRegion(TextureReference type) {
+    return ((LevelStage) getStage()).getTextureRegion(type);
   }
 
   /**

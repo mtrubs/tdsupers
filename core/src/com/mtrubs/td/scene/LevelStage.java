@@ -1,5 +1,6 @@
 package com.mtrubs.td.scene;
 
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,6 +37,8 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    */
   private static final float PAN_RATE = 0.6F;
 
+
+  private final TweenManager tweenManager;
   private final TextureRegionManager textureRegionManager;
   private final WaveManager waveManager;
   private final CurrencyManager currencyManager;
@@ -59,6 +62,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
                     WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
+    this.tweenManager = new TweenManager();
 
     this.waveManager = waveManager;
     this.waveManager.setStage(this);
@@ -101,11 +105,10 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     // add each tower plot
     this.towers = new ArrayList<TowerGroup>(towers.length);
     for (TowerLevelConfig tower : towers) {
-      TowerGroup towerGroup = new TowerGroup(tower.getX(), tower.getY(),
-        new TowerState(heroes.getActiveHeroes(), this.currencyManager),
-        this.waveManager, this.textureRegionManager,
-        tower.getUnitX(), tower.getUnitY());
+      TowerGroup towerGroup = new TowerGroup();
       addActor(towerGroup);
+      towerGroup.init(tower.getX(), tower.getY(),
+        new TowerState(heroes.getActiveHeroes(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
       this.towers.add(towerGroup);
     }
 
@@ -178,7 +181,8 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   @Override
   public void act(float delta) {
     super.act(delta);
-    this.waveManager.update(delta);
+    this.waveManager.sort();
+    this.tweenManager.update(delta);
   }
 
   /**
@@ -203,12 +207,20 @@ public class LevelStage extends Stage implements CurrencyWatcher {
 
   @Override
   public void dispose() {
-    this.waveManager.dispose();
+    this.tweenManager.killAll();
     super.dispose();
   }
 
   public TextureRegion getTextureRegion(TextureReference type) {
     return this.textureRegionManager.get(type);
+  }
+
+  public boolean isActive() {
+    return this.waveManager.isActive();
+  }
+
+  public TweenManager getTweenManager() {
+    return this.tweenManager;
   }
 
   @Override

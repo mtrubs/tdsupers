@@ -1,6 +1,5 @@
 package com.mtrubs.td.config;
 
-import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mtrubs.td.scene.MobActor;
 
@@ -22,7 +21,6 @@ public class WaveManager {
     }
   };
 
-  private final TweenManager tweenManager;
   private final List<Wave> waves;
 
   private int wave = -1;
@@ -35,7 +33,6 @@ public class WaveManager {
 
   public WaveManager(List<Wave> waves) {
     this.waves = waves;
-    this.tweenManager = new TweenManager();
     this.mobs = new ArrayList<MobActor>(); // TODO: right size?
   }
 
@@ -57,7 +54,7 @@ public class WaveManager {
     for (MobActor mob : this.waves.get(this.wave).getMobs()) {
       this.stage.addActor(mob);
       this.mobs.add(mob);
-      mob.start(this.tweenManager);
+      mob.start();
     }
   }
 
@@ -105,14 +102,9 @@ public class WaveManager {
     return current > 0 && current < this.getTotalWaves();
   }
 
-  public void update(float delta) {
+  public void sort() {
     if (this.wave >= 0) {
       Collections.sort(this.mobs, MOB_COMPARATOR);
-      this.tweenManager.update(delta);
     }
-  }
-
-  public void dispose() {
-    this.tweenManager.killAll();
   }
 }

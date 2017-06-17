@@ -43,5 +43,6 @@ public class ActiveTextureRegionManager implements TextureRegionManager {
     for (TextureRegion textureRegion : this.loadedTextures.values()) {
       textureRegion.getTexture().dispose();
     }
+    this.loadedTextures.clear();
   }
 }
