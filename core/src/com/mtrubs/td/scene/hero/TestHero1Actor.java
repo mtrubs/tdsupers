@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,7 +18,6 @@ import com.mtrubs.td.scene.TextureRegionActorAccessor;
 
 public class TestHero1Actor extends CombatActor implements SelectableMover {
 
-  private Timeline timeline;
   private float speed = 25.0F;
   private boolean selected;
 
@@ -71,11 +71,11 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
     // stop other timelines associated with this
     getTweenManager().killTarget(this);
     // move to the position
-    this.timeline = Timeline.createSequence().delay(0.0F);
+    Timeline timeline = Timeline.createSequence().delay(0.0F);
     float duration = getDuration(from, to);
-    this.timeline.push(Tween.to(this,
+    timeline.push(Tween.to(this,
       TextureRegionActorAccessor.POSITION_XY, duration).target(to.x, to.y).ease(TweenEquations.easeNone));
-    this.timeline.start(getTweenManager());
+    timeline.start(getTweenManager());
   }
 
   // TODO: this logic (and thus for MobActors too) doesnt seem quite right
@@ -119,9 +119,25 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
 
   @Override
   public void draw(Batch batch, float alpha) {
-    super.draw(batch, alpha);
+    // render this first if necessary so it ends up behind the image, gives illusion of depth.
     if (this.selected) {
-      // TODO: selection notification
+      batch.end();
+
+      ShapeRenderer shapeRenderer = ((LevelStage) getStage()).getShapeRenderer();
+
+      shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+      shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+
+      // Green outlined ellipse
+      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+      shapeRenderer.setColor(0.0F, 1.0F, 0.0F, 0.75F);
+      shapeRenderer.ellipse(getX() - 3.0F, getY() - 3.0F,
+        getWidth() + 3.0F, 15.0F);
+      shapeRenderer.end();
+
+      batch.begin();
     }
+
+    super.draw(batch, alpha);
   }
 }

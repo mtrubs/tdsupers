@@ -211,7 +211,6 @@ public class HudStage extends Stage {
       x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
       addActor(actor);
 
-      // TODO: add click event to select hero
       // TODO: add health indicator
       // TODO: cooldown indicator on death
     }

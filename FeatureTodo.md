@@ -11,8 +11,6 @@
   * stars?
   * Heroic / Epic / Legendary
 * heroes
-  * Hero Icons
-  * Skill Icons
   * Skill Actions
   * hero unit
 * Defeat / Victory
@@ -33,6 +31,7 @@
   * wave announcement
   * bonus currency for early click
 * menu
-  * volume
+  * sound volume
+  * music volume
   * quit
   * restart

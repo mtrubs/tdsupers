@@ -3,6 +3,7 @@ package com.mtrubs.td.scene;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -38,7 +39,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    */
   private static final float PAN_RATE = 0.6F;
 
-
+  private final ShapeRenderer shapeRenderer;
   private final TweenManager tweenManager;
   private final TextureRegionManager textureRegionManager;
   private final WaveManager waveManager;
@@ -66,6 +67,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
     this.tweenManager = new TweenManager();
+    this.shapeRenderer = new ShapeRenderer();
 
     this.waveManager = waveManager;
     this.waveManager.setStage(this);
@@ -150,9 +152,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
         hit = hit(x, y, true);
         if (LevelStage.this.selectable != null) {
           if (hit == levelMapActor) {
-            LevelStage.this.selectable.moveTo(event);
+            moveSelected(event);
           } else if (hit != LevelStage.this.selectable) {
-            LevelStage.this.selectable.deselect();
+            deselect();
           }
         }
       }
@@ -219,6 +221,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   @Override
   public void dispose() {
     this.tweenManager.killAll();
+    this.shapeRenderer.dispose();
     super.dispose();
   }
 
@@ -234,14 +237,39 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     return this.tweenManager;
   }
 
+  /**
+   * Sets the selected moveable so that on next click we move it.
+   *
+   * @param selectable the selected movable.
+   */
   public void setSelected(SelectableMover selectable) {
+    deselect();
     this.selectable = selectable;
     selectable.select();
   }
 
+  /**
+   * Moves the selected movable based on the InputEvent and deselects it.
+   *
+   * @param event the click event triggering the move.
+   */
   private void moveSelected(InputEvent event) {
     this.selectable.moveTo(event);
-    this.selectable.deselect();
+    deselect();
+  }
+
+  /**
+   * Deselects the currently selected movable.
+   */
+  private void deselect() {
+    if (this.selectable != null) {
+      this.selectable.deselect();
+      this.selectable = null;
+    }
+  }
+
+  public ShapeRenderer getShapeRenderer() {
+    return this.shapeRenderer;
   }
 
   @Override
