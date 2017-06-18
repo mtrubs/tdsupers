@@ -79,10 +79,6 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     final LevelMapActor levelMapActor = new LevelMapActor(this.textureRegionManager.get(levelMap));
     addActor(levelMapActor);
 
-    for (Hero hero : heroes.getActiveHeroes()) {
-      addActor(hero.newActor(textureRegionManager));
-    }
-
     // handle moving around the level and zooming in and out
     levelMapActor.addListener(new ActorGestureListener() {
 
@@ -115,6 +111,10 @@ public class LevelStage extends Stage implements CurrencyWatcher {
       towerGroup.init(tower.getX(), tower.getY(),
         new TowerState(heroes.getActiveHeroes(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
       this.towers.add(towerGroup);
+    }
+
+    for (Hero hero : heroes.getActiveHeroes()) {
+      addActor(hero.newActor(textureRegionManager));
     }
 
     /*

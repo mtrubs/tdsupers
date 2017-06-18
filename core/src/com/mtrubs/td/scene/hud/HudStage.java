@@ -210,6 +210,13 @@ public class HudStage extends Stage {
         x + PAD, PAD, textureRegion);
       x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
       addActor(actor);
+      actor.addListener(new ClickListener() {
+
+        public void clicked(InputEvent event, float x, float y) {
+          super.clicked(event, x, y);
+          // TODO: select hero
+        }
+      });
 
       // TODO: add health indicator
       // TODO: cooldown indicator on death
