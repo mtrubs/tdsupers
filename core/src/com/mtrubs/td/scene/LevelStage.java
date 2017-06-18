@@ -15,6 +15,7 @@ import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.scene.hero.SelectableMover;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +48,8 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    * List of all tower plots.
    */
   private Collection<TowerGroup> towers;
+
+  private SelectableMover selectable;
 
   /**
    * Creates a new level stage for game play.  We are given the level map, the list of active heroes
@@ -144,6 +147,14 @@ public class LevelStage extends Stage implements CurrencyWatcher {
             tower.deselect();
           }
         }
+        hit = hit(x, y, true);
+        if (LevelStage.this.selectable != null) {
+          if (hit == levelMapActor) {
+            LevelStage.this.selectable.moveTo(event);
+          } else if (hit != LevelStage.this.selectable) {
+            LevelStage.this.selectable.deselect();
+          }
+        }
       }
     });
   }
@@ -221,6 +232,16 @@ public class LevelStage extends Stage implements CurrencyWatcher {
 
   public TweenManager getTweenManager() {
     return this.tweenManager;
+  }
+
+  public void setSelected(SelectableMover selectable) {
+    this.selectable = selectable;
+    selectable.select();
+  }
+
+  private void moveSelected(InputEvent event) {
+    this.selectable.moveTo(event);
+    this.selectable.deselect();
   }
 
   @Override

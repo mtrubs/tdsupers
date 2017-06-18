@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,10 +15,11 @@ import com.mtrubs.td.scene.CombatActor;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
 
-public class TestHero1Actor extends CombatActor {
+public class TestHero1Actor extends CombatActor implements SelectableMover {
 
   private Timeline timeline;
   private float speed = 25.0F;
+  private boolean selected;
 
   public TestHero1Actor(TextureRegionManager textureRegionManager, float startX, float startY) {
     super(startX, startY, textureRegionManager.get(HeroUnit.TestHero1));
@@ -33,9 +35,33 @@ public class TestHero1Actor extends CombatActor {
       @Override
       public void touchUp(InputEvent event, float xDelta, float yDelta, int pointer, int button) {
         super.touchUp(event, xDelta, yDelta, pointer, button);
-        moveTo(getCenter(), event.getStageX(), event.getStageY());
+        if (!inTapSquare()) {
+          // as long as we get the touchUp and we are outside the tap square then we move
+          moveTo(event);
+        }
+      }
+
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        super.clicked(event, x, y);
+        ((LevelStage) TestHero1Actor.this.getStage()).setSelected(TestHero1Actor.this);
       }
     });
+  }
+
+  @Override
+  public void moveTo(InputEvent event) {
+    moveTo(getCenter(), event.getStageX(), event.getStageY());
+  }
+
+  @Override
+  public void select() {
+    this.selected = true;
+  }
+
+  @Override
+  public void deselect() {
+    this.selected = false;
   }
 
   private void moveTo(Vector2 from, float toX, float toY) {
@@ -89,5 +115,13 @@ public class TestHero1Actor extends CombatActor {
   @Override
   protected void handleDefeat() {
     // TODO
+  }
+
+  @Override
+  public void draw(Batch batch, float alpha) {
+    super.draw(batch, alpha);
+    if (this.selected) {
+      // TODO: selection notification
+    }
   }
 }
