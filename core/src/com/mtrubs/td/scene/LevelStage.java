@@ -45,6 +45,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   private final TextureRegionManager textureRegionManager;
   private final WaveManager waveManager;
   private final CurrencyManager currencyManager;
+  private final HeroManager heroManager;
 
   private final HudGroup hud;
 
@@ -58,19 +59,16 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   /**
    * Creates a new level stage for game play.  We are given the level map, the list of active heroes
    * configurations and the configuration of all the towers.
-   *
-   * @param levelMap image of the map.
-   * @param heroes   the active hero configurations.
-   * @param towers   the tower configurations.
    */
   public LevelStage(float worldWidth, float worldHeight,
-                    LevelMap levelMap, HeroManager heroes, TowerLevelConfig[] towers,
+                    LevelMap levelMap, HeroManager heroManager, TowerLevelConfig[] towers,
                     TextureRegionManager textureRegionManager, CurrencyManager currencyManager,
                     WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight));
     this.textureRegionManager = textureRegionManager;
     this.tweenManager = new TweenManager();
     this.shapeRenderer = new ShapeRenderer();
+    this.heroManager = heroManager;
 
     this.waveManager = waveManager;
 
@@ -111,11 +109,11 @@ public class LevelStage extends Stage implements CurrencyWatcher {
       TowerGroup towerGroup = new TowerGroup();
       addActor(towerGroup);
       towerGroup.init(tower.getX(), tower.getY(),
-        new TowerState(heroes.getActiveHeroes(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
+        new TowerState(heroManager.getActiveHeroes(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
       this.towers.add(towerGroup);
     }
 
-    for (Hero hero : heroes.getActiveHeroes()) {
+    for (Hero hero : heroManager.getActiveHeroes()) {
       addActor(hero.newActor(textureRegionManager));
     }
 
@@ -164,7 +162,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
 
     int startHealth = 10;
     // the HUD for the level
-    this.hud = new HudGroup(currencyManager, heroes, waveManager);
+    this.hud = new HudGroup();
     addActor(this.hud);
     this.hud.init(worldWidth, worldHeight, startHealth);
   }
@@ -289,5 +287,17 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     for (TowerGroup tower : this.towers) {
       tower.currencyChangeEvent(this.currencyManager.getCurrency());
     }
+  }
+
+  public WaveManager getWaveManager() {
+    return this.waveManager;
+  }
+
+  public HeroManager getHeroManager() {
+    return this.heroManager;
+  }
+
+  public CurrencyManager getCurrencyManager() {
+    return this.currencyManager;
   }
 }

@@ -30,10 +30,6 @@ public class HudGroup extends Group {
   private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
 
-  private final WaveManager waveManager; // disposed elsewhere
-  private final CurrencyManager currencyManager;
-  private final HeroManager heroManager;
-
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
   private float timeToNextWave;
@@ -42,12 +38,6 @@ public class HudGroup extends Group {
   private Label currencyLabel;
   private Label waveLabel;
   private TextureRegionActor waveCaller;
-
-  public HudGroup(CurrencyManager currencyManager, HeroManager heroManager, WaveManager waveManager) {
-    this.currencyManager = currencyManager;
-    this.heroManager = heroManager;
-    this.waveManager = waveManager;
-  }
 
   public void init(float worldWidth, float worldHeight, int startHealth) {
     setBounds(getX(), getY(), getStage().getWidth(), getStage().getHeight());
@@ -62,8 +52,8 @@ public class HudGroup extends Group {
 
     TextureRegion waveCallerTexture = getTextureRegion(HeadsUpDisplay.WaveCaller);
     this.waveCaller = new TextureRegionActor(
-      determineCoordinate(this.waveManager.getNextStartX(), waveCallerTexture.getRegionWidth(), worldWidth),
-      determineCoordinate(this.waveManager.getNextStartY(), waveCallerTexture.getRegionHeight(), worldHeight),
+      determineCoordinate(getWaveManager().getNextStartX(), waveCallerTexture.getRegionWidth(), worldWidth),
+      determineCoordinate(getWaveManager().getNextStartY(), waveCallerTexture.getRegionHeight(), worldHeight),
       waveCallerTexture);
     this.waveCaller.addListener(new ClickListener() {
 
@@ -99,9 +89,9 @@ public class HudGroup extends Group {
   private void startNextWave() {
     this.waveCaller.setTouchable(Touchable.disabled);
     this.waveCaller.setVisible(false);
-    this.waveManager.startWave((LevelStage) getStage());
+    getWaveManager().startWave((LevelStage) getStage());
     updateWaveLabel();
-    this.timeToNextWave = this.waveManager.getNextWaveDelay();
+    this.timeToNextWave = getWaveManager().getNextWaveDelay();
     // TODO: display wave announcements
   }
 
@@ -112,7 +102,7 @@ public class HudGroup extends Group {
 
   public void updateWaveLabel() {
     this.waveLabel.setText(String.format((Locale) null, "%d / %d",
-      this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves()));
+      getWaveManager().getCurrentWave(), getWaveManager().getTotalWaves()));
   }
 
   private void addTopLeft() {
@@ -211,7 +201,7 @@ public class HudGroup extends Group {
   private void addBottomLeft() {
     // This is the bottom left HUD; handles hero info
     float x = 0.0F;
-    for (Hero hero : this.heroManager.getActiveHeroes()) {
+    for (Hero hero : getHeroManager().getActiveHeroes()) {
       TextureRegion textureRegion = getTextureRegion(hero.getThumbnail());
       TextureRegionActor actor = new TextureRegionActor(
         x + PAD, PAD, textureRegion);
@@ -233,7 +223,7 @@ public class HudGroup extends Group {
   private void addBottomRight() {
     // This is the bottom right HUD; handles skills
     float x = getWidth();
-    for (Hero hero : this.heroManager.getActiveHeroes()) {
+    for (Hero hero : getHeroManager().getActiveHeroes()) {
       TextureRegion textureRegion = getTextureRegion(hero.getSkill());
       TextureRegionActor actor = new TextureRegionActor(
         x - PAD - textureRegion.getRegionWidth(), PAD, textureRegion);
@@ -248,9 +238,9 @@ public class HudGroup extends Group {
   @Override
   public void act(float delta) {
     super.act(delta);
-    this.currencyLabel.setText(String.valueOf(this.currencyManager.getCurrency()));
+    this.currencyLabel.setText(String.valueOf(getCurrencyManager().getCurrency()));
     // this is how we know if we have started/finished and thus need to track waves
-    if (this.waveManager.isActive()) {
+    if (getWaveManager().isActive()) {
       this.timeToNextWave -= delta;
       // if the delay hits zero then we force the wave to start
       // otherwise, when we get close to the start we show the wave caller
@@ -258,12 +248,12 @@ public class HudGroup extends Group {
         startNextWave();
       } else if (!this.waveCaller.isVisible() && this.timeToNextWave <= 10.0F) {
         this.waveCaller.setX(determineCoordinate(
-          this.waveManager.getNextStartX(),
+          getWaveManager().getNextStartX(),
           this.waveCaller.getWidth(),
           getWidth()
         ));
         this.waveCaller.setY(determineCoordinate(
-          this.waveManager.getNextStartY(),
+          getWaveManager().getNextStartY(),
           this.waveCaller.getHeight(),
           getHeight()
         ));
@@ -281,6 +271,18 @@ public class HudGroup extends Group {
    */
   public float getSpeedFactor() {
     return this.speedFactor;
+  }
+
+  private WaveManager getWaveManager() {
+    return ((LevelStage) getStage()).getWaveManager();
+  }
+
+  private HeroManager getHeroManager() {
+    return ((LevelStage) getStage()).getHeroManager();
+  }
+
+  private CurrencyManager getCurrencyManager() {
+    return ((LevelStage) getStage()).getCurrencyManager();
   }
 
   /**
