@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.*;
-import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
@@ -113,9 +112,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
       this.towers.add(towerGroup);
     }
 
-    for (Hero hero : heroManager.getActiveHeroes()) {
-      addActor(hero.newActor(textureRegionManager));
-    }
+    heroManager.createActors(this, textureRegionManager);
 
     /*
     TODO
@@ -151,9 +148,12 @@ public class LevelStage extends Stage implements CurrencyWatcher {
         }
         hit = hit(x, y, true);
         if (LevelStage.this.selectable != null) {
-          if (hit == levelMapActor) {
+          // get related actor is a slight hack on accounts of the actor might disappear on click
+          // TODO: or is instance of MOB or UNIT... as there is too much crowd to not ignore them
+          if (hit == levelMapActor && event.getRelatedActor() == null) {
             moveSelected(event);
-          } else if (hit != LevelStage.this.selectable) {
+          } else if (hit != LevelStage.this.selectable &&
+            hit.getParent() != LevelStage.this.hud) {
             deselect();
           }
         }
@@ -255,7 +255,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   public void setSelected(SelectableMover selectable) {
     deselect();
     this.selectable = selectable;
-    selectable.select();
+    if (selectable != null) {
+      selectable.select();
+    }
   }
 
   /**

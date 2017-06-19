@@ -13,4 +13,6 @@ public interface SelectableMover {
   void select();
 
   void deselect();
+
+  boolean isSelected();
 }

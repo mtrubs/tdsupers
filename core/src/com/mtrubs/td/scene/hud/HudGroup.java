@@ -16,6 +16,7 @@ import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.hero.SelectableMover;
 
 import java.util.Locale;
 
@@ -60,6 +61,8 @@ public class HudGroup extends Group {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         // TODO: bonus currency for early click
+        // used as an alternative to the 'hit' method since this disappears on click
+        event.setRelatedActor(HudGroup.this.waveCaller);
         startNextWave();
       }
     });
@@ -201,7 +204,7 @@ public class HudGroup extends Group {
   private void addBottomLeft() {
     // This is the bottom left HUD; handles hero info
     float x = 0.0F;
-    for (Hero hero : getHeroManager().getActiveHeroes()) {
+    for (final Hero hero : getHeroManager().getActiveHeroes()) {
       TextureRegion textureRegion = getTextureRegion(hero.getThumbnail());
       TextureRegionActor actor = new TextureRegionActor(
         x + PAD, PAD, textureRegion);
@@ -211,7 +214,13 @@ public class HudGroup extends Group {
 
         public void clicked(InputEvent event, float x, float y) {
           super.clicked(event, x, y);
-          // TODO: select hero
+          SelectableMover selectable = getHeroManager().getActor(hero);
+          if (selectable != null) {
+            if (selectable.isSelected()) {
+              selectable = null; // deselect
+            }
+            ((LevelStage) getStage()).setSelected(selectable);
+          }
         }
       });
 

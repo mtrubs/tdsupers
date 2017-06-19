@@ -1,7 +1,6 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mtrubs.td.scene.CombatActor;
 import com.mtrubs.td.scene.hero.TestHero1Actor;
 
 import javax.annotation.Nonnull;
@@ -19,7 +18,7 @@ public enum Hero implements TextureReference {
     HeroPath.TestHero1A, TowerEnhancement.TestHero1A,
     HeroPath.TestHero1B, TowerEnhancement.TestHero1B) {
     @Override
-    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
       return new TestHero1Actor(textureRegionManager, 400.0F, 200.0F);
     }
   },
@@ -29,7 +28,7 @@ public enum Hero implements TextureReference {
     HeroPath.TestHero2A, TowerEnhancement.TestHero2A,
     HeroPath.TestHero2B, TowerEnhancement.TestHero2B) {
     @Override
-    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
       // TODO: TestHero2
       return new TestHero1Actor(textureRegionManager, 200.0F, 200.0F);
     }
@@ -40,7 +39,7 @@ public enum Hero implements TextureReference {
     HeroPath.TestHero3A, TowerEnhancement.TestHero3A,
     HeroPath.TestHero3B, TowerEnhancement.TestHero3B) {
     @Override
-    public CombatActor newActor(TextureRegionManager textureRegionManager) {
+    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
       // TODO: TestHero3
       return new TestHero1Actor(textureRegionManager, 300.0F, 300.0F);
     }
@@ -133,5 +132,5 @@ public enum Hero implements TextureReference {
     return this.skill;
   }
 
-  public abstract CombatActor newActor(TextureRegionManager textureRegionManager);
+  public abstract TestHero1Actor newActor(TextureRegionManager textureRegionManager);
 }

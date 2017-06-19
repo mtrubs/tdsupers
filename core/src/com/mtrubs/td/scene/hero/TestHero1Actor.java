@@ -44,7 +44,7 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        ((LevelStage) TestHero1Actor.this.getStage()).setSelected(TestHero1Actor.this);
+        ((LevelStage) getStage()).setSelected(TestHero1Actor.this);
       }
     });
   }
@@ -62,6 +62,11 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
   @Override
   public void deselect() {
     this.selected = false;
+  }
+
+  @Override
+  public boolean isSelected() {
+    return this.selected;
   }
 
   private void moveTo(Vector2 from, float toX, float toY) {
