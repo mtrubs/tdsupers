@@ -3,18 +3,18 @@ package com.mtrubs.td.scene.hud;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.HeroManager;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
 import com.mtrubs.td.graphics.Hero;
-import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.graphics.TextureReference;
+import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
 
 import java.util.Locale;
@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * Stage to handle the heads up display (HUD).
  */
-public class HudStage extends Stage {
+public class HudGroup extends Group {
 
   private static final float PAD = 5.0F;
 
@@ -30,7 +30,6 @@ public class HudStage extends Stage {
   private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
 
-  private final TextureRegionActor waveCaller;
   private final WaveManager waveManager; // disposed elsewhere
   private final CurrencyManager currencyManager;
   private final HeroManager heroManager;
@@ -42,22 +41,26 @@ public class HudStage extends Stage {
   private Label healthLabel;
   private Label currencyLabel;
   private Label waveLabel;
+  private TextureRegionActor waveCaller;
 
-  public HudStage(float worldWidth, float worldHeight, TextureRegionManager textureRegionManager,
-                  int startHealth, CurrencyManager currencyManager, HeroManager heroManager, WaveManager waveManager) {
-    super(new ExtendViewport(worldWidth, worldHeight));
-
-    this.startHealth = startHealth;
+  public HudGroup(CurrencyManager currencyManager, HeroManager heroManager, WaveManager waveManager) {
     this.currencyManager = currencyManager;
     this.heroManager = heroManager;
     this.waveManager = waveManager;
+  }
 
-    addTopLeft(textureRegionManager);
-    addTopRight(textureRegionManager);
-    addBottomLeft(textureRegionManager);
-    addBottomRight(textureRegionManager);
+  public void init(float worldWidth, float worldHeight, int startHealth) {
+    setBounds(getX(), getY(), getStage().getWidth(), getStage().getHeight());
+    setTouchable(Touchable.childrenOnly);
 
-    TextureRegion waveCallerTexture = textureRegionManager.get(HeadsUpDisplay.WaveCaller);
+    this.startHealth = startHealth;
+
+    addTopLeft();
+    addTopRight();
+    addBottomLeft();
+    addBottomRight();
+
+    TextureRegion waveCallerTexture = getTextureRegion(HeadsUpDisplay.WaveCaller);
     this.waveCaller = new TextureRegionActor(
       determineCoordinate(this.waveManager.getNextStartX(), waveCallerTexture.getRegionWidth(), worldWidth),
       determineCoordinate(this.waveManager.getNextStartY(), waveCallerTexture.getRegionHeight(), worldHeight),
@@ -71,6 +74,10 @@ public class HudStage extends Stage {
       }
     });
     addActor(this.waveCaller);
+  }
+
+  private TextureRegion getTextureRegion(TextureReference type) {
+    return ((LevelStage) getStage()).getTextureRegion(type);
   }
 
   /**
@@ -92,7 +99,7 @@ public class HudStage extends Stage {
   private void startNextWave() {
     this.waveCaller.setTouchable(Touchable.disabled);
     this.waveCaller.setVisible(false);
-    this.waveManager.startWave();
+    this.waveManager.startWave((LevelStage) getStage());
     updateWaveLabel();
     this.timeToNextWave = this.waveManager.getNextWaveDelay();
     // TODO: display wave announcements
@@ -108,9 +115,9 @@ public class HudStage extends Stage {
       this.waveManager.getCurrentWave(), this.waveManager.getTotalWaves()));
   }
 
-  private void addTopLeft(TextureRegionManager textureRegionManager) {
+  private void addTopLeft() {
     // This is the top left HUD portion; handles player information
-    TextureRegion healthTexture = textureRegionManager.get(HeadsUpDisplay.Health);
+    TextureRegion healthTexture = getTextureRegion(HeadsUpDisplay.Health);
     TextureRegionActor health = new TextureRegionActor(
       PAD, // left of the world
       getHeight() - healthTexture.getRegionHeight() - PAD, // top of the world
@@ -128,7 +135,7 @@ public class HudStage extends Stage {
       this.healthLabel.getWidth(), this.healthLabel.getHeight());
     addActor(this.healthLabel);
 
-    TextureRegion currencyTexture = textureRegionManager.get(HeadsUpDisplay.Currency);
+    TextureRegion currencyTexture = getTextureRegion(HeadsUpDisplay.Currency);
     TextureRegionActor currency = new TextureRegionActor(
       this.healthLabel.getX() + this.healthLabel.getPrefWidth() + PAD, // offset from health label
       health.getY(), // same as health
@@ -142,7 +149,7 @@ public class HudStage extends Stage {
       this.currencyLabel.getWidth(), this.currencyLabel.getHeight());
     addActor(this.currencyLabel);
 
-    TextureRegion waveStatusTexture = textureRegionManager.get(HeadsUpDisplay.WaveStatus);
+    TextureRegion waveStatusTexture = getTextureRegion(HeadsUpDisplay.WaveStatus);
     TextureRegionActor waveStatus = new TextureRegionActor(
       health.getX(), // same as health
       health.getY() - health.getHeight() - PAD, // below health
@@ -158,18 +165,18 @@ public class HudStage extends Stage {
     addActor(this.waveLabel);
   }
 
-  private void addTopRight(TextureRegionManager textureRegionManager) {
+  private void addTopRight() {
     // This is the top right HUD portion; handles menu items
-    final TextureRegion fastForwardTextureOff = textureRegionManager.get(HeadsUpDisplay.FastForwardOff);
-    final TextureRegion fastForwardTextureOn = textureRegionManager.get(HeadsUpDisplay.FastForwardOn);
+    final TextureRegion fastForwardTextureOff = getTextureRegion(HeadsUpDisplay.FastForwardOff);
+    final TextureRegion fastForwardTextureOn = getTextureRegion(HeadsUpDisplay.FastForwardOn);
     final TextureRegionActor fastForward = new TextureRegionActor(
       getWidth() - fastForwardTextureOff.getRegionWidth() - PAD, // top of the world
       getHeight() - fastForwardTextureOff.getRegionHeight() - PAD, // right of the world
       fastForwardTextureOff);
     addActor(fastForward);
 
-    final TextureRegion pauseTextureOff = textureRegionManager.get(HeadsUpDisplay.PauseOff);
-    final TextureRegion pauseTextureOn = textureRegionManager.get(HeadsUpDisplay.PauseOn);
+    final TextureRegion pauseTextureOff = getTextureRegion(HeadsUpDisplay.PauseOff);
+    final TextureRegion pauseTextureOn = getTextureRegion(HeadsUpDisplay.PauseOn);
     final TextureRegionActor pause = new TextureRegionActor(
       fastForward.getX() - pauseTextureOff.getRegionWidth() - PAD, // left of fast forward
       fastForward.getY(), // same as fast forward
@@ -189,11 +196,11 @@ public class HudStage extends Stage {
       protected void handle() {
         if (pauseListener.isOn()) {
           // TODO: launch menu
-          HudStage.this.speedFactor = PAUSE_SPEED;
+          HudGroup.this.speedFactor = PAUSE_SPEED;
         } else if (fastForwardListener.isOn()) {
-          HudStage.this.speedFactor = FAST_SPEED;
+          HudGroup.this.speedFactor = FAST_SPEED;
         } else {
-          HudStage.this.speedFactor = NORMAL_SPEED;
+          HudGroup.this.speedFactor = NORMAL_SPEED;
         }
       }
     };
@@ -201,11 +208,11 @@ public class HudStage extends Stage {
     fastForwardListener.gameStateHandler = gameStateHandler;
   }
 
-  private void addBottomLeft(TextureRegionManager textureRegionManager) {
+  private void addBottomLeft() {
     // This is the bottom left HUD; handles hero info
     float x = 0.0F;
     for (Hero hero : this.heroManager.getActiveHeroes()) {
-      TextureRegion textureRegion = textureRegionManager.get(hero.getThumbnail());
+      TextureRegion textureRegion = getTextureRegion(hero.getThumbnail());
       TextureRegionActor actor = new TextureRegionActor(
         x + PAD, PAD, textureRegion);
       x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
@@ -223,11 +230,11 @@ public class HudStage extends Stage {
     }
   }
 
-  private void addBottomRight(TextureRegionManager textureRegionManager) {
+  private void addBottomRight() {
     // This is the bottom right HUD; handles skills
     float x = getWidth();
     for (Hero hero : this.heroManager.getActiveHeroes()) {
-      TextureRegion textureRegion = textureRegionManager.get(hero.getSkill());
+      TextureRegion textureRegion = getTextureRegion(hero.getSkill());
       TextureRegionActor actor = new TextureRegionActor(
         x - PAD - textureRegion.getRegionWidth(), PAD, textureRegion);
       x = actor.getX();

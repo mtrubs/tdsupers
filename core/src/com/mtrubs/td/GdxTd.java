@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.HeroManager;
 import com.mtrubs.td.config.TowerLevelConfig;
@@ -18,7 +17,6 @@ import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
-import com.mtrubs.td.scene.hud.HudStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +35,7 @@ public class GdxTd extends ApplicationAdapter {
   private static final FPSLogger FPS = new FPSLogger();
 
   private TextureRegionManager textureRegionManager;
-  private Stage levelStage;
-  private HudStage hudStage;
+  private LevelStage levelStage;
 
   @Override
   public void create() {
@@ -52,8 +49,6 @@ public class GdxTd extends ApplicationAdapter {
     heroes.add(Hero.TestHero3);
 
     HeroManager heroManager = new HeroManager(heroes);
-
-    int startHealth = 10;
 
     this.textureRegionManager = new ActiveTextureRegionManager();
 
@@ -76,10 +71,6 @@ public class GdxTd extends ApplicationAdapter {
     waves.add(new Wave(30.0F, this.textureRegionManager));
     com.mtrubs.td.config.WaveManager waveManager = new com.mtrubs.td.config.WaveManager(waves);
 
-    // TODO: I wonder if these should be one stage and hud is more of a group...
-    // the HUD for the level
-    this.hudStage = new HudStage(WORLD_WIDTH, WORLD_HEIGHT,
-      this.textureRegionManager, startHealth, currencyManager, heroManager, waveManager);
     // the current level
     this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
       LevelMap.TestLevel, heroManager, towers.toArray(new TowerLevelConfig[towers.size()]),
@@ -88,7 +79,6 @@ public class GdxTd extends ApplicationAdapter {
     // order here is important because once a stage 'handles' an event it stops
     InputMultiplexer multiplexer = new InputMultiplexer();
     // the HUD goes first so that it gets the first click
-    multiplexer.addProcessor(this.hudStage);
     multiplexer.addProcessor(this.levelStage);
 
     Gdx.input.setInputProcessor(multiplexer);
@@ -97,7 +87,6 @@ public class GdxTd extends ApplicationAdapter {
   @Override
   public void dispose() {
     this.levelStage.dispose();
-    this.hudStage.dispose();
     this.textureRegionManager.dispose();
     super.dispose();
   }
@@ -109,10 +98,8 @@ public class GdxTd extends ApplicationAdapter {
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    float delta = Gdx.graphics.getDeltaTime() * this.hudStage.getSpeedFactor();
+    float delta = Gdx.graphics.getDeltaTime() * this.levelStage.getSpeedFactor();
     this.levelStage.act(delta);
-    this.hudStage.act(delta);
     this.levelStage.draw();
-    this.hudStage.draw();
   }
 }

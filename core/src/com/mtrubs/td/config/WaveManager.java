@@ -1,6 +1,6 @@
 package com.mtrubs.td.config;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.MobActor;
 
 import java.util.ArrayList;
@@ -29,15 +29,10 @@ public class WaveManager {
    * List of active mobs.
    */
   private List<MobActor> mobs;
-  private Stage stage;
 
   public WaveManager(List<Wave> waves) {
     this.waves = waves;
     this.mobs = new ArrayList<MobActor>(); // TODO: right size?
-  }
-
-  public void setStage(Stage stage) {
-    this.stage = stage;
   }
 
   public void remove(MobActor actor) {
@@ -49,10 +44,10 @@ public class WaveManager {
     return this.mobs;
   }
 
-  public void startWave() {
+  public void startWave(LevelStage stage) {
     this.wave++;
     for (MobActor mob : this.waves.get(this.wave).getMobs()) {
-      this.stage.addActor(mob);
+      stage.addActor(mob);
       this.mobs.add(mob);
       mob.start();
     }

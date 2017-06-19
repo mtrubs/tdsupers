@@ -17,6 +17,7 @@ import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.hero.SelectableMover;
+import com.mtrubs.td.scene.hud.HudGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +46,8 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   private final WaveManager waveManager;
   private final CurrencyManager currencyManager;
 
+  private final HudGroup hud;
+
   /**
    * List of all tower plots.
    */
@@ -70,7 +73,6 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     this.shapeRenderer = new ShapeRenderer();
 
     this.waveManager = waveManager;
-    this.waveManager.setStage(this);
 
     this.currencyManager = currencyManager;
     this.currencyManager.setWatcher(this);
@@ -159,6 +161,16 @@ public class LevelStage extends Stage implements CurrencyWatcher {
         }
       }
     });
+
+    int startHealth = 10;
+    // the HUD for the level
+    this.hud = new HudGroup(currencyManager, heroes, waveManager);
+    addActor(this.hud);
+    this.hud.init(worldWidth, worldHeight, startHealth);
+  }
+
+  public float getSpeedFactor() {
+    return this.hud.getSpeedFactor();
   }
 
   public Collection<TowerGroup> getTowers() {
