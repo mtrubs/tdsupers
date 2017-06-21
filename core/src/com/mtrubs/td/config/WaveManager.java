@@ -22,13 +22,11 @@ public class WaveManager {
   };
 
   private final List<Wave> waves;
-
-  private int wave = -1;
-
   /**
    * List of active mobs.
    */
-  private List<MobActor> mobs;
+  private final List<MobActor> mobs;
+  private int wave = -1;
 
   public WaveManager(List<Wave> waves) {
     this.waves = waves;

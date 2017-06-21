@@ -23,11 +23,11 @@ public class Wave {
   /**
    * How much time, in seconds, until this wave would start.
    */
-  private float delay;
+  private final float delay;
   /**
    * The list of mobs associated with this wave.
    */
-  private List<MobActor> mobs;
+  private final List<MobActor> mobs;
 
   public Wave(float delay, TextureRegionManager textureRegionManager) {
     // TODO: path moves to be configurable
@@ -79,7 +79,7 @@ public class Wave {
 
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
 
-    // TODO: mobs move to be configurable; poolable
+    // TODO: mobs move to be configurable; pool-able
     this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 0.0F,
       textureRegionManager.get(Mob.TestMob)));
     this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 1.5F,

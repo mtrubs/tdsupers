@@ -1,6 +1,7 @@
 package com.mtrubs.td.scene;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.ProjectileType;
 import com.mtrubs.td.graphics.TowerUnit;
 
@@ -11,6 +12,7 @@ public class UnitActor extends CombatActor {
 
   private TowerUnit type;
   private float deathCoolDown;
+  private Vector2 home;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
@@ -46,11 +48,13 @@ public class UnitActor extends CombatActor {
   }
 
   private void untarget() {
+    clearTarget();
     LevelStage stage = (LevelStage) getStage();
     if (stage != null) {
-      stage.deselect(this);
+      for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
+        mob.clearTarget(this);
+      }
     }
-    clearTarget();
   }
 
   @Override
@@ -63,7 +67,7 @@ public class UnitActor extends CombatActor {
   protected Targetable checkForTarget() {
     LevelStage stage = (LevelStage) getStage();
     // if able, towers will attack the first unit they can
-    for (MobActor mob : stage.getMobs()) {
+    for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
       if (isInRange(mob)) {
         return mob;
       }
@@ -81,6 +85,10 @@ public class UnitActor extends CombatActor {
       setHitPoints(type.getHealth());
     }
     this.type = type;
+  }
+
+  public void setHome(Vector2 home) {
+    this.home = home;
   }
 
   @Override

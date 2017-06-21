@@ -74,7 +74,20 @@ public class MobActor extends CombatActor {
 
   @Override
   protected void handleDefeat() {
-    ((LevelStage) getStage()).remove(this);
+    // on defeat we:
+    LevelStage stage = (LevelStage) getStage();
+    // clear our target
+    clearTarget();
+    // add currency for this mob's value
+    stage.getCurrencyManager().add(getWorth());
+    // remove this mob from the wave manager
+    stage.getWaveManager().remove(this);
+    // remove this mob from any unit's target
+    for (UnitActor unit : stage.getUnitManager().getUnits()) {
+      unit.clearTarget(this);
+    }
+    // remove this mob from the stage
+    remove();
   }
 
   private void stopMoving() {
@@ -94,12 +107,9 @@ public class MobActor extends CombatActor {
     LevelStage stage = (LevelStage) getStage();
     // mobs will only attack the unit if it is attacking them
     // TODO: change this for different types of mobs
-    for (TowerGroup tower : stage.getTowers()) {
-      if (tower.getTarget() == this) {
-        UnitActor unit = tower.getUnit();
-        if (isInRange(unit)) {
-          return unit;
-        }
+    for (UnitActor unit : stage.getUnitManager().getUnits()) {
+      if (unit.isTargeting(this) && isInRange(unit)) {
+        return unit;
       }
     }
     return super.checkForTarget();

@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mtrubs.td.graphics.*;
+import com.mtrubs.td.graphics.TextureReference;
+import com.mtrubs.td.graphics.Tower;
+import com.mtrubs.td.graphics.TowerMenuItem;
+import com.mtrubs.td.graphics.TowerPath;
 import com.mtrubs.td.scene.hud.TowerMenuActor;
 
 import java.util.*;
@@ -28,17 +31,19 @@ public class TowerGroup extends Group {
    */
   private final Group menu;
   /**
+   * The units associated with this tower.
+   */
+  private final UnitGroup units;
+  /**
    * The level of this current tower.
    */
   private TowerState state;
-
-  // TODO: make up to 3
-  private UnitActor unit;
 
   public TowerGroup() {
     this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
     this.confirmClicks = new ArrayList<ConfirmClickListener>();
     this.menu = new Group();
+    this.units = new UnitGroup();
   }
 
   /**
@@ -59,19 +64,14 @@ public class TowerGroup extends Group {
       getTextureRegion(startingTower));
     addActor(tower);
 
-    if (startingTower.hasUnit()) {
-      this.unit = new UnitActor(unitPositionX, unitPositionY, startingTower.getUnit(),
-        getTextureRegion(startingTower.getUnit()));
-    } else {
-      this.unit = new UnitActor(unitPositionX, unitPositionY, null, null);
-    }
-    addActor(this.unit);
+    addActor(this.units);
+    this.units.setRally(unitPositionX, unitPositionY);
+    this.units.setState(startingTower);
 
     // all the menu items
     final TextureRegionActor ring = addMenuRing(tower);
     final TowerMenuActor sell = addMenuItem(ring, 240.0F, TowerMenuItem.Sell);
-    // TODO: set rally
-    //final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally);
+    final TowerMenuActor setRally = addMenuItem(ring, 300.0F, TowerMenuItem.SetRally);
     final TowerMenuActor upgrade = addMenuItem(ring, 30.0F, TowerMenuItem.Upgrade);
     final TowerMenuActor enhanceHero = addMenuItem(ring, 90.0F, TowerMenuItem.EnhanceHero);
     final TowerMenuActor enhancePath = addMenuItem(ring, 150.0F, TowerMenuItem.EnhancePath);
@@ -128,7 +128,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(0);
-          updateCurrentState(tower, TowerGroup.this.unit);
+          updateCurrentState(tower);
           super.handleClick(event, x, y);
         }
       });
@@ -155,7 +155,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(1);
-          updateCurrentState(tower, TowerGroup.this.unit);
+          updateCurrentState(tower);
           super.handleClick(event, x, y);
         }
       });
@@ -182,7 +182,7 @@ public class TowerGroup extends Group {
         @Override
         public void handleClick(InputEvent event, float x, float y) {
           TowerGroup.this.state.upgrade(2);
-          updateCurrentState(tower, TowerGroup.this.unit);
+          updateCurrentState(tower);
           super.handleClick(event, x, y);
         }
       });
@@ -208,7 +208,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade(TowerPath.A);
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
     });
@@ -233,7 +233,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade(TowerPath.B);
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
     });
@@ -258,7 +258,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.upgrade();
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
     });
@@ -283,7 +283,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.enhanceHero();
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
     });
@@ -308,7 +308,7 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.enhancePath();
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
     });
@@ -333,9 +333,16 @@ public class TowerGroup extends Group {
       @Override
       public void handleClick(InputEvent event, float x, float y) {
         TowerGroup.this.state.reset(isActive());
-        updateCurrentState(tower, TowerGroup.this.unit);
+        updateCurrentState(tower);
         super.handleClick(event, x, y);
       }
+    });
+
+    // if set rally is clicked, we want to update the spawn point of the tower
+    setRally.addListener(new ClickListener() {
+
+      // TODO link into stage to have next click update the rally
+      // see how the HeroActor works for movements
     });
   }
 
@@ -347,13 +354,11 @@ public class TowerGroup extends Group {
    * Updates the state of this tower group.
    *
    * @param towerActor the tower actor.
-   * @param unitActor  the unit actor.
    */
-  private void updateCurrentState(TextureRegionActor towerActor, UnitActor unitActor) {
+  private void updateCurrentState(TextureRegionActor towerActor) {
     Tower tower = this.state.getTower();
-    TowerUnit unit = tower.getUnit();
     updateTower(tower, towerActor);
-    updateUnit(unit, unitActor);
+    this.units.setState(tower);
   }
 
   /**
@@ -365,17 +370,6 @@ public class TowerGroup extends Group {
   private void updateTower(Tower tower, TextureRegionActor actor) {
     actor.setTextureRegion(getTextureRegion(tower));
     updateMenuState();
-  }
-
-  /**
-   * Updates the given unit actor to the current state of this group.
-   *
-   * @param unit  the unit representation for this group.
-   * @param actor the unit actor to upgrade.
-   */
-  private void updateUnit(TowerUnit unit, UnitActor actor) {
-    actor.setTextureRegion(getTextureRegion(unit));
-    actor.setType(unit);
   }
 
   /**
@@ -414,18 +408,6 @@ public class TowerGroup extends Group {
    */
   private void setMenuVisibility(boolean visible) {
     this.menu.setVisible(visible);
-  }
-
-  public void clearTarget() {
-    this.unit.clearTarget();
-  }
-
-  public Targetable getTarget() {
-    return this.unit.getTarget();
-  }
-
-  public UnitActor getUnit() {
-    return this.unit;
   }
 
   private TextureRegionActor addMenuRing(TextureRegionActor tower) {

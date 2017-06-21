@@ -45,13 +45,14 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   private final WaveManager waveManager;
   private final CurrencyManager currencyManager;
   private final HeroManager heroManager;
+  private final UnitManager unitManager;
 
   private final HudGroup hud;
 
   /**
    * List of all tower plots.
    */
-  private Collection<TowerGroup> towers;
+  private final Collection<TowerGroup> towers;
 
   private SelectableMover selectable;
 
@@ -68,6 +69,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     this.tweenManager = new TweenManager();
     this.shapeRenderer = new ShapeRenderer();
     this.heroManager = heroManager;
+    this.unitManager = new UnitManager();
 
     this.waveManager = waveManager;
 
@@ -171,36 +173,6 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     return this.hud.getSpeedFactor();
   }
 
-  public Collection<TowerGroup> getTowers() {
-    return this.towers;
-  }
-
-  public Collection<MobActor> getMobs() {
-    return this.waveManager.getActiveMobs();
-  }
-
-  public void deselect(UnitActor actor) {
-    for (MobActor mob : getMobs()) {
-      if (mob.getTarget() == actor) {
-        mob.clearTarget();
-      }
-    }
-  }
-
-  public void deselect(MobActor actor) {
-    for (TowerGroup tower : this.towers) {
-      if (tower.getTarget() == actor) {
-        tower.clearTarget();
-      }
-    }
-  }
-
-  public void remove(MobActor actor) {
-    deselect(actor);
-    this.currencyManager.add(actor.getWorth());
-    this.waveManager.remove(actor);
-  }
-
   @Override
   public void act(float delta) {
     super.act(delta);
@@ -301,5 +273,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
 
   public CurrencyManager getCurrencyManager() {
     return this.currencyManager;
+  }
+
+  public UnitManager getUnitManager() {
+    return this.unitManager;
   }
 }

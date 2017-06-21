@@ -24,12 +24,18 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
     super(positionX, positionY, textureRegion);
   }
 
-  public void clearTarget() {
+  public void clearTarget(Targetable targetable) {
+    if (isTargeting(targetable)) {
+      clearTarget();
+    }
+  }
+
+  protected void clearTarget() {
     this.target = null;
   }
 
-  public Targetable getTarget() {
-    return this.target;
+  public boolean isTargeting(Targetable targetable) {
+    return this.target == targetable;
   }
 
   @Override
@@ -60,9 +66,11 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
 
   @Override
   public void damage(int amount) {
-    this.hitPoints -= amount;
-    if (this.hitPoints <= 0) {
-      handleDefeat();
+    if (this.hitPoints > 0) {
+      this.hitPoints -= amount;
+      if (this.hitPoints <= 0) {
+        handleDefeat();
+      }
     }
   }
 

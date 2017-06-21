@@ -73,7 +73,7 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
     // adjust to be the center
     Vector2 to = new Vector2(toX - getWidth() / 2.0F, toY - getHeight() / 2.0F);
 
-    // stop other timelines associated with this
+    // stop other time-lines associated with this
     getTweenManager().killTarget(this);
     // move to the position
     Timeline timeline = Timeline.createSequence().delay(0.0F);
@@ -137,7 +137,7 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
       shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
       shapeRenderer.setColor(0.0F, 1.0F, 0.0F, 0.75F);
       shapeRenderer.ellipse(getX() - 3.0F, getY() - 3.0F,
-        getWidth() + 3.0F, 15.0F);
+        getWidth() + 3.0F, 15.0F); // TODO: factor of height?
       shapeRenderer.end();
 
       batch.begin();

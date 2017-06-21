@@ -14,7 +14,6 @@ public enum TowerEnhancement implements TextureReference {
   TestHero3A("images/towers/TestHero3/menu/enhanceA.png", 155),
   TestHero3B("images/towers/TestHero3/menu/enhanceB.png", 156);
 
-  private static final TowerEnhancement[] NONE = {};
   private final String texturePath;
   private final String key;
   private final int cost;
@@ -23,10 +22,6 @@ public enum TowerEnhancement implements TextureReference {
     this.texturePath = texturePath;
     this.cost = cost;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
-  }
-
-  public static TowerEnhancement[] noEnhancements() {
-    return NONE;
   }
 
   @Override

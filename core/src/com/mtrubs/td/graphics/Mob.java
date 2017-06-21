@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum Mob implements TextureReference {
 
-  TestMob("images/mobs/TestMob.png", 20, 50.0F, 50.0F, 8.0F, 7, 10, ProjectileType.RedBullet);
+  TestMob("images/mobs/TestMob.png", 20, 50.0F, 50.0F, 8.0F, 20, 10, ProjectileType.RedBullet);
 
   private final String texturePath;
   private final String key;
