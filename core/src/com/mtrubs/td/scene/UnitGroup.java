@@ -14,6 +14,9 @@ import com.mtrubs.td.scene.hero.SelectableMover;
 
 public class UnitGroup extends Group implements SelectableMover {
 
+
+  private static final float RADIUS = 30.0F;
+  private static final double OFFSET = 10.0F;
   private static final int MAX = 3; // TODO: sizing
 
   /**
@@ -107,9 +110,15 @@ public class UnitGroup extends Group implements SelectableMover {
     this.state = state;
   }
 
-  private Vector2 determinePosition(int count, int total) {
-    return new Vector2(this.x + ((float) count / (float) total * 50.0F),
-      this.y + ((float) count / (float) total * 50.0F));
+  private Vector2 determinePosition(double count, double total) {
+    if (total == 1) {
+      return new Vector2(this.x, this.y);
+    } else {
+      // based on a circle around x,y we spread the units out
+      return new Vector2(
+        this.x + RADIUS * (float) Math.cos(2.0D * Math.PI * count / total - OFFSET),
+        this.y + RADIUS * (float) Math.sin(2.0D * Math.PI * count / total - OFFSET));
+    }
   }
 
   private TextureRegion getTextureRegion(TowerUnit type) {
