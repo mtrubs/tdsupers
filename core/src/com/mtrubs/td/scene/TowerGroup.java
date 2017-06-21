@@ -346,8 +346,12 @@ public class TowerGroup extends Group {
     // if set rally is clicked, we want to update the spawn point of the tower
     setRally.addListener(new ClickListener() {
 
-      // TODO link into stage to have next click update the rally
-      // see how the HeroActor works for movements
+      public void clicked(InputEvent event, float x, float y) {
+        super.clicked(event, x, y);
+        deselect();
+        event.setRelatedActor(setRally);
+        ((LevelStage) getStage()).setSelected(TowerGroup.this.units);
+      }
     });
   }
 

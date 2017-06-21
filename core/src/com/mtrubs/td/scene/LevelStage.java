@@ -149,10 +149,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
           }
         }
         hit = hit(x, y, true);
-        if (LevelStage.this.selectable != null) {
-          // get related actor is a slight hack on accounts of the actor might disappear on click
-          // TODO: or is instance of MOB or UNIT... as there is too much crowd to not ignore them
-          if (hit == levelMapActor && event.getRelatedActor() == null) {
+        // get related actor is a slight hack to handle the actor disappearing on click
+        if (LevelStage.this.selectable != null && event.getRelatedActor() == null) {
+          if (hit == levelMapActor) {
             moveSelected(event);
           } else if (hit != LevelStage.this.selectable &&
             hit.getParent() != LevelStage.this.hud) {
