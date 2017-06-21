@@ -68,8 +68,9 @@ public class UnitGroup extends Group {
       } else {
         // otherwise we create them
         for (int count = 0; count < MAX; count++) {
+          TowerGroup parent = (TowerGroup) getParent();
           Vector2 position = determinePosition(count, MAX);
-          UnitActor unit = new UnitActor(position.x, position.y, type, getTextureRegion(type));
+          UnitActor unit = new UnitActor(parent.getCenterX(), parent.getCenterY(), type, getTextureRegion(type));
           addActor(unit);
           ((LevelStage) getStage()).getUnitManager().register(unit);
           unit.setHome(position);

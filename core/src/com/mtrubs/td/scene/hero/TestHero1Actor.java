@@ -18,11 +18,10 @@ import com.mtrubs.td.scene.TextureRegionActorAccessor;
 
 public class TestHero1Actor extends CombatActor implements SelectableMover {
 
-  private float speed = 25.0F;
   private boolean selected;
 
   public TestHero1Actor(TextureRegionManager textureRegionManager, float startX, float startY) {
-    super(startX, startY, textureRegionManager.get(HeroUnit.TestHero1));
+    super(startX, startY, textureRegionManager.get(HeroUnit.TestHero1), 25.0F);
 
     addListener(new ClickListener() {
 
@@ -81,11 +80,6 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
     timeline.push(Tween.to(this,
       TextureRegionActorAccessor.POSITION_XY, duration).target(to.x, to.y).ease(TweenEquations.easeNone));
     timeline.start(getTweenManager());
-  }
-
-  // TODO: this logic (and thus for MobActors too) doesnt seem quite right
-  private float getDuration(Vector2 a, Vector2 b) {
-    return a.dst(b) / this.speed;
   }
 
   private TweenManager getTweenManager() {

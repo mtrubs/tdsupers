@@ -12,6 +12,7 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
   private Targetable target;
   private float attackCoolDown;
   private int hitPoints;
+  private float speed;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
@@ -20,8 +21,9 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
    * @param positionY     the y coordinate of this actor.
    * @param textureRegion the texture of this actor.
    */
-  public CombatActor(float positionX, float positionY, TextureRegion textureRegion) {
+  public CombatActor(float positionX, float positionY, TextureRegion textureRegion, float speed) {
     super(positionX, positionY, textureRegion);
+    this.speed = speed;
   }
 
   public void clearTarget(Targetable targetable) {
@@ -32,6 +34,10 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
 
   protected void clearTarget() {
     this.target = null;
+  }
+
+  public boolean hasTarget() {
+    return this.target != null;
   }
 
   public boolean isTargeting(Targetable targetable) {
@@ -127,4 +133,9 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
   protected abstract boolean canAttack();
 
   protected abstract void handleDefeat();
+
+  // TODO: this logic (and thus for MobActors too) doesnt seem quite right
+  protected float getDuration(Vector2 a, Vector2 b) {
+    return a.dst(b) / this.speed;
+  }
 }

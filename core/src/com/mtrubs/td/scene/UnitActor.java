@@ -1,5 +1,9 @@
 package com.mtrubs.td.scene;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.ProjectileType;
@@ -10,8 +14,16 @@ import com.mtrubs.td.graphics.TowerUnit;
  */
 public class UnitActor extends CombatActor {
 
+  /**
+   * Where this unit will spawn from.
+   */
+  private final Vector2 spawn;
+
   private TowerUnit type;
   private float deathCoolDown;
+  /**
+   * The rally point of this unit.
+   */
   private Vector2 home;
 
   /**
@@ -22,14 +34,30 @@ public class UnitActor extends CombatActor {
    * @param textureRegion the texture of this actor.
    */
   public UnitActor(float positionX, float positionY, TowerUnit type, TextureRegion textureRegion) {
-    super(positionX, positionY, textureRegion);
+    super(positionX, positionY, textureRegion, 25.0F);
+    this.spawn = new Vector2(positionX, positionY);
     setType(type);
   }
 
   @Override
   public void act(float delta) {
     respawn(delta);
+    goHome();
     super.act(delta);
+  }
+
+  private void goHome() {
+    TweenManager tweenManager = ((LevelStage) getStage()).getTweenManager();
+    if (isVisible() && !hasTarget()) {
+      Timeline timeline = Timeline.createSequence();
+
+      timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY,
+        getDuration(new Vector2(getX(), getY()), this.home)).target(
+        this.home.x, this.home.y).ease(TweenEquations.easeNone));
+      timeline.start(tweenManager);
+    } else {
+      tweenManager.killTarget(this);
+    }
   }
 
   private void respawn(float delta) {
@@ -80,8 +108,15 @@ public class UnitActor extends CombatActor {
     return this.type.getRange();
   }
 
+  private void despawn() {
+    setX(this.spawn.x);
+    setY(this.spawn.y);
+  }
+
   public void setType(TowerUnit type) {
-    if (type != null) {
+    if (type == null) {
+      despawn();
+    } else {
       setHitPoints(type.getHealth());
     }
     this.type = type;
@@ -112,6 +147,7 @@ public class UnitActor extends CombatActor {
 
   @Override
   protected void handleDefeat() {
+    despawn();
     setVisible(false);
     this.deathCoolDown = this.type.getDeathCoolDown();
   }

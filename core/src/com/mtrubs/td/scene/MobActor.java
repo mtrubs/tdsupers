@@ -15,7 +15,6 @@ import com.mtrubs.td.graphics.ProjectileType;
 public class MobActor extends CombatActor {
 
   private final Vector2[] path;
-  private final float speed;
   private final float startDelay;
   private final Mob type;
 
@@ -29,11 +28,10 @@ public class MobActor extends CombatActor {
    */
   public MobActor(Vector2[] path, Mob type, float scale, float speed, float startDelay,
                   TextureRegion textureRegion) {
-    super(path[0].x, path[0].y, textureRegion);
+    super(path[0].x, path[0].y, textureRegion, speed);
     setHitPoints((int) ((float) type.getHealth() * scale));
 
     this.path = path;
-    this.speed = speed;
     this.startDelay = startDelay;
     this.type = type;
   }
@@ -144,9 +142,5 @@ public class MobActor extends CombatActor {
 
   public int getWorth() {
     return this.type.getWorth();
-  }
-
-  private float getDuration(Vector2 a, Vector2 b) {
-    return a.dst(b) / this.speed;
   }
 }

@@ -39,6 +39,9 @@ public class TowerGroup extends Group {
    */
   private TowerState state;
 
+  private float centerX;
+  private float centerY;
+
   public TowerGroup() {
     this.menuItems = new EnumMap<TowerMenuItem, TextureRegionActor>(TowerMenuItem.class);
     this.confirmClicks = new ArrayList<ConfirmClickListener>();
@@ -63,6 +66,8 @@ public class TowerGroup extends Group {
     final TextureRegionActor tower = new TextureRegionActor(positionX, positionY,
       getTextureRegion(startingTower));
     addActor(tower);
+    this.centerX = positionX + tower.getWidth() / 2.0F;
+    this.centerY = positionY + tower.getHeight() / 2.0F;
 
     addActor(this.units);
     this.units.setRally(unitPositionX, unitPositionY);
@@ -344,6 +349,14 @@ public class TowerGroup extends Group {
       // TODO link into stage to have next click update the rally
       // see how the HeroActor works for movements
     });
+  }
+
+  public float getCenterX() {
+    return this.centerX;
+  }
+
+  public float getCenterY() {
+    return this.centerY;
   }
 
   private boolean isActive() {
