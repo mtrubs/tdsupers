@@ -74,6 +74,7 @@ public class UnitGroup extends Group implements SelectableMover {
             UnitActor unit = (UnitActor) actor;
             unit.setType(type);
             unit.setTextureRegion(getTextureRegion(type));
+            unit.setVisible(false); // causes a "spawn"
           }
         }
         actors.end();
@@ -83,9 +84,8 @@ public class UnitGroup extends Group implements SelectableMover {
           TowerGroup parent = (TowerGroup) getParent();
           Vector2 position = determinePosition(index, MAX);
           UnitActor unit = new UnitActor(parent.getCenterX(), parent.getCenterY(), type, getTextureRegion(type));
-          addActor(unit);
-          ((LevelStage) getStage()).getUnitManager().register(unit);
           unit.setHome(position);
+          addActor(unit);
 
           unit.addListener(new ClickListener() {
 

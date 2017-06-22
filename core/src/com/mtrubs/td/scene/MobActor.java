@@ -81,7 +81,7 @@ public class MobActor extends CombatActor {
     // remove this mob from the wave manager
     stage.getWaveManager().remove(this);
     // remove this mob from any unit's target
-    for (UnitActor unit : stage.getUnitManager().getUnits()) {
+    for (PcActor unit : stage.getUnitManager().getUnits()) {
       unit.clearTarget(this);
     }
     // remove this mob from the stage
@@ -105,7 +105,7 @@ public class MobActor extends CombatActor {
     LevelStage stage = (LevelStage) getStage();
     // mobs will only attack the unit if it is attacking them
     // TODO: change this for different types of mobs
-    for (UnitActor unit : stage.getUnitManager().getUnits()) {
+    for (PcActor unit : stage.getUnitManager().getUnits()) {
       if (unit.isDamageable() && unit.isTargeting(this) && isInRange(unit)) {
         return unit;
       }

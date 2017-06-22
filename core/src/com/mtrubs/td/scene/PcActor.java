@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class PcActor extends CombatActor {
 
+  private float deathCoolDown;
+
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
    *
@@ -14,5 +16,78 @@ public abstract class PcActor extends CombatActor {
    */
   public PcActor(float positionX, float positionY, TextureRegion textureRegion, float speed) {
     super(positionX, positionY, textureRegion, speed);
+    // this makes the units spawn at the start
+    setVisible(false);
+    this.deathCoolDown = 0.01F;
+  }
+
+  @Override
+  public void act(float delta) {
+    respawn(delta);
+    super.act(delta);
+  }
+
+  @Override
+  public void setVisible(boolean visible) {
+    super.setVisible(visible);
+    untarget();
+  }
+
+  private void untarget() {
+    clearTarget();
+    LevelStage stage = (LevelStage) getStage();
+    if (stage != null) {
+      for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
+        mob.clearTarget(this);
+      }
+    }
+  }
+
+  @Override
+  protected void handleTarget(float delta) {
+    super.handleTarget(delta);
+    attackTarget(delta);
+  }
+
+  protected void respawn(float delta) {
+    if (hasUnit() && !isVisible()) {
+      if (this.deathCoolDown > 0.0F) {
+        this.deathCoolDown -= delta;
+        if (this.deathCoolDown <= 0.0F) {
+          setVisible(true);
+          ((LevelStage) getStage()).getUnitManager().register(this);
+        }
+      }
+    }
+  }
+
+  protected abstract boolean hasUnit();
+
+  protected abstract float getDeathCoolDown();
+
+  @Override
+  protected void handleDefeat() {
+    despawn();
+    setVisible(false);
+    this.deathCoolDown = getDeathCoolDown();
+  }
+
+  protected void despawn() {
+    LevelStage stage = ((LevelStage) getStage());
+    // if the stage is null we could not have registered it yet
+    if (stage != null) {
+      stage.getUnitManager().unregister(this);
+    }
+  }
+
+  protected Targetable checkForTarget() {
+    LevelStage stage = (LevelStage) getStage();
+    // if able, towers will attack the first unit they can
+    for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
+      if (mob.isDamageable() && isInRange(mob)) {
+        return mob;
+      }
+    }
+    return super.checkForTarget();
   }
 }

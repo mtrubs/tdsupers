@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.graphics.HeroUnit;
 import com.mtrubs.td.graphics.ProjectileType;
-import com.mtrubs.td.scene.*;
+import com.mtrubs.td.scene.LevelStage;
+import com.mtrubs.td.scene.PcActor;
+import com.mtrubs.td.scene.TextureRegionActorAccessor;
 
 public class HeroActor extends PcActor implements SelectableMover {
 
@@ -113,28 +115,6 @@ public class HeroActor extends PcActor implements SelectableMover {
     return true;
   }
 
-  protected Targetable checkForTarget() {
-    LevelStage stage = (LevelStage) getStage();
-    // if able, towers will attack the first unit they can
-    for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-      if (mob.isDamageable() && isInRange(mob)) {
-        return mob;
-      }
-    }
-    return super.checkForTarget();
-  }
-
-  @Override
-  protected void handleTarget(float delta) {
-    super.handleTarget(delta);
-    attackTarget(delta);
-  }
-
-  @Override
-  protected void handleDefeat() {
-    // TODO
-  }
-
   @Override
   public void draw(Batch batch, float alpha) {
     // render this first if necessary so it ends up behind the image, gives illusion of depth.
@@ -157,5 +137,14 @@ public class HeroActor extends PcActor implements SelectableMover {
     }
 
     super.draw(batch, alpha);
+  }
+
+  protected boolean hasUnit() {
+    return true;
+  }
+
+  @Override
+  protected float getDeathCoolDown() {
+    return this.type.getDeathCoolDown();
   }
 }

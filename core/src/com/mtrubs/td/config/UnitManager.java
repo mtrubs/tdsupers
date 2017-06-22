@@ -1,27 +1,27 @@
 package com.mtrubs.td.config;
 
-import com.mtrubs.td.scene.UnitActor;
+import com.mtrubs.td.scene.PcActor;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class UnitManager {
 
-  private final Collection<UnitActor> units;
+  private final Collection<PcActor> units;
 
   public UnitManager() {
-    this.units = new HashSet<UnitActor>();
+    this.units = new HashSet<PcActor>();
   }
 
-  public void register(UnitActor actor) {
+  public void register(PcActor actor) {
     this.units.add(actor);
   }
 
-  public void unregister(UnitActor actor) {
+  public void unregister(PcActor actor) {
     this.units.remove(actor);
   }
 
-  public Collection<UnitActor> getUnits() {
+  public Collection<PcActor> getUnits() {
     return this.units;
   }
 }

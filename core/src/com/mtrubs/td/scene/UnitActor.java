@@ -20,7 +20,6 @@ public class UnitActor extends PcActor {
   private final Vector2 spawn;
 
   private TowerUnit type;
-  private float deathCoolDown;
   /**
    * The rally point of this unit.
    */
@@ -41,9 +40,8 @@ public class UnitActor extends PcActor {
 
   @Override
   public void act(float delta) {
-    respawn(delta);
-    goHome();
     super.act(delta);
+    goHome();
   }
 
   private void goHome() {
@@ -60,63 +58,13 @@ public class UnitActor extends PcActor {
     }
   }
 
-  private void respawn(float delta) {
-    if (hasUnit() && !isVisible()) {
-      if (this.deathCoolDown > 0.0F) {
-        this.deathCoolDown -= delta;
-        if (this.deathCoolDown <= 0.0F) {
-          setVisible(true);
-          ((LevelStage) getStage()).getUnitManager().register(this);
-        }
-      }
-    }
-  }
-
-  @Override
-  public void setVisible(boolean visible) {
-    super.setVisible(visible);
-    untarget();
-  }
-
-  private void untarget() {
-    clearTarget();
-    LevelStage stage = (LevelStage) getStage();
-    if (stage != null) {
-      for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-        mob.clearTarget(this);
-      }
-    }
-  }
-
-  @Override
-  protected void handleTarget(float delta) {
-    super.handleTarget(delta);
-    attackTarget(delta);
-  }
-
-  @Override
-  protected Targetable checkForTarget() {
-    LevelStage stage = (LevelStage) getStage();
-    // if able, towers will attack the first unit they can
-    for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-      if (mob.isDamageable() && isInRange(mob)) {
-        return mob;
-      }
-    }
-    return super.checkForTarget();
-  }
-
   @Override
   protected float getRange() {
     return this.type.getRange();
   }
 
-  private void despawn() {
-    LevelStage stage = ((LevelStage) getStage());
-    // if the stage is null we could not have registered it yet
-    if (stage != null) {
-      stage.getUnitManager().unregister(this);
-    }
+  protected void despawn() {
+    super.despawn();
     setX(this.spawn.x);
     setY(this.spawn.y);
   }
@@ -144,20 +92,18 @@ public class UnitActor extends PcActor {
     return this.type.getProjectileType();
   }
 
-  private boolean hasUnit() {
+  protected boolean hasUnit() {
     return this.type != null;
+  }
+
+  @Override
+  protected float getDeathCoolDown() {
+    return this.type.getDeathCoolDown();
   }
 
   @Override
   protected boolean canAttack() {
     return hasUnit() && getProjectileType() != null;
-  }
-
-  @Override
-  protected void handleDefeat() {
-    despawn();
-    setVisible(false);
-    this.deathCoolDown = this.type.getDeathCoolDown();
   }
 
   @Override
