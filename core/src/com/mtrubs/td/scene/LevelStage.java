@@ -110,7 +110,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
       TowerGroup towerGroup = new TowerGroup();
       addActor(towerGroup);
       towerGroup.init(tower.getX(), tower.getY(),
-        new TowerState(heroManager.getActiveHeroes(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
+        new TowerState(heroManager.getActiveTowers(), this.currencyManager), tower.getUnitX(), tower.getUnitY());
       this.towers.add(towerGroup);
     }
 

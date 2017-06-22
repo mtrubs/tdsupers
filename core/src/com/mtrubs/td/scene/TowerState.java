@@ -59,7 +59,7 @@ public class TowerState {
   /**
    * List of active heroes for this instance.
    */
-  private final List<Hero> activeHeroes;
+  private final List<HeroTower> activeTowers;
   /**
    * Current level of this tower.
    */
@@ -75,7 +75,7 @@ public class TowerState {
   /**
    * The chosen hero of this tower.
    */
-  private Hero hero;
+  private HeroTower tower;
   /**
    * The upgrade path of this tower.
    */
@@ -85,38 +85,38 @@ public class TowerState {
    */
   private int costs;
 
-  // TODO: allow setting hero, path, level
-  public TowerState(@Nonnull List<Hero> activeHeroes, @Nonnull CurrencyManager currencyManager) {
+  // TODO: allow setting tower, path, level
+  public TowerState(@Nonnull List<HeroTower> activeTowers, @Nonnull CurrencyManager currencyManager) {
     this.currencyManager = currencyManager;
-    this.activeHeroes = activeHeroes;
+    this.activeTowers = activeTowers;
   }
 
-  private static Tower getTower(Hero hero, TowerPath path, int level) {
+  private static Tower getTower(HeroTower hero, TowerPath path, int level) {
     return hero == null ? Tower.EmptyPlot : hero.getTower(level, path);
   }
 
   public int activeHeroCount() {
-    return this.activeHeroes.size();
+    return this.activeTowers.size();
   }
 
-  public int getUpgradeCost(int heroIndex) {
-    return getTower(this.activeHeroes.get(heroIndex), null, this.level + 1).getCost();
+  public int getUpgradeCost(int index) {
+    return getTower(this.activeTowers.get(index), null, this.level + 1).getCost();
   }
 
   public int getUpgradeCost(TowerPath path) {
-    return getTower(this.hero, path, this.level + 1).getCost();
+    return getTower(this.tower, path, this.level + 1).getCost();
   }
 
   public int getUpgradeCost() {
-    return getTower(this.hero, this.path, this.level + 1).getCost();
+    return getTower(this.tower, this.path, this.level + 1).getCost();
   }
 
   public int getEnhanceHeroCost() {
-    return this.hero.getEnhancement(null).getCost();
+    return this.tower.getEnhancement(null).getCost();
   }
 
   public int getEnhancePathCost() {
-    return this.hero.getEnhancement(this.path).getCost();
+    return this.tower.getEnhancement(this.path).getCost();
   }
 
   public void enhanceHero() {
@@ -141,8 +141,8 @@ public class TowerState {
     this.costs += costs;
   }
 
-  public void upgrade(int heroIndex) {
-    this.hero = this.activeHeroes.get(heroIndex);
+  public void upgrade(int index) {
+    this.tower = this.activeTowers.get(index);
     upgrade();
   }
 
@@ -152,7 +152,7 @@ public class TowerState {
   }
 
   public Tower getTower() {
-    return getTower(this.hero, this.path, this.level);
+    return getTower(this.tower, this.path, this.level);
   }
 
   public void reset(boolean active) {
@@ -162,26 +162,26 @@ public class TowerState {
     this.heroEnhanced = false;
     this.pathEnhanced = false;
     this.costs = 0;
-    this.hero = null;
+    this.tower = null;
     this.path = null;
   }
 
   public TextureReference getTextureReference(TextureReference item) {
     // TODO: more dynamic
     if (item == TowerMenuItem.Hero1) {
-      return this.activeHeroes.get(0);
+      return this.activeTowers.get(0);
     } else if (item == TowerMenuItem.Hero2) {
-      return this.activeHeroes.get(1);
+      return this.activeTowers.get(1);
     } else if (item == TowerMenuItem.Hero3) {
-      return this.activeHeroes.get(2);
+      return this.activeTowers.get(2);
     } else if (item == TowerMenuItem.EnhanceHero) {
-      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getEnhancement(null);
+      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getEnhancement(null);
     } else if (item == TowerMenuItem.EnhancePath) {
-      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getEnhancement(this.path);
+      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getEnhancement(this.path);
     } else if (item == TowerMenuItem.HeroA) {
-      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getPathA();
+      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getPathA();
     } else if (item == TowerMenuItem.HeroB) {
-      return this.hero == null ? TowerMenuItem.Confirm : this.hero.getPathB();
+      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getPathB();
     } else {
       return item;
     }

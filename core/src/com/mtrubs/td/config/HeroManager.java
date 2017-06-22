@@ -1,16 +1,17 @@
 package com.mtrubs.td.config;
 
 import com.mtrubs.td.graphics.Hero;
+import com.mtrubs.td.graphics.HeroTower;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.hero.TestHero1Actor;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 public class HeroManager {
-
 
   private final List<Hero> activeHeroes;
   private final Map<Hero, TestHero1Actor> actors;
@@ -22,6 +23,14 @@ public class HeroManager {
 
   public List<Hero> getActiveHeroes() {
     return this.activeHeroes;
+  }
+
+  public List<HeroTower> getActiveTowers() {
+    List<HeroTower> towers = new ArrayList<HeroTower>(this.activeHeroes.size());
+    for (Hero hero : this.activeHeroes) {
+      towers.add(hero.getHeroTower());
+    }
+    return towers;
   }
 
   public void createActors(LevelStage stage, TextureRegionManager textureRegionManager) {

@@ -49,14 +49,12 @@ public class UnitActor extends CombatActor {
   private void goHome() {
     TweenManager tweenManager = ((LevelStage) getStage()).getTweenManager();
     if (isVisible() && !hasTarget()) {
-      if (!tweenManager.containsTarget(this)) {
-        Timeline timeline = Timeline.createSequence();
+      Timeline timeline = Timeline.createSequence();
 
-        timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY,
-          getDuration(new Vector2(getX(), getY()), this.home)).target(
-          this.home.x, this.home.y).ease(TweenEquations.easeNone));
-        timeline.start(tweenManager);
-      }
+      timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY,
+        getDuration(new Vector2(getX(), getY()), this.home)).target(
+        this.home.x, this.home.y).ease(TweenEquations.easeNone));
+      timeline.start(tweenManager);
     } else {
       tweenManager.killTarget(this);
     }
