@@ -1,9 +1,8 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.mtrubs.util.NonNull;
+import com.mtrubs.util.Nullable;
 
 /**
  * This hero's tower options.
@@ -35,9 +34,9 @@ public enum HeroTower implements TextureReference {
   private final TowerEnhancement[] enhancementB;
 
   private HeroTower(String texturePath,
-                    @Nonnull Tower base, @Nonnull TowerEnhancement enhancementBase,
-                    @Nonnull HeroPath pathA, @Nonnull TowerEnhancement enhancementA,
-                    @Nonnull HeroPath pathB, @Nonnull TowerEnhancement enhancementB) {
+                    @NonNull Tower base, @NonNull TowerEnhancement enhancementBase,
+                    @NonNull HeroPath pathA, @NonNull TowerEnhancement enhancementA,
+                    @NonNull HeroPath pathB, @NonNull TowerEnhancement enhancementB) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
     this.base = base;
@@ -63,7 +62,7 @@ public enum HeroTower implements TextureReference {
     return this.key;
   }
 
-  @Nonnull
+  @NonNull
   public Tower getTower(int level, @Nullable TowerPath path) {
     // level 0 = empty plot
     // level 1 = pathless hero

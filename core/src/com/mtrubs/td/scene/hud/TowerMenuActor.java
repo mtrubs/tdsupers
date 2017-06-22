@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mtrubs.td.scene.TextureRegionActor;
-
-import javax.annotation.Nullable;
+import com.mtrubs.util.Nullable;
 
 public class TowerMenuActor extends TextureRegionActor {
 

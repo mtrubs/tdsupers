@@ -2,8 +2,8 @@ package com.mtrubs.td.scene;
 
 import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.graphics.*;
+import com.mtrubs.util.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class TowerState {
   private int costs;
 
   // TODO: allow setting tower, path, level
-  public TowerState(@Nonnull List<HeroTower> activeTowers, @Nonnull CurrencyManager currencyManager) {
+  public TowerState(@NonNull List<HeroTower> activeTowers, @NonNull CurrencyManager currencyManager) {
     this.currencyManager = currencyManager;
     this.activeTowers = activeTowers;
   }
@@ -146,7 +146,7 @@ public class TowerState {
     upgrade();
   }
 
-  public void upgrade(@Nonnull TowerPath path) {
+  public void upgrade(@NonNull TowerPath path) {
     this.path = path;
     upgrade();
   }

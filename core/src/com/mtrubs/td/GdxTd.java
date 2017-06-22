@@ -23,6 +23,9 @@ import java.util.List;
 
 public class GdxTd extends ApplicationAdapter {
 
+  // TODO: ZOOM should not effect the HUD.
+  // TODO: only drag to move on `1 touch` (as opposed to pinch zoom)
+
   /**
    * Width of the game world for scaling purposes on different screen sizes.
    */

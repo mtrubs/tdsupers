@@ -1,8 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-
-import javax.annotation.Nonnull;
+import com.mtrubs.util.NonNull;
 
 public enum HeroPath implements TextureReference {
 
@@ -44,7 +43,7 @@ public enum HeroPath implements TextureReference {
     return this.key;
   }
 
-  @Nonnull
+  @NonNull
   public Tower getTower(int level) {
     return this.path[level - 2];
   }
