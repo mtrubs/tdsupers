@@ -134,6 +134,10 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
 
   protected abstract void handleDefeat();
 
+  public boolean isDamageable() {
+    return this.isVisible();
+  }
+
   // TODO: this logic (and thus for MobActors too) doesnt seem quite right
   protected float getDuration(Vector2 a, Vector2 b) {
     return a.dst(b) / this.speed;

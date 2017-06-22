@@ -30,23 +30,25 @@ public class ProjectileActor extends TextureRegionActor {
   @Override
   public void act(float delta) {
     super.act(delta);
+    if (this.target.isDamageable()) {
+      // move towards the target
+      Vector2 start = getCenter();
+      Vector2 end = this.target.getCenter();
+      float speed = 35.0F;
 
-    // move towards the target
-    Vector2 start = getCenter();
-    Vector2 end = this.target.getCenter();
-    float speed = 35.0F;
+      float distance = start.dst(end);
+      float dx = (end.x - start.x) / distance;
+      float dy = (end.y - start.y) / distance;
+      setX(getX() + dx * speed * delta);
+      setY(getY() + dy * speed * delta);
 
-    float distance = start.dst(end);
-    float dx = (end.x - start.x) / distance;
-    float dy = (end.y - start.y) / distance;
-    setX(getX() + dx * speed * delta);
-    setY(getY() + dy * speed * delta);
-
-    // if we have moved to or past then we are done
-    Vector2 current = getCenter();
-    if (current.dst(start) >= distance) {
-      // TODO damage
-      this.target.damage(this.source.getDamage());
+      // if we have moved to or past then we are done
+      Vector2 current = getCenter();
+      if (current.dst(start) >= distance) {
+        this.target.damage(this.source.getDamage());
+        remove();
+      }
+    } else {
       remove();
     }
   }

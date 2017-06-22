@@ -9,4 +9,6 @@ public interface Targetable {
   void damage(int amount);
 
   int getDamage();
+
+  boolean isDamageable();
 }
