@@ -49,12 +49,14 @@ public class UnitActor extends CombatActor {
   private void goHome() {
     TweenManager tweenManager = ((LevelStage) getStage()).getTweenManager();
     if (isVisible() && !hasTarget()) {
-      Timeline timeline = Timeline.createSequence();
+      if (!tweenManager.containsTarget(this)) {
+        Timeline timeline = Timeline.createSequence();
 
-      timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY,
-        getDuration(new Vector2(getX(), getY()), this.home)).target(
-        this.home.x, this.home.y).ease(TweenEquations.easeNone));
-      timeline.start(tweenManager);
+        timeline.push(Tween.to(this, TextureRegionActorAccessor.POSITION_XY,
+          getDuration(new Vector2(getX(), getY()), this.home)).target(
+          this.home.x, this.home.y).ease(TweenEquations.easeNone));
+        timeline.start(tweenManager);
+      }
     } else {
       tweenManager.killTarget(this);
     }
@@ -62,9 +64,12 @@ public class UnitActor extends CombatActor {
 
   private void respawn(float delta) {
     if (hasUnit() && !isVisible()) {
-      this.deathCoolDown -= delta;
-      if (this.deathCoolDown <= 0.0F) {
-        setVisible(true);
+      if (this.deathCoolDown > 0.0F) {
+        this.deathCoolDown -= delta;
+        if (this.deathCoolDown <= 0.0F) {
+          setVisible(true);
+          ((LevelStage) getStage()).getUnitManager().register(this);
+        }
       }
     }
   }
@@ -109,6 +114,11 @@ public class UnitActor extends CombatActor {
   }
 
   private void despawn() {
+    LevelStage stage = ((LevelStage) getStage());
+    // if the stage is null we could not have registered it yet
+    if (stage != null) {
+      stage.getUnitManager().unregister(this);
+    }
     setX(this.spawn.x);
     setY(this.spawn.y);
   }

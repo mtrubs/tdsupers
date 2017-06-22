@@ -17,6 +17,10 @@ public class UnitManager {
     this.units.add(actor);
   }
 
+  public void unregister(UnitActor actor) {
+    this.units.remove(actor);
+  }
+
   public Collection<UnitActor> getUnits() {
     return this.units;
   }

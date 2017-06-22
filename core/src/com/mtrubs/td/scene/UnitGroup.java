@@ -45,14 +45,14 @@ public class UnitGroup extends Group implements SelectableMover {
     if (hasChildren()) {
       SnapshotArray<Actor> actors = getChildren();
       Actor[] units = actors.begin();
-      int count = 0;
+      int index = 0;
       for (Actor actor : units) {
         if (actor != null) {
           UnitActor unit = (UnitActor) actor;
           if (unit.isVisible()) {
-            Vector2 position = determinePosition(count, MAX);
+            Vector2 position = determinePosition(index, MAX);
             unit.setHome(position);
-            count++;
+            index++;
           }
         }
       }
@@ -79,9 +79,9 @@ public class UnitGroup extends Group implements SelectableMover {
         actors.end();
       } else {
         // otherwise we create them
-        for (int count = 0; count < MAX; count++) {
+        for (int index = 0; index < MAX; index++) {
           TowerGroup parent = (TowerGroup) getParent();
-          Vector2 position = determinePosition(count, MAX);
+          Vector2 position = determinePosition(index, MAX);
           UnitActor unit = new UnitActor(parent.getCenterX(), parent.getCenterY(), type, getTextureRegion(type));
           addActor(unit);
           ((LevelStage) getStage()).getUnitManager().register(unit);
@@ -110,14 +110,14 @@ public class UnitGroup extends Group implements SelectableMover {
     this.state = state;
   }
 
-  private Vector2 determinePosition(double count, double total) {
+  private Vector2 determinePosition(double index, double total) {
     if (total == 1) {
       return new Vector2(this.x, this.y);
     } else {
       // based on a circle around x,y we spread the units out
       return new Vector2(
-        this.x + RADIUS * (float) Math.cos(2.0D * Math.PI * count / total - OFFSET),
-        this.y + RADIUS * (float) Math.sin(2.0D * Math.PI * count / total - OFFSET));
+        this.x + RADIUS * (float) Math.cos(2.0D * Math.PI * index / total - OFFSET),
+        this.y + RADIUS * (float) Math.sin(2.0D * Math.PI * index / total - OFFSET));
     }
   }
 

@@ -34,7 +34,7 @@ public class ProjectileActor extends TextureRegionActor {
     // move towards the target
     Vector2 start = getCenter();
     Vector2 end = this.target.getCenter();
-    float speed = 30.0F;
+    float speed = 35.0F;
 
     float distance = start.dst(end);
     float dx = (end.x - start.x) / distance;
