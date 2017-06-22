@@ -5,23 +5,25 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.graphics.HeroUnit;
 import com.mtrubs.td.graphics.ProjectileType;
-import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.CombatActor;
-import com.mtrubs.td.scene.LevelStage;
-import com.mtrubs.td.scene.TextureRegionActorAccessor;
+import com.mtrubs.td.scene.*;
 
-public class TestHero1Actor extends CombatActor implements SelectableMover {
+public class HeroActor extends PcActor implements SelectableMover {
+
+  private final HeroUnit type;
 
   private boolean selected;
 
-  public TestHero1Actor(TextureRegionManager textureRegionManager, float startX, float startY) {
-    super(startX, startY, textureRegionManager.get(HeroUnit.TestHero1), 25.0F);
+  public HeroActor(HeroUnit type, TextureRegion textureRegion, float startX, float startY) {
+    super(startX, startY, textureRegion, type.getSpeed());
+    this.type = type;
+    setHitPoints(type.getHealth());
 
     addListener(new ClickListener() {
 
@@ -43,7 +45,7 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        ((LevelStage) getStage()).setSelected(TestHero1Actor.this);
+        ((LevelStage) getStage()).setSelected(HeroActor.this);
       }
     });
   }
@@ -88,27 +90,44 @@ public class TestHero1Actor extends CombatActor implements SelectableMover {
 
   @Override
   public int getDamage() {
-    return 0; // TODO
+    return this.type.getDamage();
   }
 
   @Override
   protected float getRange() {
-    return 0; // TODO
+    return this.type.getRange();
   }
 
   @Override
   protected float getAttackCoolDown() {
-    return 0; // TODO
+    return this.type.getAttackCoolDown();
   }
 
   @Override
   protected ProjectileType getProjectileType() {
-    return null; // TODO
+    return this.type.getProjectileType();
   }
 
   @Override
   protected boolean canAttack() {
-    return false; // TODO
+    return true;
+  }
+
+  protected Targetable checkForTarget() {
+    LevelStage stage = (LevelStage) getStage();
+    // if able, towers will attack the first unit they can
+    for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
+      if (mob.isDamageable() && isInRange(mob)) {
+        return mob;
+      }
+    }
+    return super.checkForTarget();
+  }
+
+  @Override
+  protected void handleTarget(float delta) {
+    super.handleTarget(delta);
+    attackTarget(delta);
   }
 
   @Override

@@ -20,6 +20,7 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
    * @param positionX     the x coordinate of this actor.
    * @param positionY     the y coordinate of this actor.
    * @param textureRegion the texture of this actor.
+   * @param speed         the speed of this actor.
    */
   public CombatActor(float positionX, float positionY, TextureRegion textureRegion, float speed) {
     super(positionX, positionY, textureRegion);
@@ -53,8 +54,8 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
     }
 
     // make sure the current target (if there is one) is in range
-    if (this.target != null && !isInRange(this.target)) {
-      this.target = null;
+    if (this.target != null && (!isInRange(this.target) || !this.target.isDamageable())) {
+      clearTarget();
     }
 
     // if we do not have a target then acquire one

@@ -1,45 +1,34 @@
 package com.mtrubs.td.graphics;
 
-import com.mtrubs.td.scene.hero.TestHero1Actor;
+import com.mtrubs.td.scene.hero.HeroActor;
 
 /**
  * This enum represents all the heroes available.
  */
 public enum Hero {
 
-  TestHero1(HeroThumbnail.TestHero1, HeroSkill.TestHero1, HeroTower.TestHero1) {
-    @Override
-    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
-      return new TestHero1Actor(textureRegionManager, 400.0F, 200.0F);
-    }
-  },
-  TestHero2(HeroThumbnail.TestHero2, HeroSkill.TestHero2, HeroTower.TestHero2) {
-    @Override
-    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
-      // TODO: TestHero2
-      return new TestHero1Actor(textureRegionManager, 200.0F, 200.0F);
-    }
-  },
-  TestHero3(HeroThumbnail.TestHero3, HeroSkill.TestHero3, HeroTower.TestHero3) {
-    @Override
-    public TestHero1Actor newActor(TextureRegionManager textureRegionManager) {
-      // TODO: TestHero3
-      return new TestHero1Actor(textureRegionManager, 300.0F, 300.0F);
-    }
-  };
+  TestHero1(HeroThumbnail.TestHero1, HeroUnit.TestHero1,
+    HeroSkill.TestHero1, HeroTower.TestHero1),
+  TestHero2(HeroThumbnail.TestHero2, HeroUnit.TestHero2,
+    HeroSkill.TestHero2, HeroTower.TestHero2),
+  TestHero3(HeroThumbnail.TestHero3, HeroUnit.TestHero3,
+    HeroSkill.TestHero3, HeroTower.TestHero3);
 
   private final HeroThumbnail thumbnail;
+  private final HeroUnit unit;
   private final HeroSkill skill;
-  private final HeroTower heroTower;
+  private final HeroTower tower;
 
-  private Hero(HeroThumbnail thumbnail, HeroSkill skill, HeroTower heroTower) {
+  private Hero(HeroThumbnail thumbnail, HeroUnit unit,
+               HeroSkill skill, HeroTower tower) {
     this.thumbnail = thumbnail;
+    this.unit = unit;
     this.skill = skill;
-    this.heroTower = heroTower;
+    this.tower = tower;
   }
 
-  public HeroTower getHeroTower() {
-    return this.heroTower;
+  public HeroTower getTower() {
+    return this.tower;
   }
 
   public HeroThumbnail getThumbnail() {
@@ -50,5 +39,7 @@ public enum Hero {
     return this.skill;
   }
 
-  public abstract TestHero1Actor newActor(TextureRegionManager textureRegionManager);
+  public HeroActor newActor(TextureRegionManager textureRegionManager, float x, float y) {
+    return new HeroActor(this.unit, textureRegionManager.get(this.unit), x, y);
+  }
 }

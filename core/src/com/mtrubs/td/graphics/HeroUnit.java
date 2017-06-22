@@ -4,16 +4,32 @@ import com.badlogic.gdx.graphics.Texture;
 
 public enum HeroUnit implements TextureReference {
 
-  TestHero1("images/towers/TestHero1/heroUnit.png"),
-  TestHero2("images/towers/TestHero2/heroUnit.png"),
-  TestHero3("images/towers/TestHero3/heroUnit.png");
+  TestHero1("images/towers/TestHero1/heroUnit.png", 10, 50.0F, 20.0F, 10.0F, 20, 25.0F, ProjectileType.RedBullet),
+  TestHero2("images/towers/TestHero2/heroUnit.png", 20, 40.0F, 20.0F, 5.0F, 15, 30.0F, ProjectileType.RedBullet),
+  TestHero3("images/towers/TestHero3/heroUnit.png", 30, 30.0F, 20.0F, 3.0F, 5, 35.0F, ProjectileType.RedBullet);
 
   private final String texturePath;
   private final String key;
+  private final float range;
+  private final float engageRange;
+  private final float attackCoolDown;
+  private final int damage;
+  private final int health;
+  private final ProjectileType projectileType;
+  private final float speed;
 
-  private HeroUnit(String texturePath) {
+  private HeroUnit(String texturePath, int health, float range, float engageRange, float attackCoolDown,
+                   int damage, float speed, ProjectileType projectileType) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
+
+    this.range = range;
+    this.engageRange = engageRange;
+    this.attackCoolDown = attackCoolDown;
+    this.damage = damage;
+    this.health = health;
+    this.speed = speed;
+    this.projectileType = projectileType;
   }
 
   @Override
@@ -29,5 +45,29 @@ public enum HeroUnit implements TextureReference {
   @Override
   public String getKey() {
     return this.key;
+  }
+
+  public int getHealth() {
+    return this.health;
+  }
+
+  public ProjectileType getProjectileType() {
+    return this.projectileType;
+  }
+
+  public int getDamage() {
+    return this.damage;
+  }
+
+  public float getAttackCoolDown() {
+    return this.attackCoolDown;
+  }
+
+  public float getRange() {
+    return this.range;
+  }
+
+  public float getSpeed() {
+    return this.speed;
   }
 }

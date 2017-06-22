@@ -12,7 +12,7 @@ import com.mtrubs.td.graphics.TowerUnit;
 /**
  * Actor to represent each tower unit.
  */
-public class UnitActor extends CombatActor {
+public class UnitActor extends PcActor {
 
   /**
    * Where this unit will spawn from.
@@ -99,7 +99,7 @@ public class UnitActor extends CombatActor {
     LevelStage stage = (LevelStage) getStage();
     // if able, towers will attack the first unit they can
     for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-      if (isInRange(mob)) {
+      if (mob.isDamageable() && isInRange(mob)) {
         return mob;
       }
     }
@@ -150,7 +150,7 @@ public class UnitActor extends CombatActor {
 
   @Override
   protected boolean canAttack() {
-    return hasUnit();
+    return hasUnit() && getProjectileType() != null;
   }
 
   @Override

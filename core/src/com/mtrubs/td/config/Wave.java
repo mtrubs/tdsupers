@@ -80,15 +80,15 @@ public class Wave {
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
 
     // TODO: mobs move to be configurable; pool-able
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 0.0F,
+    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 0.0F,
       textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 1.5F,
+    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 1.5F,
       textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 3.0F,
+    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 3.0F,
       textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 4.5F,
+    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 4.5F,
       textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 25.0F, 6.0F,
+    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 6.0F,
       textureRegionManager.get(Mob.TestMob)));
   }
 

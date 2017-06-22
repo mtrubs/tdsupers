@@ -26,9 +26,9 @@ public class MobActor extends CombatActor {
    * @param path          the path of this actor.
    * @param textureRegion the texture of this actor.
    */
-  public MobActor(Vector2[] path, Mob type, float scale, float speed, float startDelay,
+  public MobActor(Vector2[] path, Mob type, float scale, float startDelay,
                   TextureRegion textureRegion) {
-    super(path[0].x, path[0].y, textureRegion, speed);
+    super(path[0].x, path[0].y, textureRegion, type.getSpeed());
     setHitPoints((int) ((float) type.getHealth() * scale));
 
     this.path = path;
@@ -67,7 +67,7 @@ public class MobActor extends CombatActor {
 
   @Override
   protected boolean canAttack() {
-    return this.type != null;
+    return getProjectileType() != null;
   }
 
   @Override
@@ -106,7 +106,7 @@ public class MobActor extends CombatActor {
     // mobs will only attack the unit if it is attacking them
     // TODO: change this for different types of mobs
     for (UnitActor unit : stage.getUnitManager().getUnits()) {
-      if (unit.isTargeting(this) && isInRange(unit)) {
+      if (unit.isDamageable() && unit.isTargeting(this) && isInRange(unit)) {
         return unit;
       }
     }
