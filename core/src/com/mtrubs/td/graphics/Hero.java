@@ -7,11 +7,11 @@ import com.mtrubs.td.scene.hero.HeroActor;
  */
 public enum Hero {
 
-  TestHero1(HeroThumbnail.TestHero1, HeroUnit.TestHero1,
+  TestHero1(HeroThumbnail.TestHero1, HeroUnitType.TestHero1,
     HeroSkill.TestHero1, HeroTower.TestHero1),
-  TestHero2(HeroThumbnail.TestHero2, HeroUnit.TestHero2,
+  TestHero2(HeroThumbnail.TestHero2, HeroUnitType.TestHero2,
     HeroSkill.TestHero2, HeroTower.TestHero2),
-  TestHero3(HeroThumbnail.TestHero3, HeroUnit.TestHero3,
+  TestHero3(HeroThumbnail.TestHero3, HeroUnitType.TestHero3,
     HeroSkill.TestHero3, HeroTower.TestHero3);
 
   private final HeroThumbnail thumbnail;

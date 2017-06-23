@@ -29,17 +29,17 @@ public abstract class PcActor extends CombatActor {
 
   @Override
   public void setVisible(boolean visible) {
+    if (isVisible() && !visible) {
+      untarget();
+    }
     super.setVisible(visible);
-    untarget();
   }
 
   private void untarget() {
     clearTarget();
     LevelStage stage = (LevelStage) getStage();
     if (stage != null) {
-      for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-        mob.clearTarget(this);
-      }
+      stage.getWaveManager().clearTarget(this);
     }
   }
 
@@ -80,6 +80,7 @@ public abstract class PcActor extends CombatActor {
     }
   }
 
+  @Override
   protected Targetable checkForTarget() {
     LevelStage stage = (LevelStage) getStage();
     // if able, towers will attack the first unit they can

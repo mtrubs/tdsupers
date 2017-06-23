@@ -1,20 +1,20 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.hero;
 
-import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mtrubs.td.AbstractApplicationTest;
 import com.mtrubs.td.config.UnitManager;
 import com.mtrubs.td.config.WaveManager;
-import com.mtrubs.td.graphics.TowerUnit;
+import com.mtrubs.td.graphics.HeroUnit;
+import com.mtrubs.td.scene.LevelStage;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class UnitActorTest extends AbstractApplicationTest {
+public class HeroActorTest extends AbstractApplicationTest {
 
   @Test
   public void spawnRespawn() {
@@ -22,14 +22,13 @@ public class UnitActorTest extends AbstractApplicationTest {
 
     LevelStage stage = Mockito.mock(LevelStage.class);
     when(stage.getUnitManager()).thenReturn(unitManager);
-    when(stage.getWaveManager()).thenReturn(mock(WaveManager.class));
-    when(stage.getTweenManager()).thenReturn(mock(TweenManager.class));
+    when(stage.getWaveManager()).thenReturn(Mockito.mock(WaveManager.class));
 
-    TowerUnit towerUnit = mock(TowerUnit.class);
-    when(towerUnit.getHealth()).thenReturn(2);
-    when(towerUnit.getDeathCoolDown()).thenReturn(10.0F);
+    HeroUnit heroUnit = mock(HeroUnit.class);
+    when(heroUnit.getHealth()).thenReturn(2);
+    when(heroUnit.getDeathCoolDown()).thenReturn(10.0F);
 
-    UnitActor actor = new UnitActor(10.0F, 20.0F, towerUnit, mock(TextureRegion.class));
+    HeroActor actor = new HeroActor(heroUnit, mock(TextureRegion.class), 10.0F, 20.0F);
     invoke(actor, Actor.class, "setStage", stage, Stage.class);
 
     // when the actor is create it is invisible
@@ -69,7 +68,7 @@ public class UnitActorTest extends AbstractApplicationTest {
     // enough time passes for respawn so it comes back with full health, registering itself again
     actor.act(6.0F);
     assertTrue(actor.isVisible());
-    // assertEquals(2, (int) get(actor, "hitPoints", Integer.class)); // FIXME: reset health
+    //assertEquals(2, (int) get(actor, "hitPoints", Integer.class)); // FIXME: reset health
     verify(unitManager, times(2)).register(actor);
     verifyNoMoreInteractions(unitManager);
   }

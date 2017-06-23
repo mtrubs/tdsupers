@@ -2,6 +2,7 @@ package com.mtrubs.td.config;
 
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.MobActor;
+import com.mtrubs.td.scene.Targetable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,12 @@ public class WaveManager {
   public void remove(MobActor actor) {
     this.mobs.remove(actor);
     actor.remove();
+  }
+
+  public void clearTarget(Targetable target) {
+    for (MobActor mob : this.mobs) {
+      mob.clearTarget(target);
+    }
   }
 
   public List<MobActor> getActiveMobs() {
