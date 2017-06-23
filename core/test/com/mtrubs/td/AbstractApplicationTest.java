@@ -10,10 +10,6 @@ import org.junit.BeforeClass;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static org.junit.Assert.fail;
 
 public abstract class AbstractApplicationTest {
 
@@ -82,17 +78,24 @@ public abstract class AbstractApplicationTest {
     }
   }
 
-  protected <T> void invoke(T instance, Class<?> type, String methodName, Object value, Class<?> paramType) {
+  protected <T> void set(T instance, String fieldName, Object value) {
+    set(instance, instance.getClass(), fieldName, value);
+  }
+
+  protected <T> void set(T instance, Class<?> type, String fieldName, Object value) {
     try {
-      Method method = type.getDeclaredMethod(methodName, paramType);
-      method.setAccessible(true);
-      method.invoke(instance, value);
-    } catch (NoSuchMethodException e) {
-      fail(e.getMessage());
+      Field field = type.getDeclaredField(fieldName);
+      field.setAccessible(true);
+      field.set(instance, value);
     } catch (IllegalAccessException e) {
-      fail(e.getMessage());
-    } catch (InvocationTargetException e) {
-      fail(e.getMessage());
+      throw new RuntimeException(e);
+    } catch (NoSuchFieldException e) {
+      Class<?> parent = type.getSuperclass();
+      if (parent == null) {
+        throw new RuntimeException(e);
+      } else {
+        set(instance, parent, fieldName, value);
+      }
     }
   }
 }

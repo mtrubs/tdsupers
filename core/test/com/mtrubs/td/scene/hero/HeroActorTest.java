@@ -1,8 +1,7 @@
 package com.mtrubs.td.scene.hero;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mtrubs.td.AbstractApplicationTest;
 import com.mtrubs.td.config.UnitManager;
 import com.mtrubs.td.config.WaveManager;
@@ -29,47 +28,52 @@ public class HeroActorTest extends AbstractApplicationTest {
     when(heroUnit.getDeathCoolDown()).thenReturn(10.0F);
 
     HeroActor actor = new HeroActor(heroUnit, mock(TextureRegion.class), 10.0F, 20.0F);
-    invoke(actor, Actor.class, "setStage", stage, Stage.class);
+    set(actor, "parent", mock(Group.class));
+    set(actor, "stage", stage);
 
-    // when the actor is create it is invisible
-    assertFalse(actor.isVisible());
-    assertEquals(2, (int) get(actor, "hitPoints", Integer.class));
+    // when the actor is created
+    assertFalse("then it is not present", actor.isVisible());
+    assertEquals("and it has health", 2, getHitPoints(actor));
     verifyNoMoreInteractions(unitManager);
 
-    // after a short time it spawn, registering itself
+    // when enough time has passed to spawn
     actor.act(0.5F);
-    assertTrue(actor.isVisible());
-    assertEquals(2, (int) get(actor, "hitPoints", Integer.class));
-    verify(unitManager, times(1)).register(actor);
+    assertTrue("then it is present", actor.isVisible());
+    assertEquals("and it has health", 2, getHitPoints(actor));
+    verify(unitManager, description("and it registers itself")).register(actor);
     verifyNoMoreInteractions(unitManager);
 
-    // it takes some damage, but is still alive
+    // when it takes non-mortal damage
     actor.damage(1);
     actor.act(0.5F);
-    assertTrue(actor.isVisible());
-    assertEquals(1, (int) get(actor, "hitPoints", Integer.class));
+    assertEquals("then the damage is recorded", 1, getHitPoints(actor));
+    assertTrue("and it is still present", actor.isVisible());
     verifyNoMoreInteractions(unitManager);
 
-    // it takes enough damage to kill it, so it unregisters itself
+    // when it takes mortal damage
     actor.damage(1);
     actor.act(0.5F);
-    assertFalse(actor.isVisible());
-    assertEquals(0, (int) get(actor, "hitPoints", Integer.class));
-    verify(unitManager, times(1)).unregister(actor);
+    assertEquals("then the damage is recorded", 0, getHitPoints(actor));
+    assertFalse("and it is no longer present", actor.isVisible());
+    verify(unitManager, description("and it unregisters itself")).unregister(actor);
     // TODO: assert waveManager.clearTarget
     verifyNoMoreInteractions(unitManager);
 
-    // some time passes, it is still dead
+    // when not enough time for a respawn passes
     actor.act(6.0F);
-    assertFalse(actor.isVisible());
-    assertEquals(0, (int) get(actor, "hitPoints", Integer.class));
+    assertFalse("then it is still not present", actor.isVisible());
+    assertEquals("and has not health", 0, getHitPoints(actor));
     verifyNoMoreInteractions(unitManager);
 
-    // enough time passes for respawn so it comes back with full health, registering itself again
+    // when enough time passes for a respawn
     actor.act(6.0F);
-    assertTrue(actor.isVisible());
-    //assertEquals(2, (int) get(actor, "hitPoints", Integer.class)); // FIXME: reset health
-    verify(unitManager, times(2)).register(actor);
+    assertTrue("then it is present", actor.isVisible());
+    //assertEquals("and has health again", 2, getHitPoints(actor)); // FIXME: reset health
+    verify(unitManager, times(2).description("and it is registered again")).register(actor);
     verifyNoMoreInteractions(unitManager);
+  }
+
+  private int getHitPoints(HeroActor actor) {
+    return get(actor, "hitPoints", Integer.class);
   }
 }

@@ -89,13 +89,13 @@ public class MobActor extends CombatActor {
   }
 
   private void stopMoving() {
-    if (!this.timeline.isPaused()) {
+    if (this.timeline != null && !this.timeline.isPaused()) {
       this.timeline.pause();
     }
   }
 
   private void startMoving() {
-    if (this.timeline.isPaused()) {
+    if (this.timeline != null && this.timeline.isPaused()) {
       this.timeline.resume();
     }
   }

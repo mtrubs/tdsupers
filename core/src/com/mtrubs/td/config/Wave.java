@@ -1,7 +1,7 @@
 package com.mtrubs.td.config;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mtrubs.td.graphics.Mob;
+import com.mtrubs.td.graphics.MobType;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.MobActor;
 
@@ -80,16 +80,16 @@ public class Wave {
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
 
     // TODO: mobs move to be configurable; pool-able
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 0.0F,
-      textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 1.5F,
-      textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 3.0F,
-      textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 4.5F,
-      textureRegionManager.get(Mob.TestMob)));
-    this.mobs.add(new MobActor(path, Mob.TestMob, 1.0F, 6.0F,
-      textureRegionManager.get(Mob.TestMob)));
+    this.mobs.add(new MobActor(path, MobType.TestMob, 1.0F, 0.0F,
+      textureRegionManager.get(MobType.TestMob)));
+    this.mobs.add(new MobActor(path, MobType.TestMob, 1.0F, 1.5F,
+      textureRegionManager.get(MobType.TestMob)));
+    this.mobs.add(new MobActor(path, MobType.TestMob, 1.0F, 3.0F,
+      textureRegionManager.get(MobType.TestMob)));
+    this.mobs.add(new MobActor(path, MobType.TestMob, 1.0F, 4.5F,
+      textureRegionManager.get(MobType.TestMob)));
+    this.mobs.add(new MobActor(path, MobType.TestMob, 1.0F, 6.0F,
+      textureRegionManager.get(MobType.TestMob)));
   }
 
   public List<MobActor> getMobs() {
