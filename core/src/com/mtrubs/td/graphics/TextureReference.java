@@ -2,7 +2,9 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public interface TextureReference {
+import java.io.Serializable;
+
+public interface TextureReference extends Serializable {
 
   /**
    * Gets the path to this texture reference on the file system.

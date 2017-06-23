@@ -1,79 +1,16 @@
 package com.mtrubs.td.graphics;
 
-import com.badlogic.gdx.graphics.Texture;
+public interface TowerUnit extends TextureReference {
 
-/**
- * This enum represents all the tower units.
- */
-public enum TowerUnit implements TextureReference {
+  float getRange();
 
-  TestHero1Unit("images/towers/TestHero1/towerUnit1.png", 30, 100.0F, 100.0F, 10.0F, 5.0F, 10,
-    ProjectileType.YellowBullet),
-  TestHero2Unit("images/towers/TestHero2/towerUnit1.png", 30, 100.0F, 150.0F, 6.0F, 5.0F, 10,
-    ProjectileType.YellowBullet),
-  TestHero3Unit("images/towers/TestHero3/towerUnit1.png", 30, 100.0F, 200.0F, 10.0F, 10.0F, 10,
-    ProjectileType.YellowBullet);
+  float getAttackCoolDown();
 
-  private final String texturePath;
-  private final String key;
-  private final float range;
-  private final float engageRange;
-  private final float attackCoolDown;
-  private final float deathCoolDown;
-  private final int damage;
-  private final int health;
-  private final ProjectileType projectileType;
+  ProjectileType getProjectileType();
 
-  private TowerUnit(String texturePath, int health, float range, float engageRange,
-                    float deathCoolDown, float attackCoolDown, int damage,
-                    ProjectileType projectileType) {
-    this.texturePath = texturePath;
-    this.range = range;
-    this.engageRange = engageRange;
-    this.attackCoolDown = attackCoolDown;
-    this.deathCoolDown = deathCoolDown;
-    this.projectileType = projectileType;
-    this.damage = damage;
-    this.health = health;
-    this.key = String.format("%s.%s", getClass().getSimpleName(), name());
-  }
+  float getDeathCoolDown();
 
-  @Override
-  public String getTexturePath() {
-    return this.texturePath;
-  }
+  int getDamage();
 
-  @Override
-  public void setTextureFilter(Texture texture) {
-    texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-  }
-
-  @Override
-  public String getKey() {
-    return this.key;
-  }
-
-  public ProjectileType getProjectileType() {
-    return this.projectileType;
-  }
-
-  public float getAttackCoolDown() {
-    return this.attackCoolDown;
-  }
-
-  public float getRange() {
-    return this.range;
-  }
-
-  public int getDamage() {
-    return this.damage;
-  }
-
-  public float getDeathCoolDown() {
-    return this.deathCoolDown;
-  }
-
-  public int getHealth() {
-    return this.health;
-  }
+  int getHealth();
 }

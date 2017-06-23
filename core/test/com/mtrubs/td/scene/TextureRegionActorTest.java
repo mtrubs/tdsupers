@@ -1,14 +1,14 @@
-package com.mtrubs.td;
+package com.mtrubs.td.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.AbstractApplicationTest;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TextureRegionActorTest extends AbstractBaseTest {
+public class TextureRegionActorTest extends AbstractApplicationTest {
 
   @Test
   public void createNull() {

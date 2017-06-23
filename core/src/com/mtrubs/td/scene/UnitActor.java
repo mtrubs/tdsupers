@@ -35,6 +35,7 @@ public class UnitActor extends PcActor {
   public UnitActor(float positionX, float positionY, TowerUnit type, TextureRegion textureRegion) {
     super(positionX, positionY, textureRegion, 25.0F);
     this.spawn = new Vector2(positionX, positionY);
+    this.home = this.spawn;
     setType(type);
   }
 
@@ -63,6 +64,7 @@ public class UnitActor extends PcActor {
     return this.type.getRange();
   }
 
+  @Override
   protected void despawn() {
     super.despawn();
     setX(this.spawn.x);
@@ -92,6 +94,7 @@ public class UnitActor extends PcActor {
     return this.type.getProjectileType();
   }
 
+  @Override
   protected boolean hasUnit() {
     return this.type != null;
   }
