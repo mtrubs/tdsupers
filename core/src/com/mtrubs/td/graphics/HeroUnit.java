@@ -1,18 +1,5 @@
 package com.mtrubs.td.graphics;
 
-public interface HeroUnit extends TextureReference {
+public interface HeroUnit extends PlayerControlled {
 
-  float getRange();
-
-  float getAttackCoolDown();
-
-  int getHealth();
-
-  ProjectileType getProjectileType();
-
-  float getDeathCoolDown();
-
-  int getDamage();
-
-  float getSpeed();
 }

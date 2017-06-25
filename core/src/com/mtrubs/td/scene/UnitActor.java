@@ -6,20 +6,18 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mtrubs.td.graphics.ProjectileType;
 import com.mtrubs.td.graphics.TowerUnit;
 
 /**
  * Actor to represent each tower unit.
  */
-public class UnitActor extends PcActor {
+public class UnitActor extends PcActor<TowerUnit> {
 
   /**
    * Where this unit will spawn from.
    */
   private final Vector2 spawn;
 
-  private TowerUnit type;
   /**
    * The rally point of this unit.
    */
@@ -33,7 +31,7 @@ public class UnitActor extends PcActor {
    * @param textureRegion the texture of this actor.
    */
   public UnitActor(float positionX, float positionY, TowerUnit type, TextureRegion textureRegion) {
-    super(positionX, positionY, textureRegion, 25.0F);
+    super(positionX, positionY, textureRegion, type);
     this.spawn = new Vector2(positionX, positionY);
     this.home = this.spawn;
     setType(type);
@@ -46,7 +44,7 @@ public class UnitActor extends PcActor {
   }
 
   private void goHome() {
-    TweenManager tweenManager = ((LevelStage) getStage()).getTweenManager();
+    TweenManager tweenManager = getStage().getTweenManager();
     if (isVisible() && !hasTarget()) {
       Timeline timeline = Timeline.createSequence();
 
@@ -60,24 +58,23 @@ public class UnitActor extends PcActor {
   }
 
   @Override
-  protected float getRange() {
-    return this.type.getRange();
+  protected void despawn() {
+    super.despawn();
+    if (this.spawn != null) {
+      setX(this.spawn.x);
+      setY(this.spawn.y);
+    }
   }
 
   @Override
-  protected void despawn() {
-    super.despawn();
-    setX(this.spawn.x);
-    setY(this.spawn.y);
-  }
-
   public void setType(TowerUnit type) {
     if (type == null) {
       despawn();
     } else {
       setHitPoints(type.getHealth());
+      setTextureRegion(getTextureRegion(type));
     }
-    this.type = type;
+    super.setType(type);
   }
 
   public void setHome(Vector2 home) {
@@ -85,32 +82,12 @@ public class UnitActor extends PcActor {
   }
 
   @Override
-  protected float getAttackCoolDown() {
-    return this.type.getAttackCoolDown();
-  }
-
-  @Override
-  protected ProjectileType getProjectileType() {
-    return this.type.getProjectileType();
-  }
-
-  @Override
   protected boolean hasUnit() {
-    return this.type != null;
-  }
-
-  @Override
-  protected float getDeathCoolDown() {
-    return this.type.getDeathCoolDown();
+    return getType() != null;
   }
 
   @Override
   protected boolean canAttack() {
-    return hasUnit() && getProjectileType() != null;
-  }
-
-  @Override
-  public int getDamage() {
-    return this.type.getDamage();
+    return hasUnit() && super.canAttack();
   }
 }

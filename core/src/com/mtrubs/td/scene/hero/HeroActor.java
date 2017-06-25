@@ -11,20 +11,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.graphics.HeroUnit;
-import com.mtrubs.td.graphics.ProjectileType;
-import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.PcActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
 
-public class HeroActor extends PcActor implements SelectableMover {
-
-  private final HeroUnit type;
+public class HeroActor extends PcActor<HeroUnit> implements SelectableMover {
 
   private boolean selected;
 
   public HeroActor(HeroUnit type, TextureRegion textureRegion, float startX, float startY) {
-    super(startX, startY, textureRegion, type.getSpeed());
-    this.type = type;
+    super(startX, startY, textureRegion, type);
     setHitPoints(type.getHealth());
 
     addListener(new ClickListener() {
@@ -47,7 +42,7 @@ public class HeroActor extends PcActor implements SelectableMover {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        ((LevelStage) getStage()).setSelected(HeroActor.this);
+        getStage().setSelected(HeroActor.this);
       }
     });
   }
@@ -87,32 +82,7 @@ public class HeroActor extends PcActor implements SelectableMover {
   }
 
   private TweenManager getTweenManager() {
-    return ((LevelStage) getStage()).getTweenManager();
-  }
-
-  @Override
-  public int getDamage() {
-    return this.type.getDamage();
-  }
-
-  @Override
-  protected float getRange() {
-    return this.type.getRange();
-  }
-
-  @Override
-  protected float getAttackCoolDown() {
-    return this.type.getAttackCoolDown();
-  }
-
-  @Override
-  protected ProjectileType getProjectileType() {
-    return this.type.getProjectileType();
-  }
-
-  @Override
-  protected boolean canAttack() {
-    return true;
+    return getStage().getTweenManager();
   }
 
   @Override
@@ -121,7 +91,7 @@ public class HeroActor extends PcActor implements SelectableMover {
     if (this.selected) {
       batch.end();
 
-      ShapeRenderer shapeRenderer = ((LevelStage) getStage()).getShapeRenderer();
+      ShapeRenderer shapeRenderer = getStage().getShapeRenderer();
 
       shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
       shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
@@ -139,12 +109,8 @@ public class HeroActor extends PcActor implements SelectableMover {
     super.draw(batch, alpha);
   }
 
+  @Override
   protected boolean hasUnit() {
     return true;
-  }
-
-  @Override
-  protected float getDeathCoolDown() {
-    return this.type.getDeathCoolDown();
   }
 }

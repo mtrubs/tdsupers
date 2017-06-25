@@ -1,18 +1,8 @@
 package com.mtrubs.td.graphics;
 
-public interface Mob extends TextureReference {
-
-  float getSpeed();
+public interface Mob extends Combatant {
 
   int getHealth();
-
-  float getAttackCoolDown();
-
-  ProjectileType getProjectileType();
-
-  int getDamage();
-
-  float getRange();
 
   int getWorth();
 }

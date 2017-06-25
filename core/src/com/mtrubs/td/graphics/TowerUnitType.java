@@ -82,4 +82,9 @@ public enum TowerUnitType implements TowerUnit {
   public int getHealth() {
     return this.health;
   }
+
+  @Override
+  public float getSpeed() {
+    return 25.0F;
+  }
 }

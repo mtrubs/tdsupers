@@ -7,16 +7,14 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.Mob;
-import com.mtrubs.td.graphics.ProjectileType;
 
 /**
  * The actor that represents each mob.
  */
-public class MobActor extends CombatActor {
+public class MobActor extends CombatActor<Mob> {
 
   private final Vector2[] path;
   private final float startDelay;
-  private final Mob type;
 
   private Timeline timeline;
 
@@ -28,12 +26,11 @@ public class MobActor extends CombatActor {
    */
   public MobActor(Vector2[] path, Mob type, float scale, float startDelay,
                   TextureRegion textureRegion) {
-    super(path[0].x, path[0].y, textureRegion, type.getSpeed());
+    super(path[0].x, path[0].y, textureRegion, type);
     setHitPoints((int) ((float) type.getHealth() * scale));
 
     this.path = path;
     this.startDelay = startDelay;
-    this.type = type;
   }
 
   public float getProgress() {
@@ -56,28 +53,13 @@ public class MobActor extends CombatActor {
   }
 
   @Override
-  protected float getAttackCoolDown() {
-    return this.type.getAttackCoolDown();
-  }
-
-  @Override
-  protected ProjectileType getProjectileType() {
-    return this.type.getProjectileType();
-  }
-
-  @Override
-  protected boolean canAttack() {
-    return getProjectileType() != null;
-  }
-
-  @Override
   protected void handleDefeat() {
     // on defeat we:
-    LevelStage stage = (LevelStage) getStage();
+    LevelStage stage = getStage();
     // clear our target
     clearTarget();
     // add currency for this mob's value
-    stage.getCurrencyManager().add(getWorth());
+    stage.getCurrencyManager().add(getType().getWorth());
     // remove this mob from the wave manager
     stage.getWaveManager().remove(this);
     // remove this mob from any unit's target
@@ -102,25 +84,14 @@ public class MobActor extends CombatActor {
 
   @Override
   protected Targetable checkForTarget() {
-    LevelStage stage = (LevelStage) getStage();
     // mobs will only attack the unit if it is attacking them
     // TODO: change this for different types of mobs
-    for (PcActor unit : stage.getUnitManager().getUnits()) {
+    for (PcActor unit : getStage().getUnitManager().getUnits()) {
       if (unit.isDamageable() && unit.isTargeting(this) && isInRange(unit)) {
         return unit;
       }
     }
     return super.checkForTarget();
-  }
-
-  @Override
-  protected float getRange() {
-    return this.type.getRange();
-  }
-
-  @Override
-  public int getDamage() {
-    return this.type.getDamage();
   }
 
   public void start() {
@@ -137,10 +108,6 @@ public class MobActor extends CombatActor {
   }
 
   private TweenManager getTweenManager() {
-    return ((LevelStage) getStage()).getTweenManager();
-  }
-
-  public int getWorth() {
-    return this.type.getWorth();
+    return getStage().getTweenManager();
   }
 }

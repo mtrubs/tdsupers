@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mtrubs.td.graphics.TextureReference;
 
 /**
  * The actor that represents a particular texture region in the world.
@@ -64,5 +65,10 @@ public class TextureRegionActor extends Actor {
 
   public Vector2 getCenter() {
     return new Vector2(getCenterX(), getCenterY());
+  }
+
+  protected TextureRegion getTextureRegion(TextureReference type) {
+    LevelStage stage = (LevelStage) getStage();
+    return stage == null ? null : stage.getTextureRegion(type);
   }
 }

@@ -2,17 +2,18 @@ package com.mtrubs.td.scene;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mtrubs.td.graphics.ProjectileType;
+import com.mtrubs.td.graphics.Combatant;
 
 /**
  * Base actor that represents anything capable of engaging in combat.
  */
-public abstract class CombatActor extends TextureRegionActor implements Targetable {
+public abstract class CombatActor<T extends Combatant> extends TextureRegionActor implements Targetable {
 
   private Targetable target;
   private float attackCoolDown;
   private int hitPoints;
-  private float speed;
+
+  private T type;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
@@ -20,11 +21,19 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
    * @param positionX     the x coordinate of this actor.
    * @param positionY     the y coordinate of this actor.
    * @param textureRegion the texture of this actor.
-   * @param speed         the speed of this actor.
+   * @param type          the type of this actor.
    */
-  public CombatActor(float positionX, float positionY, TextureRegion textureRegion, float speed) {
+  public CombatActor(float positionX, float positionY, TextureRegion textureRegion, T type) {
     super(positionX, positionY, textureRegion);
-    this.speed = speed;
+    this.type = type;
+  }
+
+  protected T getType() {
+    return this.type;
+  }
+
+  protected void setType(T type) {
+    this.type = type;
   }
 
   public void clearTarget(Targetable targetable) {
@@ -54,6 +63,7 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
     }
 
     // make sure the current target (if there is one) is in range
+    // TODO: i think this is preventing targeting from clearing correctly
     if (this.target != null && (!isInRange(this.target) || !this.target.isDamageable())) {
       clearTarget();
     }
@@ -106,11 +116,10 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
       return;
     }
     if (this.attackCoolDown <= 0.0F) {
-      LevelStage stage = (LevelStage) getStage();
       ProjectileActor projectile = new ProjectileActor(getCenterX(), getCenterY(),
-        this, this.target, stage.getTextureRegion(getProjectileType()));
+        this, this.target, getTextureRegion(this.type.getProjectileType()));
       getStage().addActor(projectile);
-      this.attackCoolDown += getAttackCoolDown();
+      this.attackCoolDown += this.type.getAttackCoolDown();
     }
   }
 
@@ -118,29 +127,36 @@ public abstract class CombatActor extends TextureRegionActor implements Targetab
     if (target != null) {
       Vector2 unitLoc = getCenter();
       Vector2 mobLoc = target.getCenter();
-      if (unitLoc.dst(mobLoc) < getRange()) {
+      if (unitLoc.dst(mobLoc) < this.type.getRange()) {
         return true;
       }
     }
     return false;
   }
 
-  protected abstract float getRange();
-
-  protected abstract float getAttackCoolDown();
-
-  protected abstract ProjectileType getProjectileType();
-
-  protected abstract boolean canAttack();
+  protected boolean canAttack() {
+    return this.type.getProjectileType() != null;
+  }
 
   protected abstract void handleDefeat();
 
+  @Override
   public boolean isDamageable() {
     return this.isVisible();
   }
 
   // TODO: this logic (and thus for MobActors too) doesnt seem quite right
   protected float getDuration(Vector2 a, Vector2 b) {
-    return a.dst(b) / this.speed;
+    return a.dst(b) / this.type.getSpeed();
+  }
+
+  @Override
+  public int getDamage() {
+    return this.type.getDamage();
+  }
+
+  @Override
+  public LevelStage getStage() {
+    return (LevelStage) super.getStage();
   }
 }

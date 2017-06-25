@@ -73,8 +73,6 @@ public class UnitGroup extends Group implements SelectableMover {
           if (actor != null) {
             UnitActor unit = (UnitActor) actor;
             unit.setType(type);
-            unit.setTextureRegion(getTextureRegion(type));
-            unit.setVisible(false); // causes a "spawn"
           }
         }
         actors.end();
