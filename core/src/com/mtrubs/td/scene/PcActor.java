@@ -52,6 +52,7 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
       if (this.deathCoolDown > 0.0F) {
         this.deathCoolDown -= delta;
         if (this.deathCoolDown <= 0.0F) {
+          setHitPoints(getType().getHealth());
           setVisible(true);
           getStage().getUnitManager().register(this);
         }

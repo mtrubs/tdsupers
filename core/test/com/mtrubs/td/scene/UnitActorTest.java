@@ -69,7 +69,7 @@ public class UnitActorTest extends AbstractApplicationTest {
     // when enough time passes for a respawn
     actor.act(6.0F);
     assertTrue("then it is present", actor.isVisible());
-    // assertEquals("and has health again", 2, getHitPoints(actor)); // FIXME: reset health
+    assertEquals("and has health again", 2, getHitPoints(actor));
     verify(unitManager, times(2).description("and it is registered again")).register(actor);
     verifyNoMoreInteractions(unitManager);
   }
