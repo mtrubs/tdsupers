@@ -63,7 +63,6 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
 
   @Override
   protected void handleDefeat() {
-    despawn();
     setVisible(false);
     this.deathCoolDown = getType().getDeathCoolDown();
   }

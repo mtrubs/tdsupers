@@ -25,7 +25,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
    */
   public CombatActor(float positionX, float positionY, TextureRegion textureRegion, T type) {
     super(positionX, positionY, textureRegion);
-    this.type = type;
+    setType(type);
   }
 
   protected T getType() {

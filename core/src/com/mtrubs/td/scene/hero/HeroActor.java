@@ -21,6 +21,7 @@ public class HeroActor extends PcActor<HeroUnit> implements SelectableMover {
   public HeroActor(HeroUnit type, TextureRegion textureRegion, float startX, float startY) {
     super(startX, startY, textureRegion, type);
     setHitPoints(type.getHealth());
+    setVisible(false);
 
     addListener(new ClickListener() {
 

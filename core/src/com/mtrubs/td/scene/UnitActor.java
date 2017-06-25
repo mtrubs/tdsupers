@@ -34,7 +34,6 @@ public class UnitActor extends PcActor<TowerUnit> {
     super(positionX, positionY, textureRegion, type);
     this.spawn = new Vector2(positionX, positionY);
     this.home = this.spawn;
-    setType(type);
   }
 
   @Override
