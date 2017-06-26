@@ -64,7 +64,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
 
     // make sure the current target (if there is one) is in range
     // TODO: i think this is preventing targeting from clearing correctly
-    if (this.target != null && (!isInRange(this.target) || !this.target.isDamageable())) {
+    if (this.target != null && (!this.target.isDamageable() || !isInRange(this.target))) {
       clearTarget();
     }
 
