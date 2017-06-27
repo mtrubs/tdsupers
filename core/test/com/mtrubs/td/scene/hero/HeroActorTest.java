@@ -82,12 +82,12 @@ public class HeroActorTest extends AbstractApplicationTest {
   public void target() {
     // a MOB that is in range and damageable
     MobActor first = mock(MobActor.class);
-    when(first.isDamageable()).thenReturn(true);
+    when(first.isVisible()).thenReturn(true);
     when(first.getCenter()).thenReturn(new Vector2(11.0F, 21.0F));
 
     // a MOB that is in range and damageable
     MobActor second = mock(MobActor.class);
-    when(second.isDamageable()).thenReturn(true);
+    when(second.isVisible()).thenReturn(true);
     when(second.getCenter()).thenReturn(new Vector2(12.0F, 22.0F));
 
     WaveManager waveManager = mock(WaveManager.class);
@@ -116,29 +116,29 @@ public class HeroActorTest extends AbstractApplicationTest {
     actor.act(0.5F);
     //noinspection ResultOfMethodCallIgnored
     verify(waveManager, description("then the actor checks the manager for a target")).getActiveMobs();
-    verify(first, description("and the actor checks the first MOB is targetable")).isDamageable();
+    verify(first, description("and the actor checks the first MOB is targetable")).isVisible();
     verify(first, description("and the actor checks the first MOB is in range")).getCenter();
     assertTrue("then the actor has a target", actor.hasTarget());
     assertTrue("and the actor is targeting the first MOB", actor.isTargeting(first));
     verifyNoMoreInteractions(waveManager, first, second);
 
     reset(first);
-    when(first.isDamageable()).thenReturn(false);
+    when(first.isVisible()).thenReturn(false);
 
     // when the first mob is no longer damageable
     clearInvocations(waveManager, first, second);
     actor.act(0.5F);
     //noinspection ResultOfMethodCallIgnored
     verify(waveManager, description("then the actor checks the manager for a target")).getActiveMobs();
-    verify(first, times(2).description("and the actor checks the first MOB is still valid and targetable")).isDamageable();
-    verify(second, description("and the actor checks the second MOB is targetable")).isDamageable();
+    verify(first, times(2).description("and the actor checks the first MOB is still valid and targetable")).isVisible();
+    verify(second, description("and the actor checks the second MOB is targetable")).isVisible();
     verify(second, description("and the actor checks the second MOB is in range")).getCenter();
     assertTrue("then the actor has a target", actor.hasTarget());
     assertTrue("and the actor is targeting the second MOB", actor.isTargeting(second));
     verifyNoMoreInteractions(waveManager, first, second);
 
     reset(second);
-    when(second.isDamageable()).thenReturn(true);
+    when(second.isVisible()).thenReturn(true);
     when(second.getCenter()).thenReturn(new Vector2(100.0F, 200.0F));
 
     // when the second mob is no longer in range
@@ -146,8 +146,8 @@ public class HeroActorTest extends AbstractApplicationTest {
     actor.act(0.5F);
     //noinspection ResultOfMethodCallIgnored
     verify(waveManager, description("then the actor checks the manager for a target")).getActiveMobs();
-    verify(first, description("and the actor checks the first MOB is still targetable")).isDamageable();
-    verify(second, times(2).description("and the actor checks the second MOB is valid and targetable")).isDamageable();
+    verify(first, description("and the actor checks the first MOB is still targetable")).isVisible();
+    verify(second, times(2).description("and the actor checks the second MOB is valid and targetable")).isVisible();
     verify(second, times(2).description("and the actor checks the second MOB is in range")).getCenter();
     assertFalse("then the actor has a target", actor.hasTarget());
     verifyNoMoreInteractions(waveManager, first, second);

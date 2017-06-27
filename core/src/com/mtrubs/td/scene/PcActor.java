@@ -83,7 +83,7 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
     LevelStage stage = getStage();
     // if able, towers will attack the first unit they can
     for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-      if (mob.isDamageable() && isInRange(mob)) {
+      if (isInRange(mob)) {
         return mob;
       }
     }

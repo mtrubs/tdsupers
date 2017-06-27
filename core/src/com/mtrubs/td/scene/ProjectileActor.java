@@ -30,7 +30,7 @@ public class ProjectileActor extends TextureRegionActor {
   @Override
   public void act(float delta) {
     super.act(delta);
-    if (this.target.isDamageable()) {
+    if (this.target.isVisible()) {
       // move towards the target
       Vector2 start = getCenter();
       Vector2 end = this.target.getCenter();

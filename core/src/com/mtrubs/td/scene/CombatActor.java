@@ -64,7 +64,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
 
     // make sure the current target (if there is one) is in range
     // TODO: i think this is preventing targeting from clearing correctly
-    if (this.target != null && (!this.target.isDamageable() || !isInRange(this.target))) {
+    if (this.target != null && !isInRange(this.target)) {
       clearTarget();
     }
 
@@ -124,7 +124,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   }
 
   protected boolean isInRange(Targetable target) {
-    if (target != null) {
+    if (target != null && target.isVisible()) {
       Vector2 unitLoc = getCenter();
       Vector2 mobLoc = target.getCenter();
       if (unitLoc.dst(mobLoc) < this.type.getRange()) {
@@ -139,11 +139,6 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   }
 
   protected abstract void handleDefeat();
-
-  @Override
-  public boolean isDamageable() {
-    return this.isVisible();
-  }
 
   // TODO: this logic (and thus for MobActors too) doesnt seem quite right
   protected float getDuration(Vector2 a, Vector2 b) {

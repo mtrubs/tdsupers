@@ -10,5 +10,5 @@ public interface Targetable {
 
   int getDamage();
 
-  boolean isDamageable();
+  boolean isVisible();
 }

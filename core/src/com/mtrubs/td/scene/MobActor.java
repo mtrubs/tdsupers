@@ -87,7 +87,7 @@ public class MobActor extends CombatActor<Mob> {
     // mobs will only attack the unit if it is attacking them
     // TODO: change this for different types of mobs
     for (PcActor unit : getStage().getUnitManager().getUnits()) {
-      if (unit.isDamageable() && unit.isTargeting(this) && isInRange(unit)) {
+      if (unit.isTargeting(this) && isInRange(unit)) {
         return unit;
       }
     }
