@@ -100,6 +100,7 @@ public class GdxTd extends ApplicationAdapter {
     super.render();
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
     float delta = Gdx.graphics.getDeltaTime() * this.levelStage.getSpeedFactor();
     this.levelStage.act(delta);

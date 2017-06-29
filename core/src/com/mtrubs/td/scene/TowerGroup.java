@@ -346,6 +346,7 @@ public class TowerGroup extends Group {
     // if set rally is clicked, we want to update the spawn point of the tower
     setRally.addListener(new ClickListener() {
 
+      @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
         deselect();
@@ -587,41 +588,4 @@ public class TowerGroup extends Group {
     public void handleClick(InputEvent event, float x, float y) {
     }
   }
-
-// TODO this is for drawing a transparent circle (tower range)
-//    private class CircleActor extends Actor {
-//        // TODO: this needs to be disposed
-//        private ShapeRenderer shapeRenderer;
-//
-//        private CircleActor(float xPosition, float yPosition) {
-//            this.shapeRenderer = new ShapeRenderer();
-//            setBounds(xPosition, yPosition, 125.0F, 125.0F);
-//        }
-//
-//        public void draw(Batch batch, float alpha) {
-//            super.draw(batch, alpha);
-//            batch.end();
-//
-//            // TODO: what is the right place to declare this?
-//            // enables alpha for shape rendering inside actors
-//            Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
-//
-//            this.shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-//            this.shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-//
-//            // Green filled transparent circle
-//            this.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            this.shapeRenderer.setColor(0.0F, 1.0F, 0.0F, 0.25F);
-//            this.shapeRenderer.circle(getX() + 32, getY() + 32, 85.0F);
-//            this.shapeRenderer.end();
-//
-//            // Green outlined circle
-//            this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//            this.shapeRenderer.setColor(0.0F, 1.0F, 0.0F, 0.75F);
-//            this.shapeRenderer.circle(getX() + 32, getY() + 32, 85.0F);
-//            this.shapeRenderer.end();
-//
-//            batch.begin();
-//        }
-//    }
 }

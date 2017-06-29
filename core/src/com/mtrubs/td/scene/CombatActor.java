@@ -1,18 +1,37 @@
 package com.mtrubs.td.scene;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mtrubs.td.graphics.Combatant;
+import com.mtrubs.td.scene.hero.SelectableMover;
 
 /**
  * Base actor that represents anything capable of engaging in combat.
  */
-public abstract class CombatActor<T extends Combatant> extends TextureRegionActor implements Targetable {
+public abstract class CombatActor<T extends Combatant> extends TextureRegionActor
+  implements Targetable, SelectableMover {
 
+  private static float HEIGHT_SCALE = 0.5F;
+  /**
+   * The range of this unit. Used to determine what we are able to attack.
+   * TODO: probably need one per skill...?
+   * TODO: use this to determine who to attack; current they do not line up
+   */
+  private final Ellipse range = new Ellipse();
   private Targetable target;
   private float attackCoolDown;
   private int hitPoints;
-
+  private boolean selected;
   private T type;
 
   /**
@@ -153,5 +172,95 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   @Override
   public LevelStage getStage() {
     return (LevelStage) super.getStage();
+  }
+
+  @Override
+  public void moveTo(InputEvent event) {
+    moveTo(getCenter(), event.getStageX(), event.getStageY());
+  }
+
+  @Override
+  public void select() {
+    this.selected = true;
+  }
+
+  @Override
+  public void deselect() {
+    this.selected = false;
+  }
+
+  @Override
+  public boolean isSelected() {
+    return this.selected;
+  }
+
+  private void moveTo(Vector2 from, float toX, float toY) {
+    // adjust to be the center
+    Vector2 to = new Vector2(toX - getWidth() / 2.0F, toY - getHeight() / 2.0F);
+
+    // stop other time-lines associated with this
+    getTweenManager().killTarget(this);
+    // move to the position
+    Timeline timeline = Timeline.createSequence().delay(0.0F);
+    float duration = getDuration(from, to);
+    timeline.push(Tween.to(this,
+      TextureRegionActorAccessor.POSITION_XY, duration).target(to.x, to.y).ease(TweenEquations.easeNone));
+    timeline.start(getTweenManager());
+  }
+
+  private TweenManager getTweenManager() {
+    return getStage().getTweenManager();
+  }
+
+  @Override
+  public void draw(Batch batch, float alpha) {
+    updateRange();
+
+    // render this first if necessary so it ends up behind the image, gives illusion of depth.
+    if (this.selected) {
+      batch.end();
+      Gdx.gl.glEnable(GL20.GL_BLEND);
+
+      ShapeRenderer shapeRenderer = getStage().getShapeRenderer();
+      shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+      shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+
+      float selectWidth = getWidth() + 5.0F;
+      float selectHeight = getWidth() * HEIGHT_SCALE;
+      float selectX = getCenterX() - selectWidth * 0.5F;
+      float selectY = getY() - selectHeight * 0.5F;
+
+      // Green outlined ellipse
+      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+      shapeRenderer.setColor(0.0F, 1.0F, 0.0F, alpha * 0.5F);
+      shapeRenderer.ellipse(selectX, selectY, selectWidth, selectHeight);
+      shapeRenderer.end();
+
+      // blue filled transparent circle
+      shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+      shapeRenderer.setColor(0.0F, 0.0F, 1.0F, alpha * 0.1F);
+      shapeRenderer.ellipse(this.range.x, this.range.y, this.range.width, this.range.height);
+      shapeRenderer.end();
+
+      // blue outlined circle
+      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+      shapeRenderer.setColor(0.0F, 0.0F, 1.0F, alpha * 0.5F);
+      shapeRenderer.ellipse(this.range.x, this.range.y, this.range.width, this.range.height);
+      shapeRenderer.end();
+
+      Gdx.gl.glDisable(GL20.GL_BLEND);
+      batch.begin();
+    }
+
+    super.draw(batch, alpha);
+  }
+
+  private void updateRange() {
+    T type = getType();
+    float rangeWidth = type == null ? 0.0F : type.getRange();
+    float rangeHeight = type == null ? 0.0F : type.getRange() * HEIGHT_SCALE;
+    float rangeX = getCenterX() - rangeWidth * 0.5F;
+    float rangeY = getY() - rangeHeight * 0.5F;
+    this.range.set(rangeX, rangeY, rangeWidth, rangeHeight);
   }
 }

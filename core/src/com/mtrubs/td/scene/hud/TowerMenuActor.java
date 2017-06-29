@@ -38,11 +38,12 @@ public class TowerMenuActor extends TextureRegionActor {
       style.font = new BitmapFont();
       style.fontColor = Color.BLACK;
       this.cost = new Label(TEXT, style);
-      this.cost.setX(getCenterX() - (this.cost.getPrefWidth() / 2.0F));
+      this.cost.setX(getCenterX() - (this.cost.getWidth() / 2.0F));
       this.cost.setY(getY() - this.costRegion.getRegionHeight() + OVERLAP);
     }
   }
 
+  @Override
   public void setTextureRegion(TextureRegion textureRegion) {
     super.setTextureRegion(textureRegion);
     if (this.costRegion != null && this.cost != null) {
@@ -80,7 +81,8 @@ public class TowerMenuActor extends TextureRegionActor {
     super.draw(batch, alpha);
     if (this.costRegion != null) {
       float height = this.costRegion.getRegionHeight();
-      batch.draw(this.costRegion, getX(), getY() - height + OVERLAP, getOriginX(), getOriginY(),
+      batch.draw(this.costRegion, getCenterX() - (this.costRegion.getRegionWidth() / 2.0F),
+        getY() - height + OVERLAP, getOriginX(), getOriginY(),
         this.costRegion.getRegionWidth(), height,
         getScaleX(), getScaleY(), getRotation());
     }

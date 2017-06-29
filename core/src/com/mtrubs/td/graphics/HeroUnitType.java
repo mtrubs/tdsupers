@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 
 public enum HeroUnitType implements HeroUnit {
 
-  TestHero1("images/towers/TestHero1/heroUnit.png", 10, 50.0F, 20.0F, 10.0F, 50.0F, 20, 25.0F, ProjectileType.RedBullet),
-  TestHero2("images/towers/TestHero2/heroUnit.png", 20, 40.0F, 20.0F, 5.0F, 50.0F, 15, 30.0F, ProjectileType.RedBullet),
-  TestHero3("images/towers/TestHero3/heroUnit.png", 30, 30.0F, 20.0F, 3.0F, 50.0F, 5, 35.0F, ProjectileType.RedBullet);
+  TestHero1("images/towers/TestHero1/heroUnit.png", 10, 150.0F, 20.0F, 10.0F, 50.0F, 20, 25.0F, ProjectileType.RedBullet),
+  TestHero2("images/towers/TestHero2/heroUnit.png", 20, 140.0F, 20.0F, 5.0F, 50.0F, 15, 30.0F, ProjectileType.RedBullet),
+  TestHero3("images/towers/TestHero3/heroUnit.png", 30, 130.0F, 20.0F, 3.0F, 50.0F, 5, 35.0F, ProjectileType.RedBullet);
 
   private final String texturePath;
   private final String key;
