@@ -212,7 +212,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     updateRange();
 
     // render this first if necessary so it ends up behind the image, gives illusion of depth.
-    if (this.selected) {
+    if (this.selected || LevelStage.DEBUG) {
       batch.end();
       Gdx.gl.glEnable(GL20.GL_BLEND);
 
@@ -220,16 +220,18 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
       shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
       shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
-      float selectWidth = getWidth() + 5.0F;
-      float selectHeight = getWidth() * HEIGHT_SCALE;
-      float selectX = getCenterX() - selectWidth * 0.5F;
-      float selectY = getY() - selectHeight * 0.5F;
+      if (this.selected) {
+        float selectWidth = getWidth() + 5.0F;
+        float selectHeight = getWidth() * HEIGHT_SCALE;
+        float selectX = getCenterX() - selectWidth * 0.5F;
+        float selectY = getY() - selectHeight * 0.5F;
 
-      // Green outlined ellipse
-      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-      shapeRenderer.setColor(0.0F, 1.0F, 0.0F, alpha * 0.5F);
-      shapeRenderer.ellipse(selectX, selectY, selectWidth, selectHeight);
-      shapeRenderer.end();
+        // Green outlined ellipse
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0.0F, 1.0F, 0.0F, alpha * 0.5F);
+        shapeRenderer.ellipse(selectX, selectY, selectWidth, selectHeight);
+        shapeRenderer.end();
+      }
 
       // why is this translation is needed vs ellipse.x, ellipse.y?
       // the x,y seem to be the center for intersections but bottom left for drawing

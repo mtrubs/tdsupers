@@ -26,6 +26,7 @@ import java.util.Collection;
  */
 public class LevelStage extends Stage implements CurrencyWatcher {
 
+  public static final boolean DEBUG = false;
   /**
    * The closest we are allowed to zoom in.
    */

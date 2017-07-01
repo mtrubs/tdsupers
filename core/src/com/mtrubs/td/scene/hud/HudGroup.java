@@ -1,6 +1,8 @@
 package com.mtrubs.td.scene.hud;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -212,6 +214,7 @@ public class HudGroup extends Group {
       addActor(actor);
       actor.addListener(new ClickListener() {
 
+        @Override
         public void clicked(InputEvent event, float x, float y) {
           super.clicked(event, x, y);
           SelectableMover selectable = getHeroManager().getActor(hero);
@@ -292,6 +295,17 @@ public class HudGroup extends Group {
 
   private CurrencyManager getCurrencyManager() {
     return ((LevelStage) getStage()).getCurrencyManager();
+  }
+
+  @Override
+  public void draw(Batch batch, float alpha) {
+    // this is done to fix the HUD on the camera no matter where it moves
+    Camera camera = getStage().getCamera();
+    setPosition(camera.position.x - camera.viewportWidth / 2.0F,
+      camera.position.y - camera.viewportHeight / 2.0F);
+    // TODO: check scaling
+    // TODO: the wave callers need to be a little smarter in regards to camera
+    super.draw(batch, alpha);
   }
 
   /**
