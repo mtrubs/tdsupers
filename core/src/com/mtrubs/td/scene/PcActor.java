@@ -41,12 +41,6 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
     super.setVisible(visible);
   }
 
-  @Override
-  protected void handleTarget(float delta) {
-    super.handleTarget(delta);
-    attackTarget(delta);
-  }
-
   protected void respawn(float delta) {
     if (hasUnit() && !isVisible()) {
       if (this.deathCoolDown > 0.0F) {
@@ -82,8 +76,9 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
   protected Targetable checkForTarget() {
     LevelStage stage = getStage();
     // if able, towers will attack the first unit they can
+    // TODO: change this for different types
     for (MobActor mob : stage.getWaveManager().getActiveMobs()) {
-      if (isInRange(mob)) {
+      if (isTargetable(mob)) {
         return mob;
       }
     }

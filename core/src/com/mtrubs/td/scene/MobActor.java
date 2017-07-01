@@ -46,10 +46,9 @@ public class MobActor extends CombatActor<Mob> {
 
   @Override
   protected void handleTarget(float delta) {
-    super.handleTarget(delta);
     // if we have a target we stop moving and attack it
     stopMoving();
-    attackTarget(delta);
+    super.handleTarget(delta);
   }
 
   @Override
@@ -85,9 +84,9 @@ public class MobActor extends CombatActor<Mob> {
   @Override
   protected Targetable checkForTarget() {
     // mobs will only attack the unit if it is attacking them
-    // TODO: change this for different types of mobs
+    // TODO: change this for different types
     for (PcActor unit : getStage().getUnitManager().getUnits()) {
-      if (unit.isTargeting(this) && isInRange(unit)) {
+      if (unit.isTargeting(this) && isTargetable(unit)) {
         return unit;
       }
     }

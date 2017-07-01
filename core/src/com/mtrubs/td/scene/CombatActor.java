@@ -45,6 +45,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   public CombatActor(float positionX, float positionY, TextureRegion textureRegion, T type) {
     super(positionX, positionY, textureRegion);
     setType(type);
+    updateRange();
   }
 
   protected T getType() {
@@ -83,7 +84,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
 
     // make sure the current target (if there is one) is in range
     // TODO: i think this is preventing targeting from clearing correctly
-    if (this.target != null && !isInRange(this.target)) {
+    if (!isTargetable(this.target)) {
       clearTarget();
     }
 
@@ -98,6 +99,10 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     } else {
       handleTarget(delta);
     }
+  }
+
+  protected boolean isTargetable(Targetable target) {
+    return target != null && target.isVisible() && this.range.contains(target.getCenter());
   }
 
   @Override
@@ -123,6 +128,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   }
 
   protected void handleTarget(float delta) {
+    attackTarget(delta);
   }
 
   private void resetCoolDown() {
@@ -142,24 +148,13 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     }
   }
 
-  protected boolean isInRange(Targetable target) {
-    if (target != null && target.isVisible()) {
-      Vector2 unitLoc = getCenter();
-      Vector2 mobLoc = target.getCenter();
-      if (unitLoc.dst(mobLoc) < this.type.getRange()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   protected boolean canAttack() {
     return this.type.getProjectileType() != null;
   }
 
   protected abstract void handleDefeat();
 
-  // TODO: this logic (and thus for MobActors too) doesnt seem quite right
+  // TODO: this logic doesnt seem quite right
   protected float getDuration(Vector2 a, Vector2 b) {
     return a.dst(b) / this.type.getSpeed();
   }
@@ -236,16 +231,21 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
       shapeRenderer.ellipse(selectX, selectY, selectWidth, selectHeight);
       shapeRenderer.end();
 
+      // why is this translation is needed vs ellipse.x, ellipse.y?
+      // the x,y seem to be the center for intersections but bottom left for drawing
+      float rangeX = this.range.x - this.range.width * 0.5F;
+      float rangeY = getY() - this.range.height * 0.5F;
+
       // blue filled transparent circle
       shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
       shapeRenderer.setColor(0.0F, 0.0F, 1.0F, alpha * 0.1F);
-      shapeRenderer.ellipse(this.range.x, this.range.y, this.range.width, this.range.height);
+      shapeRenderer.ellipse(rangeX, rangeY, this.range.width, this.range.height);
       shapeRenderer.end();
 
       // blue outlined circle
       shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
       shapeRenderer.setColor(0.0F, 0.0F, 1.0F, alpha * 0.5F);
-      shapeRenderer.ellipse(this.range.x, this.range.y, this.range.width, this.range.height);
+      shapeRenderer.ellipse(rangeX, rangeY, this.range.width, this.range.height);
       shapeRenderer.end();
 
       Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -259,8 +259,8 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     T type = getType();
     float rangeWidth = type == null ? 0.0F : type.getRange();
     float rangeHeight = type == null ? 0.0F : type.getRange() * HEIGHT_SCALE;
-    float rangeX = getCenterX() - rangeWidth * 0.5F;
-    float rangeY = getY() - rangeHeight * 0.5F;
+    float rangeX = getCenterX();
+    float rangeY = getCenterY();
     this.range.set(rangeX, rangeY, rangeWidth, rangeHeight);
   }
 }
