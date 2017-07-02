@@ -128,7 +128,6 @@ public class LevelStage extends Stage implements CurrencyWatcher {
      - some kind of informational note
      - (if range changes) distance changes to grey with unit upgrade distance in blue/green
     on click of rally
-     - next click in range becomes rally point
      - unit range indicator moves to rally
     on drag from tower
      - unit range indicator becomes grey
@@ -136,11 +135,22 @@ public class LevelStage extends Stage implements CurrencyWatcher {
      - rally becomes end point
     */
 
-    // deselects every tower that we have not clicked on
     addListener(new ClickListener() {
 
       @Override
+      public boolean scrolled(InputEvent event, float x, float y, int amount) {
+        super.scrolled(event, x, y, amount);
+        // handles mouse wheel scroll zooming
+        OrthographicCamera camera = (OrthographicCamera) event.getStage().getCamera();
+        camera.zoom = MathUtils.clamp(camera.zoom - 0.1F * (float) amount, MIN_ZOOM, MAX_ZOOM);
+        clampCamera(event.getStage(), levelMapActor, camera);
+        camera.update();
+        return true;
+      }
+
+      @Override
       public void clicked(InputEvent event, float x, float y) {
+        // deselects every tower that we have not clicked on
         super.clicked(event, x, y);
         // this seems too tied to the setup
         Actor hit = hit(x, y, true).getParent().getParent();

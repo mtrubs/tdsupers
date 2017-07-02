@@ -1,7 +1,7 @@
 package com.mtrubs.td.scene.hud;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -300,10 +300,11 @@ public class HudGroup extends Group {
   @Override
   public void draw(Batch batch, float alpha) {
     // this is done to fix the HUD on the camera no matter where it moves
-    Camera camera = getStage().getCamera();
-    setPosition(camera.position.x - camera.viewportWidth / 2.0F,
-      camera.position.y - camera.viewportHeight / 2.0F);
-    // TODO: check scaling
+    // and to keep it the same size no matter how much we zoom in or out.
+    OrthographicCamera camera = (OrthographicCamera) getStage().getCamera();
+    setScale(camera.zoom);
+    setPosition(camera.position.x - camera.viewportWidth / 2.0F * camera.zoom,
+      camera.position.y - camera.viewportHeight / 2.0F * camera.zoom);
     // TODO: the wave callers need to be a little smarter in regards to camera
     super.draw(batch, alpha);
   }

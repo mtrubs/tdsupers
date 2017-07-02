@@ -25,7 +25,6 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   /**
    * The range of this unit. Used to determine what we are able to attack.
    * TODO: probably need one per skill...?
-   * TODO: use this to determine who to attack; current they do not line up
    */
   private final Ellipse range = new Ellipse();
   private Targetable target;
