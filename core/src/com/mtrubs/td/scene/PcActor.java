@@ -2,8 +2,9 @@ package com.mtrubs.td.scene;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mtrubs.td.graphics.PlayerControlled;
+import com.mtrubs.td.scene.hud.CooldownManager;
 
-public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T> {
+public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T> implements CooldownManager {
 
   private float deathCoolDown;
 
@@ -83,5 +84,11 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
       }
     }
     return super.checkForTarget();
+  }
+
+  @Override
+  public float getPercentCooldown() {
+    T type = getType();
+    return type == null ? 0.0F : this.deathCoolDown / type.getDeathCoolDown() * 0.75F;
   }
 }

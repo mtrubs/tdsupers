@@ -18,7 +18,7 @@ import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
-import com.mtrubs.td.scene.hero.SelectableMover;
+import com.mtrubs.td.scene.hero.HeroActor;
 
 import java.util.Locale;
 
@@ -205,11 +205,13 @@ public class HudGroup extends Group {
 
   private void addBottomLeft() {
     // This is the bottom left HUD; handles hero info
+    TextureRegion cooldown = getTextureRegion(HeadsUpDisplay.Cooldown);
     float x = 0.0F;
     for (final Hero hero : getHeroManager().getActiveHeroes()) {
+      final HeroActor current = getHeroManager().getActor(hero);
       TextureRegion textureRegion = getTextureRegion(hero.getThumbnail());
-      TextureRegionActor actor = new TextureRegionActor(
-        x + PAD, PAD, textureRegion);
+      CooldownActor actor = new CooldownActor(
+        x + PAD, PAD, textureRegion, cooldown, current);
       x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
       addActor(actor);
       actor.addListener(new ClickListener() {
@@ -217,18 +219,11 @@ public class HudGroup extends Group {
         @Override
         public void clicked(InputEvent event, float x, float y) {
           super.clicked(event, x, y);
-          SelectableMover selectable = getHeroManager().getActor(hero);
-          if (selectable != null) {
-            if (selectable.isSelected()) {
-              selectable = null; // deselect
-            }
-            ((LevelStage) getStage()).setSelected(selectable);
-          }
+          ((LevelStage) getStage()).setSelected(current == null || current.isSelected() ? null : current);
         }
       });
 
       // TODO: add health indicator
-      // TODO: cooldown indicator on death
     }
   }
 

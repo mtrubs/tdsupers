@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public enum HeadsUpDisplay implements TextureReference {
 
+  Cooldown("images/hud/cooldown.png"),
   Currency("images/hud/influence.png"),
   FastForwardOff("images/hud/fastForwardOff.png"),
   FastForwardOn("images/hud/fastForwardOn.png"),
