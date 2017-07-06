@@ -1,6 +1,6 @@
 package com.mtrubs.td.scene.hud;
 
-public interface CooldownManager {
+public interface CooldownInformer {
 
   float getPercentCooldown();
 }

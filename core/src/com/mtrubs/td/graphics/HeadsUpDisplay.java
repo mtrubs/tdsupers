@@ -12,6 +12,7 @@ public enum HeadsUpDisplay implements TextureReference {
   FastForwardOff("images/hud/fastForwardOff.png"),
   FastForwardOn("images/hud/fastForwardOn.png"),
   Health("images/hud/health.png"),
+  HeroHealth("images/hud/heroHealth.png"),
   PauseOff("images/hud/pauseOff.png"),
   PauseOn("images/hud/pauseOn.png"),
   WaveCaller("images/hud/waveCaller.png"),

@@ -109,4 +109,9 @@ public class MobActor extends CombatActor<Mob> {
   private TweenManager getTweenManager() {
     return getStage().getTweenManager();
   }
+
+  @Override
+  protected int getMaxHealth() {
+    return getType().getHealth();
+  }
 }

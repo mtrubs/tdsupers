@@ -206,15 +206,19 @@ public class HudGroup extends Group {
   private void addBottomLeft() {
     // This is the bottom left HUD; handles hero info
     TextureRegion cooldown = getTextureRegion(HeadsUpDisplay.Cooldown);
+    TextureRegion health = getTextureRegion(HeadsUpDisplay.HeroHealth);
+
     float x = 0.0F;
     for (final Hero hero : getHeroManager().getActiveHeroes()) {
       final HeroActor current = getHeroManager().getActor(hero);
-      TextureRegion textureRegion = getTextureRegion(hero.getThumbnail());
-      CooldownActor actor = new CooldownActor(
-        x + PAD, PAD, textureRegion, cooldown, current);
-      x = actor.getX() + actor.getWidth(); // sets up the next to be beside it
-      addActor(actor);
-      actor.addListener(new ClickListener() {
+      TextureRegion thumbnail = getTextureRegion(hero.getThumbnail());
+
+      // the hero thumbnail
+      HeroHealthActor thumbnailActor = new HeroHealthActor(x + PAD, PAD,
+        thumbnail, health, cooldown, current);
+      x = thumbnailActor.getX() + thumbnailActor.getWidth(); // sets up the next to be beside it
+      addActor(thumbnailActor);
+      thumbnailActor.addListener(new ClickListener() {
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
@@ -222,8 +226,6 @@ public class HudGroup extends Group {
           ((LevelStage) getStage()).setSelected(current == null || current.isSelected() ? null : current);
         }
       });
-
-      // TODO: add health indicator
     }
   }
 

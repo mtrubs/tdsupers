@@ -8,7 +8,7 @@ import com.mtrubs.td.scene.TextureRegionActor;
 
 public class CooldownActor extends TextureRegionActor {
 
-  private final CooldownManager cooldownManager;
+  private final CooldownInformer cooldownInformer;
   private final Sprite cooldown;
 
   /**
@@ -18,23 +18,23 @@ public class CooldownActor extends TextureRegionActor {
    * @param positionY       the y coordinate of this actor.
    * @param textureRegion   the texture of this actor.
    * @param cooldown        the cooldown image.
-   * @param cooldownManager manages the cooldown associated with this actor.
+   * @param cooldownInformer manages the cooldown associated with this actor.
    */
   public CooldownActor(float positionX, float positionY,
                        TextureRegion textureRegion,
                        TextureRegion cooldown,
-                       CooldownManager cooldownManager) {
+                       CooldownInformer cooldownInformer) {
     super(positionX, positionY, textureRegion);
     this.cooldown = new Sprite(cooldown);
     this.cooldown.setX(positionX);
     this.cooldown.setY(positionY);
-    this.cooldownManager = cooldownManager;
+    this.cooldownInformer = cooldownInformer;
   }
 
   @Override
   public void draw(Batch batch, float alpha) {
     super.draw(batch, alpha);
-    float cooldown = this.cooldownManager.getPercentCooldown();
+    float cooldown = this.cooldownInformer.getPercentCooldown();
     if (cooldown > 0.0F) {
       setTouchable(Touchable.disabled);
       this.cooldown.draw(batch, cooldown);

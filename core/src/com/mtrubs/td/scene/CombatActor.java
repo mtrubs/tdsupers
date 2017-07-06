@@ -14,12 +14,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mtrubs.td.graphics.Combatant;
 import com.mtrubs.td.scene.hero.SelectableMover;
+import com.mtrubs.td.scene.hud.HealthInformer;
 
 /**
  * Base actor that represents anything capable of engaging in combat.
  */
 public abstract class CombatActor<T extends Combatant> extends TextureRegionActor
-  implements Targetable, SelectableMover {
+  implements Targetable, SelectableMover, HealthInformer {
 
   private static float HEIGHT_SCALE = 0.5F;
   /**
@@ -264,4 +265,13 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     float rangeY = getCenterY();
     this.range.set(rangeX, rangeY, rangeWidth, rangeHeight);
   }
+
+  @Override
+  public float getPercentHealth() {
+    float health = this.hitPoints;
+    float max = getMaxHealth();
+    return Math.max(0.0F, health / max);
+  }
+
+  protected abstract int getMaxHealth();
 }
