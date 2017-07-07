@@ -6,9 +6,9 @@ import com.mtrubs.util.Nullable;
 
 public enum HeroUnitType implements HeroUnit {
 
-  TestHero1("images/towers/TestHero1/heroUnit.png", 10, 250.0F, 20.0F, 10.0F, 50.0F, 20, 25.0F, ProjectileType.RedBullet),
-  TestHero2("images/towers/TestHero2/heroUnit.png", 20, 225.0F, 20.0F, 5.0F, 50.0F, 15, 30.0F, ProjectileType.RedBullet),
-  TestHero3("images/towers/TestHero3/heroUnit.png", 30, 200.0F, 20.0F, 3.0F, 50.0F, 5, 35.0F, ProjectileType.RedBullet);
+  TestHero1("images/towers/TestHero1/heroUnit.png", 10, 1, 250.0F, 20.0F, 10.0F, 50.0F, 20, 25.0F, ProjectileType.RedBullet),
+  TestHero2("images/towers/TestHero2/heroUnit.png", 20, 1, 225.0F, 20.0F, 5.0F, 50.0F, 15, 30.0F, ProjectileType.RedBullet),
+  TestHero3("images/towers/TestHero3/heroUnit.png", 30, 2, 200.0F, 20.0F, 3.0F, 50.0F, 5, 35.0F, ProjectileType.RedBullet);
 
   private final String texturePath;
   private final String key;
@@ -18,10 +18,11 @@ public enum HeroUnitType implements HeroUnit {
   private final float deathCoolDown;
   private final int damage;
   private final int health;
+  private final int hps;
   private final ProjectileType projectileType;
   private final float speed;
 
-  private HeroUnitType(String texturePath, int health, float range, float engageRange, float attackCoolDown,
+  private HeroUnitType(String texturePath, int health, int hps, float range, float engageRange, float attackCoolDown,
                        float deathCoolDown, int damage, float speed, ProjectileType projectileType) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
@@ -32,6 +33,7 @@ public enum HeroUnitType implements HeroUnit {
     this.deathCoolDown = deathCoolDown;
     this.damage = damage;
     this.health = health;
+    this.hps = hps;
     this.speed = speed;
     this.projectileType = projectileType;
   }
@@ -55,6 +57,11 @@ public enum HeroUnitType implements HeroUnit {
   @Override
   public int getHealth() {
     return this.health;
+  }
+
+  @Override
+  public int getHps() {
+    return this.hps;
   }
 
   @Nullable

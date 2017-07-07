@@ -6,7 +6,12 @@ import com.mtrubs.td.scene.hud.CooldownInformer;
 
 public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T> implements CooldownInformer {
 
+  private static final float OUT_OF_COMBAT = 5.0F;
+  private static final float HEAL_TICK = 1.0F;
+
   private float deathCoolDown;
+  private float outOfCombatTimer;
+  private float healTimer;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
@@ -24,6 +29,29 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
   public void act(float delta) {
     respawn(delta);
     super.act(delta);
+  }
+
+  @Override
+  protected void handleNoTarget(float delta) {
+    super.handleNoTarget(delta);
+    this.outOfCombatTimer += delta;
+    if (this.outOfCombatTimer > OUT_OF_COMBAT) { // once a PC has been OOC for 5 seconds it can heal
+      this.healTimer += delta;
+      if (this.healTimer > HEAL_TICK) {
+        T type = getType();
+        int hps = type == null ? 0 : type.getHps();
+        int ticks = Math.round(this.healTimer / HEAL_TICK);
+        heal(ticks * hps);
+      }
+      this.healTimer %= HEAL_TICK;
+    }
+  }
+
+  @Override
+  protected void handleTarget(float delta) {
+    super.handleTarget(delta);
+    this.outOfCombatTimer = 0.0F;
+    this.healTimer = 0.0F;
   }
 
   @Override

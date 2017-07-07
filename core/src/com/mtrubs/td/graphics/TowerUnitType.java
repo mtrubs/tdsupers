@@ -9,11 +9,11 @@ import com.mtrubs.util.Nullable;
  */
 public enum TowerUnitType implements TowerUnit {
 
-  TestHero1Unit("images/towers/TestHero1/towerUnit1.png", 30, 250.0F, 100.0F, 10.0F, 5.0F, 10,
+  TestHero1Unit("images/towers/TestHero1/towerUnit1.png", 30, 2, 250.0F, 100.0F, 10.0F, 5.0F, 10,
     ProjectileType.YellowBullet),
-  TestHero2Unit("images/towers/TestHero2/towerUnit1.png", 30, 225.0F, 150.0F, 6.0F, 5.0F, 10,
+  TestHero2Unit("images/towers/TestHero2/towerUnit1.png", 30, 3, 225.0F, 150.0F, 6.0F, 5.0F, 10,
     ProjectileType.YellowBullet),
-  TestHero3Unit("images/towers/TestHero3/towerUnit1.png", 30, 200.0F, 200.0F, 10.0F, 10.0F, 10,
+  TestHero3Unit("images/towers/TestHero3/towerUnit1.png", 30, 3, 200.0F, 200.0F, 10.0F, 10.0F, 10,
     ProjectileType.YellowBullet);
 
   private final String texturePath;
@@ -24,9 +24,10 @@ public enum TowerUnitType implements TowerUnit {
   private final float deathCoolDown;
   private final int damage;
   private final int health;
+  private final int hps;
   private final ProjectileType projectileType;
 
-  private TowerUnitType(String texturePath, int health, float range, float engageRange,
+  private TowerUnitType(String texturePath, int health, int hps, float range, float engageRange,
                         float deathCoolDown, float attackCoolDown, int damage,
                         ProjectileType projectileType) {
     this.texturePath = texturePath;
@@ -37,6 +38,7 @@ public enum TowerUnitType implements TowerUnit {
     this.projectileType = projectileType;
     this.damage = damage;
     this.health = health;
+    this.hps = hps;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }
 
@@ -85,6 +87,11 @@ public enum TowerUnitType implements TowerUnit {
   @Override
   public int getHealth() {
     return this.health;
+  }
+
+  @Override
+  public int getHps() {
+    return this.hps;
   }
 
   @Override

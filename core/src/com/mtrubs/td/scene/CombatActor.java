@@ -108,10 +108,19 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   @Override
   public void damage(int amount) {
     if (this.hitPoints > 0) {
-      this.hitPoints -= amount;
-      if (this.hitPoints <= 0) {
+      // ensure that we do not exceed 0
+      this.hitPoints = Math.max(0, this.hitPoints - amount);
+      if (this.hitPoints == 0) {
         handleDefeat();
       }
+    }
+  }
+
+  public void heal(int amount) {
+    int max = getMaxHealth();
+    if (this.hitPoints > 0 && this.hitPoints < max) {
+      // ensure that we do not exceed the max
+      this.hitPoints = Math.min(max, this.hitPoints + amount);
     }
   }
 
