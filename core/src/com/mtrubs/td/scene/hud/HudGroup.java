@@ -33,6 +33,7 @@ public class HudGroup extends Group {
   private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
   private static final float WAVE_CALLER_POP = 10.0F;
+  private static final float WAVE_BONUS_WIGGLE = 0.85F;
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
@@ -63,13 +64,26 @@ public class HudGroup extends Group {
 
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        // TODO: bonus currency for early click
         // used as an alternative to the 'hit' method since this disappears on click
         event.setRelatedActor(HudGroup.this.waveCaller);
+        // if they call a wave early they get a bonus
+        awardBonus();
         startNextWave();
       }
     });
     addActor(this.waveCaller);
+  }
+
+  private void awardBonus() {
+    int bonus = getWaveManager().getNextWaveBonus();
+    float max = WAVE_CALLER_POP * WAVE_BONUS_WIGGLE; // give a small leeway to allow 100%
+    if (this.timeToNextWave < max) {
+      bonus = Math.round(bonus * this.timeToNextWave / max);
+    }
+    if (bonus > 0) {
+      System.out.println("Bonus: " + bonus);
+      getCurrencyManager().add(bonus);
+    }
   }
 
   private TextureRegion getTextureRegion(TextureReference type) {

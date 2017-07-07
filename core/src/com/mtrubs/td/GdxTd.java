@@ -65,10 +65,10 @@ public class GdxTd extends ApplicationAdapter {
 
     // Wave Setup
     List<Wave> waves = new ArrayList<Wave>();
-    waves.add(new Wave(0.0F, this.textureRegionManager));
-    waves.add(new Wave(30.0F, this.textureRegionManager));
-    waves.add(new Wave(30.0F, this.textureRegionManager));
-    waves.add(new Wave(30.0F, this.textureRegionManager));
+    waves.add(new Wave(0.0F, 0, this.textureRegionManager));
+    waves.add(new Wave(30.0F, 50, this.textureRegionManager));
+    waves.add(new Wave(30.0F, 51, this.textureRegionManager));
+    waves.add(new Wave(30.0F, 52, this.textureRegionManager));
     com.mtrubs.td.config.WaveManager waveManager = new com.mtrubs.td.config.WaveManager(waves);
 
     // the current level

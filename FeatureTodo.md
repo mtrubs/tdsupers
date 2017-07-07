@@ -12,7 +12,6 @@
   * Heroic / Epic / Legendary
 * heroes
   * Skill Actions
-  * hero unit
 * Defeat / Victory
   * MOB Goal Spot
   * Moveable Goal Spot
@@ -20,8 +19,8 @@
   * info messages
   * Melee
   * Tower Upgrade Effects
-  * unit spawning (up to amount)
-  * rally point
+  * dynamic unit count
+  * rally point bound
 * animation
 * sound
   * music
@@ -29,7 +28,6 @@
 * waves
   * multiple wave spawn points
   * wave announcement
-  * bonus currency for early click
 * menu
   * sound volume
   * music volume

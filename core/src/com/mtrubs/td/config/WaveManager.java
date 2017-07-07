@@ -62,33 +62,44 @@ public class WaveManager {
     return this.waves.size();
   }
 
+  /**
+   * Returns the current wave as a person would think of it [1,...,n] or
+   * the next wave as an array would think of it [0,...,n].
+   *
+   * @return number of the current wave; index of the next wave.
+   */
   public int getCurrentWave() {
     // this is + 1 due to array index starting at 0
     return this.wave + 1;
+  }
+
+  // for readability
+  private int getNextWaveIndex() {
+    return getCurrentWave();
   }
 
   /**
    * @return the location of the next wave's start point. X coordinate.
    */
   public float getNextStartX() {
-    int current = getCurrentWave();
-    return current < this.waves.size() ? this.waves.get(current).getStartX() : 0.0F;
+    int next = getNextWaveIndex();
+    return next < this.waves.size() ? this.waves.get(next).getStartX() : 0.0F;
   }
 
   /**
    * @return the location of the next wave's start point. Y coordinate.
    */
   public float getNextStartY() {
-    int current = getCurrentWave();
-    return current < this.waves.size() ? this.waves.get(current).getStartY() : 0.0F;
+    int next = getNextWaveIndex();
+    return next < this.waves.size() ? this.waves.get(next).getStartY() : 0.0F;
   }
 
   /**
    * @return the delay until the next wave should start
    */
   public float getNextWaveDelay() {
-    int current = getCurrentWave();
-    return current < this.waves.size() ? this.waves.get(current).getDelay() : 100.0F;
+    int next = getNextWaveIndex();
+    return next < this.waves.size() ? this.waves.get(next).getDelay() : 100.0F;
   }
 
   /**
@@ -98,13 +109,23 @@ public class WaveManager {
    * @return true if we are running the firth through last waves.
    */
   public boolean isActive() {
-    int current = getCurrentWave();
-    return current > 0 && current < this.getTotalWaves();
+    int next = getNextWaveIndex(); // 0 if we have not started yet
+    return next > 0 && next < this.getTotalWaves();
   }
 
   public void sort() {
     if (this.wave >= 0) {
       Collections.sort(this.mobs, MOB_COMPARATOR);
     }
+  }
+
+  /**
+   * Gets the maximum amount of bonus currency that can be awarded for calling this wave early.
+   *
+   * @return the amount of bonus currency to be awarded (max).
+   */
+  public int getNextWaveBonus() {
+    int next = getNextWaveIndex();
+    return next > 0 && next < this.getTotalWaves() ? this.waves.get(next).getBonusCurrency() : 0;
   }
 }

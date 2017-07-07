@@ -25,11 +25,15 @@ public class Wave {
    */
   private final float delay;
   /**
+   * How much currency bonus received for starting the way early (max).
+   */
+  private final int bonusCurrency;
+  /**
    * The list of mobs associated with this wave.
    */
   private final List<MobActor> mobs;
 
-  public Wave(float delay, TextureRegionManager textureRegionManager) {
+  public Wave(float delay, int bonusCurrency, TextureRegionManager textureRegionManager) {
     // TODO: path moves to be configurable
     Vector2[] values = {
       new Vector2(-100.0F, 289.0F),
@@ -76,6 +80,7 @@ public class Wave {
     this.startX = path[0].x;
     this.startY = path[0].y;
     this.delay = delay;
+    this.bonusCurrency = bonusCurrency;
 
     this.mobs = new ArrayList<MobActor>(5); // TODO: right size
 
@@ -106,5 +111,9 @@ public class Wave {
 
   public float getDelay() {
     return this.delay;
+  }
+
+  public int getBonusCurrency() {
+    return this.bonusCurrency;
   }
 }
