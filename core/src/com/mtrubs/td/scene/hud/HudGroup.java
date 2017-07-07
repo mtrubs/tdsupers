@@ -32,6 +32,7 @@ public class HudGroup extends Group {
   private static final float NORMAL_SPEED = 1.0F;
   private static final float FAST_SPEED = 10.5F;
   private static final float PAUSE_SPEED = 0.0F;
+  private static final float WAVE_CALLER_POP = 10.0F;
 
   private float speedFactor = NORMAL_SPEED;
   private int startHealth;
@@ -255,7 +256,8 @@ public class HudGroup extends Group {
       // otherwise, when we get close to the start we show the wave caller
       if (this.timeToNextWave <= 0.0F) {
         startNextWave();
-      } else if (!this.waveCaller.isVisible() && this.timeToNextWave <= 10.0F) {
+      } else if (!this.waveCaller.isVisible() && this.timeToNextWave <= WAVE_CALLER_POP) {
+        // TODO: this might not be lag friendly
         this.waveCaller.setX(determineCoordinate(
           getWaveManager().getNextStartX(),
           this.waveCaller.getWidth(),
