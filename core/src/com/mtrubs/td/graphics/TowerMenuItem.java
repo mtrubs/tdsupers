@@ -2,6 +2,7 @@ package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mtrubs.td.scene.TowerState;
+import com.mtrubs.util.NonNull;
 
 /**
  * This enum represents all the tower menu items available.
@@ -15,6 +16,7 @@ public enum TowerMenuItem implements TextureReference {
   CostPlaque(false, "images/towers/menu/costPlaque.png"),
   Confirm(false, "images/towers/menu/confirm.png"),
   Upgrade(true, "images/towers/menu/upgrade.png") {
+    @Override
     public int getCost(TowerState state) {
       return state.getUpgradeCost();
     }
@@ -97,6 +99,7 @@ public enum TowerMenuItem implements TextureReference {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;

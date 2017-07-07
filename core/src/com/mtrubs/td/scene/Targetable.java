@@ -1,9 +1,11 @@
 package com.mtrubs.td.scene;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mtrubs.util.NonNull;
 
 public interface Targetable {
 
+  @NonNull
   Vector2 getCenter();
 
   void damage(int amount);

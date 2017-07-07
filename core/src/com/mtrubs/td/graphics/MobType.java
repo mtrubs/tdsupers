@@ -1,6 +1,8 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.util.NonNull;
+import com.mtrubs.util.Nullable;
 
 /**
  * This enum represents all the mob available.
@@ -44,11 +46,13 @@ public enum MobType implements Mob {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;
   }
 
+  @Nullable
   @Override
   public ProjectileType getProjectileType() {
     return this.projectileType;

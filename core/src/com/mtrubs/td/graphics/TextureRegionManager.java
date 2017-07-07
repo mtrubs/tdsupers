@@ -1,6 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mtrubs.util.Nullable;
 
 public interface TextureRegionManager {
 
@@ -10,6 +11,7 @@ public interface TextureRegionManager {
    * @param type the reference to the texture we want to load.
    * @return the loaded texture region of the given reference.
    */
+  @Nullable
   TextureRegion get(TextureReference type);
 
   /**

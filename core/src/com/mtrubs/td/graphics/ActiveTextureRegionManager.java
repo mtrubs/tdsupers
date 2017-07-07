@@ -3,6 +3,7 @@ package com.mtrubs.td.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mtrubs.util.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class ActiveTextureRegionManager implements TextureRegionManager {
     this.loadedTextures = new HashMap<String, TextureRegion>();
   }
 
+  @Nullable
   @Override
   public TextureRegion get(TextureReference type) {
     if (type == null) {

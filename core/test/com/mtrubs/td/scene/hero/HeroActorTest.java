@@ -61,7 +61,6 @@ public class HeroActorTest extends AbstractApplicationTest {
     assertEquals("then the damage is recorded", 0, getHitPoints(actor));
     assertFalse("and it is no longer present", actor.isVisible());
     verify(unitManager, description("and it unregisters itself")).unregister(actor);
-    // TODO: assert waveManager.clearTarget
     verifyNoMoreInteractions(unitManager);
 
     // when not enough time for a respawn passes

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mtrubs.td.graphics.Combatant;
 import com.mtrubs.td.scene.hero.SelectableMover;
 import com.mtrubs.td.scene.hud.HealthInformer;
+import com.mtrubs.util.NonNull;
 
 /**
  * Base actor that represents anything capable of engaging in combat.
@@ -22,7 +23,7 @@ import com.mtrubs.td.scene.hud.HealthInformer;
 public abstract class CombatActor<T extends Combatant> extends TextureRegionActor
   implements Targetable, SelectableMover, HealthInformer {
 
-  private static float HEIGHT_SCALE = 0.5F;
+  private static final float HEIGHT_SCALE = 0.5F;
   /**
    * The range of this unit. Used to determine what we are able to attack.
    * TODO: probably need one per skill...?
@@ -83,7 +84,6 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
     }
 
     // make sure the current target (if there is one) is in range
-    // TODO: i think this is preventing targeting from clearing correctly
     if (!isTargetable(this.target)) {
       clearTarget();
     }
@@ -170,7 +170,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   }
 
   @Override
-  public void moveTo(InputEvent event) {
+  public void moveTo(@NonNull InputEvent event) {
     moveTo(getCenter(), event.getStageX(), event.getStageY());
   }
 

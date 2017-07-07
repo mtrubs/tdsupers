@@ -1,6 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.util.NonNull;
 
 import java.io.Serializable;
 
@@ -26,5 +27,6 @@ public interface TextureReference extends Serializable {
    *
    * @return the unique key of this reference.
    */
+  @NonNull
   String getKey();
 }

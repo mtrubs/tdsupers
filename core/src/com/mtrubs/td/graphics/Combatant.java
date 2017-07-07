@@ -1,5 +1,7 @@
 package com.mtrubs.td.graphics;
 
+import com.mtrubs.util.Nullable;
+
 public interface Combatant extends TextureReference {
 
   int getDamage();
@@ -10,5 +12,6 @@ public interface Combatant extends TextureReference {
 
   float getRange();
 
+  @Nullable
   ProjectileType getProjectileType();
 }

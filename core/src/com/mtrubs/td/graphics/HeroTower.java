@@ -57,6 +57,7 @@ public enum HeroTower implements TextureReference {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;

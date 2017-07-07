@@ -1,6 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.util.NonNull;
 
 /**
  * This enum represents all the towers (and upgrades) available.
@@ -66,6 +67,7 @@ public enum Tower implements TextureReference {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;

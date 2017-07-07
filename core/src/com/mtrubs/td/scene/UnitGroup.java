@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.mtrubs.td.graphics.Tower;
 import com.mtrubs.td.graphics.TowerUnit;
 import com.mtrubs.td.scene.hero.SelectableMover;
+import com.mtrubs.util.NonNull;
 
 public class UnitGroup extends Group implements SelectableMover {
 
@@ -124,7 +125,7 @@ public class UnitGroup extends Group implements SelectableMover {
   }
 
   @Override
-  public void moveTo(InputEvent event) {
+  public void moveTo(@NonNull InputEvent event) {
     // TODO: bound to the tower in some fashion
     setRally(event.getStageX(), event.getStageY());
   }

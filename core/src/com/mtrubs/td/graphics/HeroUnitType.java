@@ -1,6 +1,8 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.util.NonNull;
+import com.mtrubs.util.Nullable;
 
 public enum HeroUnitType implements HeroUnit {
 
@@ -44,6 +46,7 @@ public enum HeroUnitType implements HeroUnit {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;
@@ -54,6 +57,7 @@ public enum HeroUnitType implements HeroUnit {
     return this.health;
   }
 
+  @Nullable
   @Override
   public ProjectileType getProjectileType() {
     return this.projectileType;

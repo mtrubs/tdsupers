@@ -1,6 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.util.NonNull;
 
 /**
  * This enum represents all the HUD textures available.
@@ -36,6 +37,7 @@ public enum HeadsUpDisplay implements TextureReference {
     texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
   }
 
+  @NonNull
   @Override
   public String getKey() {
     return this.key;
