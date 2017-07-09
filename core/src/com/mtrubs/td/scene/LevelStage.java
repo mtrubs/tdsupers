@@ -127,8 +127,6 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     on click of upgrade
      - some kind of informational note
      - (if range changes) distance changes to grey with unit upgrade distance in blue/green
-    on click of rally
-     - unit range indicator moves to rally
     on drag from tower
      - unit range indicator becomes grey
      - unit range indicator (blue/green) shows from finger
