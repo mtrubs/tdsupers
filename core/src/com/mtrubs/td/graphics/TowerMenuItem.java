@@ -15,6 +15,7 @@ public enum TowerMenuItem implements TextureReference {
   SetRally(false, "images/towers/menu/rally.png"),
   CostPlaque(false, "images/towers/menu/costPlaque.png"),
   Confirm(false, "images/towers/menu/confirm.png"),
+  Disabled(false, "images/towers/menu/disabled.png"),
   Upgrade(true, "images/towers/menu/upgrade.png") {
     @Override
     public int getCost(TowerState state) {

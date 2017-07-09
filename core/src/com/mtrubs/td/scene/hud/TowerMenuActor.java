@@ -3,9 +3,11 @@ package com.mtrubs.td.scene.hud;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.mtrubs.td.graphics.TowerMenuItem;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.util.Nullable;
 
@@ -18,6 +20,8 @@ public class TowerMenuActor extends TextureRegionActor {
   private final Label cost;
   @Nullable
   private final TextureRegion costRegion;
+  @Nullable
+  private Sprite disabled;
 
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
@@ -67,10 +71,12 @@ public class TowerMenuActor extends TextureRegionActor {
     super.setTouchable(touchable);
     if (this.cost != null) {
       if (touchable == Touchable.enabled) {
-        // TODO: un-gray out the texture region
         this.cost.getStyle().fontColor = Color.BLACK;
       } else if (touchable == Touchable.disabled) {
-        // TODO: gray out the texture region
+        if (this.disabled == null) {
+          this.disabled = new Sprite(getTextureRegion(TowerMenuItem.Disabled));
+          this.disabled.setBounds(getX(), getY(), getWidth(), getHeight());
+        }
         this.cost.getStyle().fontColor = Color.RED;
       }
     }
@@ -79,6 +85,9 @@ public class TowerMenuActor extends TextureRegionActor {
   @Override
   public void draw(Batch batch, float alpha) {
     super.draw(batch, alpha);
+    if (this.disabled != null && getTouchable() == Touchable.disabled) {
+      this.disabled.draw(batch, 0.5F);
+    }
     if (this.costRegion != null) {
       float height = this.costRegion.getRegionHeight();
       batch.draw(this.costRegion, getCenterX() - (this.costRegion.getRegionWidth() / 2.0F),

@@ -16,6 +16,7 @@
   * MOB Goal Spot
   * Moveable Goal Spot
 * towers
+  * better handling of in front/behind of units
   * info messages
   * Melee
   * Tower Upgrade Effects
