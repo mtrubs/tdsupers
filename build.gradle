@@ -114,6 +114,17 @@ project(":core") {
   }
 }
 
+idea {
+  module {
+    excludeDirs += file(".gradle")
+    excludeDirs += file(".idea")
+    excludeDirs += file("build/intermediates")
+
+    downloadJavadoc = true
+    downloadSources = true
+  }
+}
+
 tasks.eclipse.doLast {
   delete ".project"
 }
