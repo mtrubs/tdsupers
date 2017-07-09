@@ -150,7 +150,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
       return;
     }
     if (this.attackCoolDown <= 0.0F) {
-      // TODO: might not be lag friendly
+      // FIXME: might not be lag friendly
       ProjectileActor projectile = new ProjectileActor(getCenterX(), getCenterY(),
         this, this.target, getTextureRegion(this.type.getProjectileType()));
       getStage().addActor(projectile);
@@ -164,7 +164,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
 
   protected abstract void handleDefeat();
 
-  // TODO: this logic doesnt seem quite right
+  // FIXME: this logic doesnt seem quite right
   protected float getDuration(Vector2 a, Vector2 b) {
     return a.dst(b) / this.type.getSpeed();
   }

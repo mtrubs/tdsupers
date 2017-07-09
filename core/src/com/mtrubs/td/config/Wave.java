@@ -11,7 +11,7 @@ import java.util.List;
 public class Wave {
 
   // TODO: make this a list of X,Y's for more complex maps
-  private static int count; // TODO: just for test
+  private static int count; // FIXME: just for test
   /**
    * Where the wave starts. X coordinate.
    */
@@ -52,7 +52,7 @@ public class Wave {
       new Vector2(1210.0F, 257.0F)
     };
 
-    // TODO: just for test
+    // FIXME: just for test
     float y2x = 800.0F / 600.0F;
     float x2y = 600.0F / 800.0F;
     Vector2[] path = new Vector2[values.length];

@@ -95,7 +95,7 @@ public class MobActor extends CombatActor<Mob> {
 
   public void start() {
     if (this.timeline != null) {
-      throw new RuntimeException("This mob has already been started"); // TODO: type the exception
+      throw new RuntimeException("This mob has already been started"); // FIXME: type the exception
     }
     this.timeline = Timeline.createSequence().delay(this.startDelay);
     for (int i = 1; i < this.path.length; i++) {

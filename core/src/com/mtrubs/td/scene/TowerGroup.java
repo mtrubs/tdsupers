@@ -478,7 +478,7 @@ public class TowerGroup extends Group {
 
     // circle math to figure out where this menu item belongs
     // we offset x and y by the radius of the ring
-    // TODO: circle math might need minor tweaking based on width of ring (which I am not sure I can calculate dynamically)
+    // FIXME: circle math might need minor tweaking based on width of ring (which I am not sure I can calculate dynamically)
     float circleX = (float) (radius * Math.cos(degrees * Math.PI / 180.0F)) + ring.getX() + radius;
     float circleY = (float) (radius * Math.sin(degrees * Math.PI / 180.0F)) + ring.getY() + radius;
     TowerMenuActor actor = new TowerMenuActor(

@@ -167,7 +167,7 @@ public class TowerState {
   }
 
   public TextureReference getTextureReference(TextureReference item) {
-    // TODO: more dynamic
+    // FIXME: more dynamic
     if (item == TowerMenuItem.Hero1) {
       return this.activeTowers.get(0);
     } else if (item == TowerMenuItem.Hero2) {

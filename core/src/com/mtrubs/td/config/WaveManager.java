@@ -31,7 +31,7 @@ public class WaveManager {
 
   public WaveManager(List<Wave> waves) {
     this.waves = waves;
-    this.mobs = new ArrayList<MobActor>(); // TODO: right size?
+    this.mobs = new ArrayList<MobActor>(); // FIXME: right size?
   }
 
   public void remove(MobActor actor) {

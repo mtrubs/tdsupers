@@ -93,7 +93,7 @@ public class GdxTd extends ApplicationAdapter {
 
   @Override
   public void render() {
-    FPS.log(); // TODO: for debug
+    FPS.log(); // FIXME: for debug
     super.render();
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
