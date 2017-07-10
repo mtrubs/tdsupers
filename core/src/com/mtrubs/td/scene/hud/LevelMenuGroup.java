@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mtrubs.td.config.SettingsManager;
 import com.mtrubs.td.graphics.LevelMenu;
 import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
@@ -53,16 +54,34 @@ public class LevelMenuGroup extends Group {
     TextureRegion musicTexture = getStage().getTextureRegion(LevelMenu.Music);
     TextureRegionActor music = new TextureRegionActor(quit.getX(),
       menu.getY() + PAD, musicTexture);
-    // TODO: show disabled
     addActor(music);
     TextureRegionActor sound = new TextureRegionActor(restart.getX(), music.getY(),
       getStage().getTextureRegion(LevelMenu.Sound));
-    // TODO: show disabled
     addActor(sound);
     TextureRegionActor vibrate = new TextureRegionActor(resume.getX(), music.getY(),
       getStage().getTextureRegion(LevelMenu.Vibrate));
-    // TODO: show disabled
     addActor(vibrate);
+
+    // enabled/disabled state cue for the setting toggles
+    final SettingsManager settingsManager = getStage().getSettingsManager();
+    TextureRegion disabled = getStage().getTextureRegion(LevelMenu.Disabled);
+    float offsetX = disabled.getRegionWidth() * 0.25F;
+    float offsetY = disabled.getRegionHeight() * 0.25F;
+    final TextureRegionActor musicDisabled = new TextureRegionActor(music.getX() - offsetX,
+      music.getY() - offsetY, disabled);
+    musicDisabled.setVisible(!settingsManager.isMusicEnabled());
+    musicDisabled.setTouchable(Touchable.disabled);
+    addActor(musicDisabled);
+    final TextureRegionActor soundDisabled = new TextureRegionActor(sound.getX() - offsetX,
+      sound.getY() - offsetY, disabled);
+    soundDisabled.setVisible(!settingsManager.isSoundEnabled());
+    soundDisabled.setTouchable(Touchable.disabled);
+    addActor(soundDisabled);
+    final TextureRegionActor vibrateDisabled = new TextureRegionActor(vibrate.getX() - offsetX,
+      vibrate.getY() - offsetY, disabled);
+    vibrateDisabled.setVisible(!settingsManager.isVibrateEnabled());
+    vibrateDisabled.setTouchable(Touchable.disabled);
+    addActor(vibrateDisabled);
 
     // TODO: Screen shot
 
@@ -96,32 +115,11 @@ public class LevelMenuGroup extends Group {
       }
     });
     // add a click event to enable/disable the music
-    music.addListener(new ClickListener() {
-
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        super.clicked(event, x, y);
-        // TODO: disable/enable music
-      }
-    });
+    music.addListener(new MusicToggleClickListener(settingsManager, musicDisabled));
     // add a click event to enable/disable the sound effects
-    sound.addListener(new ClickListener() {
-
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        super.clicked(event, x, y);
-        // TODO: disable/enable sound effects
-      }
-    });
+    sound.addListener(new SoundToggleClickListener(settingsManager, soundDisabled));
     // add a click event to enable/disable the vibration
-    vibrate.addListener(new ClickListener() {
-
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        super.clicked(event, x, y);
-        // TODO: disable/enable vibrations
-      }
-    });
+    vibrate.addListener(new VibrateToggleClickListener(settingsManager, vibrateDisabled));
   }
 
   protected void setPauseListener(@NonNull ClickListener pauseListener) {
@@ -151,5 +149,78 @@ public class LevelMenuGroup extends Group {
   @Override
   public LevelStage getStage() {
     return (LevelStage) super.getStage();
+  }
+
+  private static class MusicToggleClickListener extends ToggleClickListener {
+
+    public MusicToggleClickListener(SettingsManager settings, TextureRegionActor actor) {
+      super(settings, actor);
+    }
+
+    @Override
+    protected boolean isEnabled(SettingsManager settings) {
+      return settings.isMusicEnabled();
+    }
+
+    @Override
+    protected void toggle(SettingsManager settings) {
+      settings.toggleMusicEnabled();
+    }
+  }
+
+  private static class SoundToggleClickListener extends ToggleClickListener {
+
+    public SoundToggleClickListener(SettingsManager settings, TextureRegionActor actor) {
+      super(settings, actor);
+    }
+
+    @Override
+    protected boolean isEnabled(SettingsManager settings) {
+      return settings.isSoundEnabled();
+    }
+
+    @Override
+    protected void toggle(SettingsManager settings) {
+      settings.toggleSoundEnabled();
+    }
+  }
+
+  private static class VibrateToggleClickListener extends ToggleClickListener {
+
+    public VibrateToggleClickListener(SettingsManager settings, TextureRegionActor actor) {
+      super(settings, actor);
+    }
+
+    @Override
+    protected boolean isEnabled(SettingsManager settings) {
+      return settings.isVibrateEnabled();
+    }
+
+    @Override
+    protected void toggle(SettingsManager settings) {
+      settings.toggleVibrateEnabled();
+    }
+  }
+
+  private abstract static class ToggleClickListener extends ClickListener {
+
+    private final SettingsManager settings;
+    private final TextureRegionActor actor;
+
+    public ToggleClickListener(SettingsManager settings, TextureRegionActor actor) {
+      this.settings = settings;
+      this.actor = actor;
+    }
+
+    @Override
+    public void clicked(InputEvent event, float x, float y) {
+      super.clicked(event, x, y);
+      toggle(this.settings);
+      this.actor.setVisible(!isEnabled(this.settings));
+    }
+
+    protected abstract boolean isEnabled(SettingsManager settings);
+
+    protected abstract void toggle(SettingsManager settings);
   }
 }

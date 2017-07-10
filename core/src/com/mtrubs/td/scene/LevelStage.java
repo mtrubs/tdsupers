@@ -47,6 +47,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   private final CurrencyManager currencyManager;
   private final HeroManager heroManager;
   private final UnitManager unitManager;
+  private final SettingsManager settingsManager;
 
   private final HudGroup hud;
 
@@ -71,6 +72,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     this.shapeRenderer = new ShapeRenderer();
     this.heroManager = heroManager;
     this.unitManager = new UnitManager();
+    this.settingsManager = new InMemorySettingsManager();
 
     this.waveManager = waveManager;
 
@@ -285,5 +287,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
 
   public UnitManager getUnitManager() {
     return this.unitManager;
+  }
+
+  public SettingsManager getSettingsManager() {
+    return this.settingsManager;
   }
 }
