@@ -43,12 +43,14 @@ public class HudGroup extends Group {
   private Label currencyLabel;
   private Label waveLabel;
   private TextureRegionActor waveCaller;
+  private LevelMenuGroup levelMenu;
 
   public void init(float worldWidth, float worldHeight, int startHealth) {
     setBounds(getX(), getY(), getStage().getWidth(), getStage().getHeight());
     setTouchable(Touchable.childrenOnly);
 
     this.startHealth = startHealth;
+    this.levelMenu = new LevelMenuGroup(this);
 
     addTopLeft();
     addTopRight();
@@ -72,6 +74,10 @@ public class HudGroup extends Group {
       }
     });
     addActor(this.waveCaller);
+
+    addActor(this.levelMenu);
+    this.levelMenu.init();
+    this.levelMenu.setVisible(false);
   }
 
   private void awardBonus() {
@@ -205,17 +211,23 @@ public class HudGroup extends Group {
       @Override
       protected void handle() {
         if (pauseListener.isOn()) {
-          // TODO: launch menu
+          HudGroup.this.levelMenu.setVisible(true);
+          // TODO: hide others
           HudGroup.this.speedFactor = PAUSE_SPEED;
-        } else if (fastForwardListener.isOn()) {
-          HudGroup.this.speedFactor = FAST_SPEED;
         } else {
-          HudGroup.this.speedFactor = NORMAL_SPEED;
+          HudGroup.this.levelMenu.setVisible(false);
+          // TODO: show others
+          if (fastForwardListener.isOn()) {
+            HudGroup.this.speedFactor = FAST_SPEED;
+          } else {
+            HudGroup.this.speedFactor = NORMAL_SPEED;
+          }
         }
       }
     };
     pauseListener.gameStateHandler = gameStateHandler;
     fastForwardListener.gameStateHandler = gameStateHandler;
+    this.levelMenu.setPauseListener(pauseListener);
   }
 
   private void addBottomLeft() {

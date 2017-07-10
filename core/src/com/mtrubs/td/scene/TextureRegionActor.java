@@ -56,11 +56,11 @@ public class TextureRegionActor extends Actor {
     }
   }
 
-  protected float getCenterX() {
+  public float getCenterX() {
     return getX() + getWidth() / 2.0F;
   }
 
-  protected float getCenterY() {
+  public float getCenterY() {
     return getY() + getHeight() / 2.0F;
   }
 
