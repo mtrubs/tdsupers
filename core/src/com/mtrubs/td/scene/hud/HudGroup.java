@@ -87,7 +87,6 @@ public class HudGroup extends Group {
       bonus = Math.round(bonus * this.timeToNextWave / max);
     }
     if (bonus > 0) {
-      System.out.println("Bonus: " + bonus);
       getCurrencyManager().add(bonus);
     }
   }

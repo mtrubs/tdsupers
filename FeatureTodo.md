@@ -6,6 +6,8 @@
 * hero xp
 * hero skills/upgrades
 
+https://www.codeandweb.com/texturepacker
+
 ### Level Map
 * game mode
   * stars?

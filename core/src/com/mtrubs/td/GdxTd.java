@@ -33,6 +33,9 @@ public class GdxTd extends ApplicationAdapter {
   private static final float WORLD_HEIGHT = 600.0F;
 
   private static final FPSLogger FPS = new FPSLogger();
+  private static final float TIME_STEP = 1.0F / 60.0F;
+
+  private float delta;
 
   private TextureRegionManager textureRegionManager;
   private LevelStage levelStage;
@@ -99,8 +102,12 @@ public class GdxTd extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-    float delta = Gdx.graphics.getDeltaTime() * this.levelStage.getSpeedFactor();
-    this.levelStage.act(delta);
+    // TODO: in a while loop adding to delta and subtracting a time_step (1/60) fps
+    this.delta += Gdx.graphics.getDeltaTime();
+    //while (this.delta >= TIME_STEP) {
+    //  this.delta -= TIME_STEP;
+    this.levelStage.act(TIME_STEP * this.levelStage.getSpeedFactor());
     this.levelStage.draw();
+    //}
   }
 }
