@@ -3,111 +3,66 @@ package com.mtrubs.td;
 import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.mtrubs.td.config.CurrencyManager;
-import com.mtrubs.td.config.HeroManager;
-import com.mtrubs.td.config.TowerLevelConfig;
-import com.mtrubs.td.config.Wave;
-import com.mtrubs.td.graphics.ActiveTextureRegionManager;
-import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.graphics.level.Hero;
-import com.mtrubs.td.graphics.level.LevelMap;
+import com.mtrubs.td.scene.GameStateInputProcessor;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
-import com.mtrubs.td.scene.level.LevelStage;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mtrubs.util.Nullable;
 
 public class GdxTd extends ApplicationAdapter {
 
   /**
-   * Width of the game world for scaling purposes on different screen sizes.
+   * Keeps the acting in step with the desired frame rate.
    */
-  private static final float WORLD_WIDTH = 800.0F;
+  private static final float GAME_TICK = 1.0F / 60.0F;
+  private static final FPSLogger FPS = new FPSLogger(); // FIXME: for debug
   /**
-   * Height of the game world for scaling purposes on different screen sizes.
+   * The current unhandled delta amount based on the graphics.
    */
-  private static final float WORLD_HEIGHT = 600.0F;
-
-  private static final FPSLogger FPS = new FPSLogger();
-  private static final float TIME_STEP = 1.0F / 60.0F;
-
   private float delta;
-
-  private TextureRegionManager textureRegionManager;
-  private LevelStage levelStage;
+  /**
+   * The currently active and running stage.
+   */
+  @Nullable
+  private GameStateInputProcessor processor;
 
   @Override
   public void create() {
     super.create();
 
+    // not sure where these should live exactly
     Tween.registerAccessor(TextureRegionActor.class, new TextureRegionActorAccessor());
-
-    List<Hero> heroes = new ArrayList<Hero>();
-    heroes.add(Hero.TestHero1);
-    heroes.add(Hero.TestHero2);
-    heroes.add(Hero.TestHero3);
-
-    HeroManager heroManager = new HeroManager(heroes);
-
-    this.textureRegionManager = new ActiveTextureRegionManager();
-
-    // Tower plots
-    List<TowerLevelConfig> towers = new ArrayList<TowerLevelConfig>();
-    towers.add(new TowerLevelConfig(160.0F, 300.0F, 160.0F, 250.0F));
-    towers.add(new TowerLevelConfig(440.0F, 300.0F, 440.0F, 250.0F));
-    towers.add(new TowerLevelConfig(300.0F, 140.0F, 300.0F, 190.0F));
-    //towers.add(new TowerLevelConfig(500.0f, 55.0F));
-
-    // Currency Setup
-    int startCurrency = 250;
-    CurrencyManager currencyManager = new CurrencyManager(startCurrency);
-
-    // Wave Setup
-    List<Wave> waves = new ArrayList<Wave>();
-    waves.add(new Wave(0.0F, 0, this.textureRegionManager));
-    waves.add(new Wave(30.0F, 50, this.textureRegionManager));
-    waves.add(new Wave(30.0F, 51, this.textureRegionManager));
-    waves.add(new Wave(30.0F, 52, this.textureRegionManager));
-    com.mtrubs.td.config.WaveManager waveManager = new com.mtrubs.td.config.WaveManager(waves);
-
-    // the current level
-    this.levelStage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT,
-      LevelMap.TestLevel, heroManager, towers.toArray(new TowerLevelConfig[towers.size()]),
-      this.textureRegionManager, currencyManager, waveManager);
-
-    // order here is important because once a stage 'handles' an event it stops
-    InputMultiplexer multiplexer = new InputMultiplexer();
-    // the HUD goes first so that it gets the first click
-    multiplexer.addProcessor(this.levelStage);
-
-    Gdx.input.setInputProcessor(multiplexer);
     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+    this.processor = new GameStateInputProcessor();
+    Gdx.input.setInputProcessor(this.processor);
+    this.processor.switchToLevel();
   }
 
   @Override
   public void dispose() {
-    this.levelStage.dispose();
-    this.textureRegionManager.dispose();
+    if (this.processor != null) {
+      this.processor.dispose();
+    }
     super.dispose();
   }
 
   @Override
   public void render() {
-    FPS.log(); // FIXME: for debug
+    FPS.log();
     super.render();
 
     this.delta += Gdx.graphics.getDeltaTime();
-    while (this.delta >= TIME_STEP) {
+    while (this.delta >= GAME_TICK) {
       Gdx.gl.glClearColor(1, 1, 1, 1);
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-      this.delta -= TIME_STEP;
-      this.levelStage.act(TIME_STEP);
-      this.levelStage.draw();
+      this.delta -= GAME_TICK;
+      if (this.processor != null) {
+        this.processor.act(GAME_TICK);
+        this.processor.draw();
+      }
     }
   }
 }

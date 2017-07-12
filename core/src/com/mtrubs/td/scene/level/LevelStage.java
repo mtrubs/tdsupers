@@ -2,6 +2,7 @@ package com.mtrubs.td.scene.level;
 
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.*;
+import com.mtrubs.td.graphics.ActiveTextureRegionManager;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.graphics.level.LevelMap;
@@ -64,12 +66,11 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    * Creates a new level stage for game play.  We are given the level map, the list of active heroes
    * configurations and the configuration of all the towers.
    */
-  public LevelStage(float worldWidth, float worldHeight,
+  public LevelStage(float worldWidth, float worldHeight, Batch batch,
                     LevelMap levelMap, HeroManager heroManager, TowerLevelConfig[] towers,
-                    TextureRegionManager textureRegionManager, CurrencyManager currencyManager,
-                    WaveManager waveManager) {
-    super(new ExtendViewport(worldWidth, worldHeight));
-    this.textureRegionManager = textureRegionManager;
+                    CurrencyManager currencyManager, WaveManager waveManager) {
+    super(new ExtendViewport(worldWidth, worldHeight), batch);
+    this.textureRegionManager = new ActiveTextureRegionManager();
     this.tweenManager = new TweenManager();
     this.shapeRenderer = new ShapeRenderer();
     this.heroManager = heroManager;
@@ -119,7 +120,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
       this.towers.add(towerGroup);
     }
 
-    heroManager.createActors(this, textureRegionManager);
+    heroManager.createActors(this, this.textureRegionManager);
 
     /*
     TODO
@@ -212,6 +213,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
   @Override
   public void dispose() {
     this.tweenManager.killAll();
+    this.textureRegionManager.dispose();
     this.shapeRenderer.dispose();
     super.dispose();
   }
