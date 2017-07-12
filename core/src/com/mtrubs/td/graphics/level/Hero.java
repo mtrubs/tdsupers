@@ -1,5 +1,6 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
+import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.scene.level.mob.HeroActor;
 
 /**

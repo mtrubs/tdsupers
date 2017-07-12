@@ -1,24 +1,31 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.util.NonNull;
 
-/**
- * This enum represents all the projectiles available.
- */
-public enum ProjectileType implements TextureReference {
+public enum LevelMenu implements TextureReference {
 
-  RedBullet("images/projectiles/red.png"),
-  YellowBullet("images/projectiles/yellow.png");
+  Background("images/hud/menu/background.png"),
+  Disabled("images/hud/menu/disabled.png"),
+  Music("images/hud/menu/music.png"),
+  Quit("images/hud/menu/quit.png"),
+  Restart("images/hud/menu/restart.png"),
+  Resume("images/hud/menu/resume.png"),
+  Sound("images/hud/menu/sound.png"),
+  Vibrate("images/hud/menu/vibrate.png");
 
+  @NonNull
   private final String texturePath;
+  @NonNull
   private final String key;
 
-  private ProjectileType(String texturePath) {
+  private LevelMenu(@NonNull String texturePath) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }
 
+  @NonNull
   @Override
   public String getTexturePath() {
     return this.texturePath;

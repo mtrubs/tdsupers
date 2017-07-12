@@ -6,7 +6,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mtrubs.td.graphics.Mob;
+import com.mtrubs.td.graphics.level.Mob;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
 import com.mtrubs.td.scene.level.LevelStage;
 

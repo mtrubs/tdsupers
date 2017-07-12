@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mtrubs.td.AbstractApplicationTest;
 import com.mtrubs.td.config.UnitManager;
 import com.mtrubs.td.config.WaveManager;
-import com.mtrubs.td.graphics.HeroUnit;
+import com.mtrubs.td.graphics.level.HeroUnit;
 import com.mtrubs.td.scene.level.mob.HeroActor;
 import com.mtrubs.td.scene.level.mob.MobActor;
 import org.junit.Test;

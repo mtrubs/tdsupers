@@ -7,7 +7,7 @@ import com.mtrubs.td.AbstractApplicationTest;
 import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.UnitManager;
 import com.mtrubs.td.config.WaveManager;
-import com.mtrubs.td.graphics.Mob;
+import com.mtrubs.td.graphics.level.Mob;
 import com.mtrubs.td.scene.level.mob.MobActor;
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -1,7 +1,7 @@
 package com.mtrubs.td.scene.level.mob;
 
 import com.mtrubs.td.config.CurrencyManager;
-import com.mtrubs.td.graphics.*;
+import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.util.NonNull;
 
 import java.util.ArrayList;
@@ -13,53 +13,53 @@ public class TowerState {
    * How much we discount the tower value by when we sell it.
    */
   private static final float SELL_FACTOR = 0.75F;
-  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_ALL_ENH;
-  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_HERO_ENH;
-  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_PATH_ENH;
-  private static final List<TowerMenuItem[]> TOWER_LEVEL_MENUS_NO_ENH;
+  private static final List<com.mtrubs.td.graphics.level.TowerMenuItem[]> TOWER_LEVEL_MENUS_ALL_ENH;
+  private static final List<com.mtrubs.td.graphics.level.TowerMenuItem[]> TOWER_LEVEL_MENUS_HERO_ENH;
+  private static final List<com.mtrubs.td.graphics.level.TowerMenuItem[]> TOWER_LEVEL_MENUS_PATH_ENH;
+  private static final List<com.mtrubs.td.graphics.level.TowerMenuItem[]> TOWER_LEVEL_MENUS_NO_ENH;
 
   static {
-    TOWER_LEVEL_MENUS_ALL_ENH = new ArrayList<TowerMenuItem[]>();
-    TOWER_LEVEL_MENUS_HERO_ENH = new ArrayList<TowerMenuItem[]>();
-    TOWER_LEVEL_MENUS_PATH_ENH = new ArrayList<TowerMenuItem[]>();
-    TOWER_LEVEL_MENUS_NO_ENH = new ArrayList<TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_ALL_ENH = new ArrayList<com.mtrubs.td.graphics.level.TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_HERO_ENH = new ArrayList<com.mtrubs.td.graphics.level.TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_PATH_ENH = new ArrayList<com.mtrubs.td.graphics.level.TowerMenuItem[]>();
+    TOWER_LEVEL_MENUS_NO_ENH = new ArrayList<com.mtrubs.td.graphics.level.TowerMenuItem[]>();
 
     // level 0 - select a hero
-    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
-    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
-    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
-    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Hero1, TowerMenuItem.Hero2, TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Hero1, com.mtrubs.td.graphics.level.TowerMenuItem.Hero2, com.mtrubs.td.graphics.level.TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Hero1, com.mtrubs.td.graphics.level.TowerMenuItem.Hero2, com.mtrubs.td.graphics.level.TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Hero1, com.mtrubs.td.graphics.level.TowerMenuItem.Hero2, com.mtrubs.td.graphics.level.TowerMenuItem.Hero3});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Hero1, com.mtrubs.td.graphics.level.TowerMenuItem.Hero2, com.mtrubs.td.graphics.level.TowerMenuItem.Hero3});
 
     // level 1 - choose a path
-    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
-    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
-    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
-    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.HeroA, TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.HeroA, com.mtrubs.td.graphics.level.TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.HeroA, com.mtrubs.td.graphics.level.TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.HeroA, com.mtrubs.td.graphics.level.TowerMenuItem.HeroB});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.HeroA, com.mtrubs.td.graphics.level.TowerMenuItem.HeroB});
 
     // level 2 - upgrade + hero enhance
-    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
-    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
-    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
-    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero});
 
     // level 3 - upgrade + path enhance
-    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade});
-    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhancePath});
-    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero});
-    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.Upgrade, TowerMenuItem.EnhanceHero, TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade, com.mtrubs.td.graphics.level.TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.Upgrade, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero, com.mtrubs.td.graphics.level.TowerMenuItem.EnhancePath});
 
     // level 4 - final
-    TOWER_LEVEL_MENUS_ALL_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally});
-    TOWER_LEVEL_MENUS_HERO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhancePath});
-    TOWER_LEVEL_MENUS_PATH_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhanceHero});
-    TOWER_LEVEL_MENUS_NO_ENH.add(new TowerMenuItem[]{TowerMenuItem.Sell, TowerMenuItem.SetRally, TowerMenuItem.EnhanceHero, TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_ALL_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally});
+    TOWER_LEVEL_MENUS_HERO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.EnhancePath});
+    TOWER_LEVEL_MENUS_PATH_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero});
+    TOWER_LEVEL_MENUS_NO_ENH.add(new com.mtrubs.td.graphics.level.TowerMenuItem[]{com.mtrubs.td.graphics.level.TowerMenuItem.Sell, com.mtrubs.td.graphics.level.TowerMenuItem.SetRally, com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero, com.mtrubs.td.graphics.level.TowerMenuItem.EnhancePath});
   }
 
   private final CurrencyManager currencyManager;
   /**
    * List of active heroes for this instance.
    */
-  private final List<HeroTower> activeTowers;
+  private final List<com.mtrubs.td.graphics.level.HeroTower> activeTowers;
   /**
    * Current level of this tower.
    */
@@ -75,24 +75,24 @@ public class TowerState {
   /**
    * The chosen hero of this tower.
    */
-  private HeroTower tower;
+  private com.mtrubs.td.graphics.level.HeroTower tower;
   /**
    * The upgrade path of this tower.
    */
-  private TowerPath path;
+  private com.mtrubs.td.graphics.level.TowerPath path;
   /**
    * The total amount of cost invested in this tower.
    */
   private int costs;
 
   // TODO: allow setting tower, path, level
-  public TowerState(@NonNull List<HeroTower> activeTowers, @NonNull CurrencyManager currencyManager) {
+  public TowerState(@NonNull List<com.mtrubs.td.graphics.level.HeroTower> activeTowers, @NonNull CurrencyManager currencyManager) {
     this.currencyManager = currencyManager;
     this.activeTowers = activeTowers;
   }
 
-  private static Tower getTower(HeroTower hero, TowerPath path, int level) {
-    return hero == null ? Tower.EmptyPlot : hero.getTower(level, path);
+  private static com.mtrubs.td.graphics.level.Tower getTower(com.mtrubs.td.graphics.level.HeroTower hero, com.mtrubs.td.graphics.level.TowerPath path, int level) {
+    return hero == null ? com.mtrubs.td.graphics.level.Tower.EmptyPlot : hero.getTower(level, path);
   }
 
   public int activeHeroCount() {
@@ -103,7 +103,7 @@ public class TowerState {
     return getTower(this.activeTowers.get(index), null, this.level + 1).getCost();
   }
 
-  public int getUpgradeCost(TowerPath path) {
+  public int getUpgradeCost(com.mtrubs.td.graphics.level.TowerPath path) {
     return getTower(this.tower, path, this.level + 1).getCost();
   }
 
@@ -135,7 +135,7 @@ public class TowerState {
 
   public void upgrade() {
     this.level++;
-    Tower upgrade = getTower();
+    com.mtrubs.td.graphics.level.Tower upgrade = getTower();
     int costs = upgrade.getCost();
     this.currencyManager.subtract(costs);
     this.costs += costs;
@@ -146,12 +146,12 @@ public class TowerState {
     upgrade();
   }
 
-  public void upgrade(@NonNull TowerPath path) {
+  public void upgrade(@NonNull com.mtrubs.td.graphics.level.TowerPath path) {
     this.path = path;
     upgrade();
   }
 
-  public Tower getTower() {
+  public com.mtrubs.td.graphics.level.Tower getTower() {
     return getTower(this.tower, this.path, this.level);
   }
 
@@ -168,20 +168,20 @@ public class TowerState {
 
   public TextureReference getTextureReference(TextureReference item) {
     // FIXME: more dynamic
-    if (item == TowerMenuItem.Hero1) {
+    if (item == com.mtrubs.td.graphics.level.TowerMenuItem.Hero1) {
       return this.activeTowers.get(0);
-    } else if (item == TowerMenuItem.Hero2) {
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.Hero2) {
       return this.activeTowers.get(1);
-    } else if (item == TowerMenuItem.Hero3) {
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.Hero3) {
       return this.activeTowers.get(2);
-    } else if (item == TowerMenuItem.EnhanceHero) {
-      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getEnhancement(null);
-    } else if (item == TowerMenuItem.EnhancePath) {
-      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getEnhancement(this.path);
-    } else if (item == TowerMenuItem.HeroA) {
-      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getPathA();
-    } else if (item == TowerMenuItem.HeroB) {
-      return this.tower == null ? TowerMenuItem.Confirm : this.tower.getPathB();
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.EnhanceHero) {
+      return this.tower == null ? com.mtrubs.td.graphics.level.TowerMenuItem.Confirm : this.tower.getEnhancement(null);
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.EnhancePath) {
+      return this.tower == null ? com.mtrubs.td.graphics.level.TowerMenuItem.Confirm : this.tower.getEnhancement(this.path);
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.HeroA) {
+      return this.tower == null ? com.mtrubs.td.graphics.level.TowerMenuItem.Confirm : this.tower.getPathA();
+    } else if (item == com.mtrubs.td.graphics.level.TowerMenuItem.HeroB) {
+      return this.tower == null ? com.mtrubs.td.graphics.level.TowerMenuItem.Confirm : this.tower.getPathB();
     } else {
       return item;
     }
@@ -192,7 +192,7 @@ public class TowerState {
    *
    * @return the visible menu items for this state.
    */
-  public TowerMenuItem[] getVisibleItems() {
+  public com.mtrubs.td.graphics.level.TowerMenuItem[] getVisibleItems() {
     if (this.heroEnhanced && this.pathEnhanced) {
       return TOWER_LEVEL_MENUS_ALL_ENH.get(this.level);
     } else if (this.heroEnhanced) {

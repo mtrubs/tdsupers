@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mtrubs.td.config.*;
-import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.graphics.level.LevelMap;
 import com.mtrubs.td.scene.level.hud.HudGroup;
 import com.mtrubs.td.scene.level.mob.SelectableMover;
 import com.mtrubs.td.scene.level.mob.TowerGroup;
@@ -181,12 +181,9 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     this.hud.init(worldWidth, worldHeight, startHealth);
   }
 
-  public float getSpeedFactor() {
-    return this.hud.getSpeedFactor();
-  }
-
   @Override
   public void act(float delta) {
+    delta = delta * this.hud.getSpeedFactor();
     super.act(delta);
     this.waveManager.sort();
     this.tweenManager.update(delta);

@@ -1,7 +1,7 @@
 package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mtrubs.td.graphics.PlayerControlled;
+import com.mtrubs.td.graphics.level.PlayerControlled;
 import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.td.scene.level.hud.CooldownInformer;
 

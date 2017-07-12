@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.config.SettingsManager;
-import com.mtrubs.td.graphics.LevelMenu;
+import com.mtrubs.td.graphics.level.LevelMenu;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.util.NonNull;

@@ -1,30 +1,23 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.util.NonNull;
 
-public enum LevelMenu implements TextureReference {
+public enum HeroSkill implements TextureReference {
 
-  Background("images/hud/menu/background.png"),
-  Disabled("images/hud/menu/disabled.png"),
-  Music("images/hud/menu/music.png"),
-  Quit("images/hud/menu/quit.png"),
-  Restart("images/hud/menu/restart.png"),
-  Resume("images/hud/menu/resume.png"),
-  Sound("images/hud/menu/sound.png"),
-  Vibrate("images/hud/menu/vibrate.png");
+  TestHero1("images/towers/TestHero1/skill.png"),
+  TestHero2("images/towers/TestHero2/skill.png"),
+  TestHero3("images/towers/TestHero3/skill.png");
 
-  @NonNull
   private final String texturePath;
-  @NonNull
   private final String key;
 
-  private LevelMenu(@NonNull String texturePath) {
+  private HeroSkill(String texturePath) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }
 
-  @NonNull
   @Override
   public String getTexturePath() {
     return this.texturePath;

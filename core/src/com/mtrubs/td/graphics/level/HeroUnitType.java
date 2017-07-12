@@ -1,4 +1,4 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mtrubs.util.NonNull;

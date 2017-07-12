@@ -3,7 +3,7 @@ package com.mtrubs.td.scene.level.mob;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mtrubs.td.graphics.HeroUnit;
+import com.mtrubs.td.graphics.level.HeroUnit;
 
 public class HeroActor extends PcActor<HeroUnit> {
 

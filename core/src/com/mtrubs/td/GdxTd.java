@@ -11,9 +11,9 @@ import com.mtrubs.td.config.HeroManager;
 import com.mtrubs.td.config.TowerLevelConfig;
 import com.mtrubs.td.config.Wave;
 import com.mtrubs.td.graphics.ActiveTextureRegionManager;
-import com.mtrubs.td.graphics.Hero;
-import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.graphics.level.Hero;
+import com.mtrubs.td.graphics.level.LevelMap;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
 import com.mtrubs.td.scene.level.LevelStage;
@@ -106,7 +106,7 @@ public class GdxTd extends ApplicationAdapter {
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
       this.delta -= TIME_STEP;
-      this.levelStage.act(TIME_STEP * this.levelStage.getSpeedFactor());
+      this.levelStage.act(TIME_STEP);
       this.levelStage.draw();
     }
   }

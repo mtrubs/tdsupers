@@ -1,38 +1,44 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mtrubs.util.NonNull;
 import com.mtrubs.util.Nullable;
 
 /**
- * This enum represents all the mob available.
+ * This enum represents all the tower units.
  */
-public enum MobType implements Mob {
+public enum TowerUnitType implements TowerUnit {
 
-  TestMob("images/mobs/TestMob.png", 20, 200.0F, 50.0F, 8.0F, 20, 10, 25.0F, ProjectileType.RedBullet);
+  TestHero1Unit("images/towers/TestHero1/towerUnit1.png", 30, 2, 250.0F, 100.0F, 10.0F, 5.0F, 10,
+    ProjectileType.YellowBullet),
+  TestHero2Unit("images/towers/TestHero2/towerUnit1.png", 30, 3, 225.0F, 150.0F, 6.0F, 5.0F, 10,
+    ProjectileType.YellowBullet),
+  TestHero3Unit("images/towers/TestHero3/towerUnit1.png", 30, 3, 200.0F, 200.0F, 10.0F, 10.0F, 10,
+    ProjectileType.YellowBullet);
 
   private final String texturePath;
   private final String key;
   private final float range;
   private final float engageRange;
   private final float attackCoolDown;
+  private final float deathCoolDown;
   private final int damage;
   private final int health;
-  private final int worth;
-  private final float speed;
+  private final int hps;
   private final ProjectileType projectileType;
 
-  private MobType(String texturePath, int health, float range, float engageRange, float attackCoolDown,
-                  int damage, int worth, float speed, ProjectileType projectileType) {
+  private TowerUnitType(String texturePath, int health, int hps, float range, float engageRange,
+                        float deathCoolDown, float attackCoolDown, int damage,
+                        ProjectileType projectileType) {
     this.texturePath = texturePath;
     this.range = range;
     this.engageRange = engageRange;
     this.attackCoolDown = attackCoolDown;
+    this.deathCoolDown = deathCoolDown;
     this.projectileType = projectileType;
-    this.speed = speed;
     this.damage = damage;
-    this.worth = worth;
     this.health = health;
+    this.hps = hps;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }
 
@@ -74,17 +80,22 @@ public enum MobType implements Mob {
   }
 
   @Override
+  public float getDeathCoolDown() {
+    return this.deathCoolDown;
+  }
+
+  @Override
   public int getHealth() {
     return this.health;
   }
 
   @Override
-  public int getWorth() {
-    return this.worth;
+  public int getHps() {
+    return this.hps;
   }
 
   @Override
   public float getSpeed() {
-    return this.speed;
+    return 25.0F;
   }
 }

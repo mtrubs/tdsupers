@@ -1,18 +1,19 @@
-package com.mtrubs.td.graphics;
+package com.mtrubs.td.graphics.level;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.util.NonNull;
 
-public enum HeroSkill implements TextureReference {
+public enum HeroThumbnail implements TextureReference {
 
-  TestHero1("images/towers/TestHero1/skill.png"),
-  TestHero2("images/towers/TestHero2/skill.png"),
-  TestHero3("images/towers/TestHero3/skill.png");
+  TestHero1("images/towers/TestHero1/thumbnail.png"),
+  TestHero2("images/towers/TestHero2/thumbnail.png"),
+  TestHero3("images/towers/TestHero3/thumbnail.png");
 
   private final String texturePath;
   private final String key;
 
-  private HeroSkill(String texturePath) {
+  private HeroThumbnail(String texturePath) {
     this.texturePath = texturePath;
     this.key = String.format("%s.%s", getClass().getSimpleName(), name());
   }

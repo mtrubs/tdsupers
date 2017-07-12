@@ -1,8 +1,8 @@
 package com.mtrubs.td.config;
 
-import com.mtrubs.td.graphics.Hero;
-import com.mtrubs.td.graphics.HeroTower;
 import com.mtrubs.td.graphics.TextureRegionManager;
+import com.mtrubs.td.graphics.level.Hero;
+import com.mtrubs.td.graphics.level.HeroTower;
 import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.td.scene.level.mob.HeroActor;
 

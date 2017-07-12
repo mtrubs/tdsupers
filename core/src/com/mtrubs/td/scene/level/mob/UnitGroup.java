@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.mtrubs.td.graphics.Tower;
-import com.mtrubs.td.graphics.TowerUnit;
+import com.mtrubs.td.graphics.level.Tower;
+import com.mtrubs.td.graphics.level.TowerUnit;
 import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.util.NonNull;
 

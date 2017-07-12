@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.mtrubs.td.graphics.Combatant;
+import com.mtrubs.td.graphics.level.Combatant;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
 import com.mtrubs.td.scene.level.LevelStage;
