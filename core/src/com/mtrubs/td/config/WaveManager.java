@@ -1,8 +1,8 @@
 package com.mtrubs.td.config;
 
-import com.mtrubs.td.scene.LevelStage;
-import com.mtrubs.td.scene.MobActor;
-import com.mtrubs.td.scene.Targetable;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.mob.MobActor;
+import com.mtrubs.td.scene.level.mob.Targetable;
 
 import java.util.ArrayList;
 import java.util.Collections;

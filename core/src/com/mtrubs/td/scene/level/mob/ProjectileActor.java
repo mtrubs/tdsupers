@@ -1,7 +1,8 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.mtrubs.td.scene.TextureRegionActor;
 
 /**
  * The actor that represents each projectile.

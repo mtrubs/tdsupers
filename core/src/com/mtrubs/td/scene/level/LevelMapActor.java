@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.config.SettingsManager;
 import com.mtrubs.td.graphics.LevelMenu;
-import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.util.NonNull;
 import com.mtrubs.util.Nullable;
 

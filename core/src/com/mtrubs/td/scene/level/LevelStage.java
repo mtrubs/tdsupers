@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level;
 
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,8 +15,10 @@ import com.mtrubs.td.config.*;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.hero.SelectableMover;
-import com.mtrubs.td.scene.hud.HudGroup;
+import com.mtrubs.td.scene.level.hud.HudGroup;
+import com.mtrubs.td.scene.level.mob.SelectableMover;
+import com.mtrubs.td.scene.level.mob.TowerGroup;
+import com.mtrubs.td.scene.level.mob.TowerState;
 
 import java.util.ArrayList;
 import java.util.Collection;

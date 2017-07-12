@@ -1,8 +1,8 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mtrubs.td.scene.hero.HeroActor;
+import com.mtrubs.td.scene.level.mob.HeroActor;
 
 public class HeroHealthActor extends CooldownActor {
 

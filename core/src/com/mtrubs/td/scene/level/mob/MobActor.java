@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
@@ -7,6 +7,8 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.Mob;
+import com.mtrubs.td.scene.TextureRegionActorAccessor;
+import com.mtrubs.td.scene.level.LevelStage;
 
 /**
  * The actor that represents each mob.

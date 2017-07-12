@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hero;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mtrubs.util.NonNull;

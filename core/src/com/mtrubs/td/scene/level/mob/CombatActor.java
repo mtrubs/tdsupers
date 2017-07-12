@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
@@ -13,8 +13,10 @@ import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mtrubs.td.graphics.Combatant;
-import com.mtrubs.td.scene.hero.SelectableMover;
-import com.mtrubs.td.scene.hud.HealthInformer;
+import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.TextureRegionActorAccessor;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.hud.HealthInformer;
 import com.mtrubs.util.NonNull;
 
 /**

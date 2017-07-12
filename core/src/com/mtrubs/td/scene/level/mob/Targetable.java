@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.util.NonNull;

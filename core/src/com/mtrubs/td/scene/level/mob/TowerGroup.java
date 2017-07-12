@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -9,7 +9,9 @@ import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.Tower;
 import com.mtrubs.td.graphics.TowerMenuItem;
 import com.mtrubs.td.graphics.TowerPath;
-import com.mtrubs.td.scene.hud.TowerMenuActor;
+import com.mtrubs.td.scene.TextureRegionActor;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.hud.TowerMenuActor;
 
 import java.util.*;
 

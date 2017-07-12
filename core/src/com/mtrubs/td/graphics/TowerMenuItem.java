@@ -1,7 +1,7 @@
 package com.mtrubs.td.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mtrubs.td.scene.TowerState;
+import com.mtrubs.td.scene.level.mob.TowerState;
 import com.mtrubs.util.NonNull;
 
 /**

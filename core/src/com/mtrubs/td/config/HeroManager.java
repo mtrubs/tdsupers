@@ -3,8 +3,8 @@ package com.mtrubs.td.config;
 import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.HeroTower;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.LevelStage;
-import com.mtrubs.td.scene.hero.HeroActor;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.mob.HeroActor;
 
 import java.util.ArrayList;
 import java.util.EnumMap;

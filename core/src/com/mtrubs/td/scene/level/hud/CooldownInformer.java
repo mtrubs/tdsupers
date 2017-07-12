@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 public interface CooldownInformer {
 

@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,10 +14,10 @@ public class CooldownActor extends TextureRegionActor {
   /**
    * Creates an actor with the given texture region at the given x,y coordinates.
    *
-   * @param positionX       the x coordinate of this actor.
-   * @param positionY       the y coordinate of this actor.
-   * @param textureRegion   the texture of this actor.
-   * @param cooldown        the cooldown image.
+   * @param positionX        the x coordinate of this actor.
+   * @param positionY        the y coordinate of this actor.
+   * @param textureRegion    the texture of this actor.
+   * @param cooldown         the cooldown image.
    * @param cooldownInformer manages the cooldown associated with this actor.
    */
   public CooldownActor(float positionX, float positionY,

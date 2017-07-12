@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.mtrubs.td.graphics.Tower;
 import com.mtrubs.td.graphics.TowerUnit;
-import com.mtrubs.td.scene.hero.SelectableMover;
+import com.mtrubs.td.scene.level.LevelStage;
 import com.mtrubs.util.NonNull;
 
 public class UnitGroup extends Group implements SelectableMover {

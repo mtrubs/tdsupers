@@ -14,9 +14,9 @@ import com.mtrubs.td.graphics.ActiveTextureRegionManager;
 import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.LevelMap;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
 import com.mtrubs.td.scene.TextureRegionActorAccessor;
+import com.mtrubs.td.scene.level.LevelStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +85,7 @@ public class GdxTd extends ApplicationAdapter {
     multiplexer.addProcessor(this.levelStage);
 
     Gdx.input.setInputProcessor(multiplexer);
+    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
   }
 
   @Override
@@ -103,7 +104,6 @@ public class GdxTd extends ApplicationAdapter {
     while (this.delta >= TIME_STEP) {
       Gdx.gl.glClearColor(1, 1, 1, 1);
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-      Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
       this.delta -= TIME_STEP;
       this.levelStage.act(TIME_STEP * this.levelStage.getSpeedFactor());

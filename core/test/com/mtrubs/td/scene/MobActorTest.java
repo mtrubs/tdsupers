@@ -8,6 +8,7 @@ import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.config.UnitManager;
 import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.Mob;
+import com.mtrubs.td.scene.level.mob.MobActor;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,7 +24,7 @@ public class MobActorTest extends AbstractApplicationTest {
 
     WaveManager waveManager = mock(WaveManager.class);
 
-    LevelStage stage = Mockito.mock(LevelStage.class);
+    com.mtrubs.td.scene.level.LevelStage stage = Mockito.mock(com.mtrubs.td.scene.level.LevelStage.class);
     when(stage.getUnitManager()).thenReturn(mock(UnitManager.class));
     when(stage.getCurrencyManager()).thenReturn(currencyManager);
     when(stage.getWaveManager()).thenReturn(waveManager);

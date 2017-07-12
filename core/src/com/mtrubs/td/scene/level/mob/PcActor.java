@@ -1,8 +1,9 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mtrubs.td.graphics.PlayerControlled;
-import com.mtrubs.td.scene.hud.CooldownInformer;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.hud.CooldownInformer;
 
 public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T> implements CooldownInformer {
 

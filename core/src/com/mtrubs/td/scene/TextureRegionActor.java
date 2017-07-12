@@ -70,7 +70,7 @@ public class TextureRegionActor extends Actor {
   }
 
   protected TextureRegion getTextureRegion(TextureReference type) {
-    LevelStage stage = (LevelStage) getStage();
+    com.mtrubs.td.scene.level.LevelStage stage = (com.mtrubs.td.scene.level.LevelStage) getStage();
     return stage == null ? null : stage.getTextureRegion(type);
   }
 }

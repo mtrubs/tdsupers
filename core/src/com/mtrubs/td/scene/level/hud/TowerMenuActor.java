@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;

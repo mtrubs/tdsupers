@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene;
+package com.mtrubs.td.scene.level.mob;
 
 import com.mtrubs.td.config.CurrencyManager;
 import com.mtrubs.td.graphics.*;

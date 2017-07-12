@@ -1,6 +1,6 @@
 package com.mtrubs.td.config;
 
-import com.mtrubs.td.scene.PcActor;
+import com.mtrubs.td.scene.level.mob.PcActor;
 
 import java.util.Collection;
 import java.util.HashSet;

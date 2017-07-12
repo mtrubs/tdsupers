@@ -3,7 +3,7 @@ package com.mtrubs.td.config;
 import com.badlogic.gdx.math.Vector2;
 import com.mtrubs.td.graphics.MobType;
 import com.mtrubs.td.graphics.TextureRegionManager;
-import com.mtrubs.td.scene.MobActor;
+import com.mtrubs.td.scene.level.mob.MobActor;
 
 import java.util.ArrayList;
 import java.util.List;

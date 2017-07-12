@@ -1,6 +1,6 @@
 package com.mtrubs.td.graphics;
 
-import com.mtrubs.td.scene.hero.HeroActor;
+import com.mtrubs.td.scene.level.mob.HeroActor;
 
 /**
  * This enum represents all the heroes available.

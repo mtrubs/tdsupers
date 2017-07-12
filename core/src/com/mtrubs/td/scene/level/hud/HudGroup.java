@@ -1,4 +1,4 @@
-package com.mtrubs.td.scene.hud;
+package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,9 +16,9 @@ import com.mtrubs.td.config.WaveManager;
 import com.mtrubs.td.graphics.HeadsUpDisplay;
 import com.mtrubs.td.graphics.Hero;
 import com.mtrubs.td.graphics.TextureReference;
-import com.mtrubs.td.scene.LevelStage;
 import com.mtrubs.td.scene.TextureRegionActor;
-import com.mtrubs.td.scene.hero.HeroActor;
+import com.mtrubs.td.scene.level.LevelStage;
+import com.mtrubs.td.scene.level.mob.HeroActor;
 
 import java.util.Locale;
 
@@ -240,7 +240,7 @@ public class HudGroup extends Group {
       TextureRegion thumbnail = getTextureRegion(hero.getThumbnail());
 
       // the hero thumbnail
-      HeroHealthActor thumbnailActor = new HeroHealthActor(x + PAD, PAD,
+      com.mtrubs.td.scene.level.hud.HeroHealthActor thumbnailActor = new com.mtrubs.td.scene.level.hud.HeroHealthActor(x + PAD, PAD,
         thumbnail, health, cooldown, current);
       x = thumbnailActor.getX() + thumbnailActor.getWidth(); // sets up the next to be beside it
       addActor(thumbnailActor);
