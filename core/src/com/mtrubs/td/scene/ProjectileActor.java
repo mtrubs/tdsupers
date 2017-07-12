@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ProjectileActor extends TextureRegionActor {
 
+  // FIXME: This actor seems to get added above the HUD
   private final Targetable source;
   private final Targetable target;
 

@@ -35,15 +35,14 @@ public abstract class PcActor<T extends PlayerControlled> extends CombatActor<T>
   protected void handleNoTarget(float delta) {
     super.handleNoTarget(delta);
     this.outOfCombatTimer += delta;
-    if (this.outOfCombatTimer > OUT_OF_COMBAT) { // once a PC has been OOC for 5 seconds it can heal
+    // TODO: and is hurt
+    if (this.outOfCombatTimer >= OUT_OF_COMBAT) { // once a PC has been OOC for 5 seconds it can heal
       this.healTimer += delta;
       if (this.healTimer > HEAL_TICK) {
+        this.healTimer -= HEAL_TICK;
         T type = getType();
-        int hps = type == null ? 0 : type.getHps();
-        int ticks = Math.round(this.healTimer / HEAL_TICK);
-        heal(ticks * hps);
+        heal(type == null ? 0 : type.getHps());
       }
-      this.healTimer %= HEAL_TICK;
     }
   }
 

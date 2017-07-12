@@ -98,16 +98,16 @@ public class GdxTd extends ApplicationAdapter {
   public void render() {
     FPS.log(); // FIXME: for debug
     super.render();
-    Gdx.gl.glClearColor(1, 1, 1, 1);
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-    // TODO: in a while loop adding to delta and subtracting a time_step (1/60) fps
     this.delta += Gdx.graphics.getDeltaTime();
-    //while (this.delta >= TIME_STEP) {
-    //  this.delta -= TIME_STEP;
-    this.levelStage.act(TIME_STEP * this.levelStage.getSpeedFactor());
-    this.levelStage.draw();
-    //}
+    while (this.delta >= TIME_STEP) {
+      Gdx.gl.glClearColor(1, 1, 1, 1);
+      Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+      Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+      this.delta -= TIME_STEP;
+      this.levelStage.act(TIME_STEP * this.levelStage.getSpeedFactor());
+      this.levelStage.draw();
+    }
   }
 }

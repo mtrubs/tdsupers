@@ -282,7 +282,6 @@ public class HudGroup extends Group {
       if (this.timeToNextWave <= 0.0F) {
         startNextWave();
       } else if (!this.waveCaller.isVisible() && this.timeToNextWave <= WAVE_CALLER_POP) {
-        // FIXME: this might not be lag friendly
         this.waveCaller.setX(determineCoordinate(
           getWaveManager().getNextStartX(),
           this.waveCaller.getWidth(),

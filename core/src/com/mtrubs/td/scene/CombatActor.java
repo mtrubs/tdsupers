@@ -119,6 +119,7 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
   public void heal(int amount) {
     int max = getMaxHealth();
     if (this.hitPoints > 0 && this.hitPoints < max) {
+      System.out.println(this + " wants to heal " + amount);
       // ensure that we do not exceed the max
       this.hitPoints = Math.min(max, this.hitPoints + amount);
     }
@@ -150,7 +151,6 @@ public abstract class CombatActor<T extends Combatant> extends TextureRegionActo
       return;
     }
     if (this.attackCoolDown <= 0.0F) {
-      // FIXME: might not be lag friendly
       ProjectileActor projectile = new ProjectileActor(getCenterX(), getCenterY(),
         this, this.target, getTextureRegion(this.type.getProjectileType()));
       getStage().addActor(projectile);
