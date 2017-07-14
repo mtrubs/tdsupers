@@ -1,13 +1,16 @@
 package com.mtrubs.td.scene.level.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mtrubs.td.config.SettingsManager;
 import com.mtrubs.td.graphics.level.LevelMenu;
@@ -19,9 +22,12 @@ import com.mtrubs.util.Nullable;
 public class LevelMenuGroup extends Group {
 
   private static final float PAD = 40.0F;
-
+  private static final float CONFIRM_PAD = 20.0F;
+  private static final int STATE_QUIT = 1;
+  private static final int STATE_RESTART = 2;
   @Nullable
   private ClickListener pauseListener;
+  private int menuState;
 
   public LevelMenuGroup(@NonNull Group parent) {
     setBounds(parent.getX(), parent.getY(), parent.getWidth(), parent.getHeight());
@@ -29,38 +35,43 @@ public class LevelMenuGroup extends Group {
   }
 
   public void init() {
+    final Group menuGroup = new Group();
+    final Group confirmGroup = new Group();
+    addActor(menuGroup);
+    addActor(confirmGroup);
+
     // placard
     // TODO: level info
     TextureRegion backgroundTexture = getStage().getTextureRegion(LevelMenu.Background);
     TextureRegionActor menu = new TextureRegionActor((getWidth() - backgroundTexture.getRegionWidth()) / 2.0F,
       (getHeight() - backgroundTexture.getRegionHeight()) / 2.0F, backgroundTexture);
-    addActor(menu);
+    menuGroup.addActor(menu);
 
     // first row
     TextureRegion quitTexture = getStage().getTextureRegion(LevelMenu.Quit);
     TextureRegionActor quit = new TextureRegionActor(menu.getX() + PAD,
       menu.getY() + menu.getHeight() - PAD - quitTexture.getRegionHeight(),
       quitTexture);
-    addActor(quit);
+    menuGroup.addActor(quit);
     TextureRegionActor resume = new TextureRegionActor(
       menu.getX() + menu.getWidth() - PAD - quitTexture.getRegionWidth(),
       quit.getY(), getStage().getTextureRegion(LevelMenu.Resume));
-    addActor(resume);
+    menuGroup.addActor(resume);
     TextureRegionActor restart = new TextureRegionActor(menu.getCenterX() - quitTexture.getRegionWidth() / 2.0F,
       quit.getY(), getStage().getTextureRegion(LevelMenu.Restart));
-    addActor(restart);
+    menuGroup.addActor(restart);
 
     // second row
     TextureRegion musicTexture = getStage().getTextureRegion(LevelMenu.Music);
     TextureRegionActor music = new TextureRegionActor(quit.getX(),
       menu.getY() + PAD, musicTexture);
-    addActor(music);
+    menuGroup.addActor(music);
     TextureRegionActor sound = new TextureRegionActor(restart.getX(), music.getY(),
       getStage().getTextureRegion(LevelMenu.Sound));
-    addActor(sound);
+    menuGroup.addActor(sound);
     TextureRegionActor vibrate = new TextureRegionActor(resume.getX(), music.getY(),
       getStage().getTextureRegion(LevelMenu.Vibrate));
-    addActor(vibrate);
+    menuGroup.addActor(vibrate);
 
     // enabled/disabled state cue for the setting toggles
     final SettingsManager settingsManager = getStage().getSettingsManager();
@@ -71,38 +82,67 @@ public class LevelMenuGroup extends Group {
       music.getY() - offsetY, disabled);
     musicDisabled.setVisible(!settingsManager.isMusicEnabled());
     musicDisabled.setTouchable(Touchable.disabled);
-    addActor(musicDisabled);
+    menuGroup.addActor(musicDisabled);
     final TextureRegionActor soundDisabled = new TextureRegionActor(sound.getX() - offsetX,
       sound.getY() - offsetY, disabled);
     soundDisabled.setVisible(!settingsManager.isSoundEnabled());
     soundDisabled.setTouchable(Touchable.disabled);
-    addActor(soundDisabled);
+    menuGroup.addActor(soundDisabled);
     final TextureRegionActor vibrateDisabled = new TextureRegionActor(vibrate.getX() - offsetX,
       vibrate.getY() - offsetY, disabled);
     vibrateDisabled.setVisible(!settingsManager.isVibrateEnabled());
     vibrateDisabled.setTouchable(Touchable.disabled);
-    addActor(vibrateDisabled);
+    menuGroup.addActor(vibrateDisabled);
+
+    final float confirmWidth = backgroundTexture.getRegionWidth() * 0.75F;
+    float confirmHeight = backgroundTexture.getRegionHeight() * 0.66F;
+    final float confirmX = menu.getX() + backgroundTexture.getRegionWidth() / 2.0F - confirmWidth / 2.0F;
+    float confirmY = menu.getY() + backgroundTexture.getRegionHeight() / 2.0F - confirmHeight / 2.0F;
+    TextureRegionActor confirmBackground = new TextureRegionActor(confirmX, confirmY, backgroundTexture);
+    confirmBackground.setBounds(confirmX, confirmY, confirmWidth, confirmHeight);
+    confirmGroup.addActor(confirmBackground);
+
+    TextureRegion cancelTexture = getStage().getTextureRegion(LevelMenu.Cancel);
+    Label.LabelStyle confirmStyle = new Label.LabelStyle();
+    confirmStyle.font = new BitmapFont();
+    confirmStyle.fontColor = Color.BLACK;
+    final Label confirmText = new Label("", confirmStyle);
+    confirmText.setY(confirmY + confirmHeight - CONFIRM_PAD);
+    confirmGroup.addActor(confirmText);
+    TextureRegionActor cancel = new TextureRegionActor(confirmX + PAD,
+      confirmY + CONFIRM_PAD, cancelTexture);
+    confirmGroup.addActor(cancel);
+    TextureRegionActor confirm = new TextureRegionActor(confirmX + confirmWidth - PAD - cancelTexture.getRegionWidth(),
+      cancel.getY(), getStage().getTextureRegion(LevelMenu.Confirm));
+    confirmGroup.addActor(confirm);
+    confirmGroup.setVisible(false);
 
     // TODO: Screen shot
 
-    // add a click event to quit the level
+    // add a click event to confirm the quit of the level
     quit.addListener(new ClickListener() {
 
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        // TODO confirm
-        getStage().quit();
+        menuGroup.setVisible(false);
+        confirmGroup.setVisible(true);
+        confirmText.setText("Are you sure you want to quit?"); // TODO: language file
+        confirmText.setX(confirmX + confirmWidth / 2.0F - confirmText.getPrefWidth() / 2.0F);
+        LevelMenuGroup.this.menuState = STATE_QUIT;
       }
     });
-    // add a click event to restart the level
+    // add a click event to confirm the restart of the level
     restart.addListener(new ClickListener() {
 
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        // TODO: confirm
-        getStage().restart();
+        menuGroup.setVisible(false);
+        confirmGroup.setVisible(true);
+        confirmText.setText("Are you sure you want to restart?"); // TODO: language file
+        confirmText.setX(confirmX + confirmWidth / 2.0F - confirmText.getPrefWidth() / 2.0F);
+        LevelMenuGroup.this.menuState = STATE_RESTART;
       }
     });
     // add a click event to unpause the level
@@ -122,6 +162,23 @@ public class LevelMenuGroup extends Group {
     sound.addListener(new SoundToggleClickListener(settingsManager, soundDisabled));
     // add a click event to enable/disable the vibration
     vibrate.addListener(new VibrateToggleClickListener(settingsManager, vibrateDisabled));
+
+    // add a click event to cancel the restart/quit
+    cancel.addListener(new ConfirmPromptClickListener(menuGroup, confirmGroup));
+    // add a click event to quit/restart on confirm
+    confirm.addListener(new ConfirmPromptClickListener(menuGroup, confirmGroup) {
+
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        super.clicked(event, x, y);
+        // if quit or restart
+        if (LevelMenuGroup.this.menuState == STATE_QUIT) {
+          getStage().quit();
+        } else if (LevelMenuGroup.this.menuState == STATE_RESTART) {
+          getStage().restart();
+        }
+      }
+    });
   }
 
   protected void setPauseListener(@NonNull ClickListener pauseListener) {
@@ -224,5 +281,23 @@ public class LevelMenuGroup extends Group {
     protected abstract boolean isEnabled(SettingsManager settings);
 
     protected abstract void toggle(SettingsManager settings);
+  }
+
+  private static class ConfirmPromptClickListener extends ClickListener {
+
+    private final Group menuGroup;
+    private final Group confirmGroup;
+
+    public ConfirmPromptClickListener(Group menuGroup, Group confirmGroup) {
+      this.menuGroup = menuGroup;
+      this.confirmGroup = confirmGroup;
+    }
+
+    @Override
+    public void clicked(InputEvent event, float x, float y) {
+      super.clicked(event, x, y);
+      this.menuGroup.setVisible(true);
+      this.confirmGroup.setVisible(false);
+    }
   }
 }

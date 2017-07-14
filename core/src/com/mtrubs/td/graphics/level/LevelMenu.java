@@ -7,6 +7,8 @@ import com.mtrubs.util.NonNull;
 public enum LevelMenu implements TextureReference {
 
   Background("images/hud/menu/background.png"),
+  Cancel("images/hud/menu/cancel.png"),
+  Confirm("images/hud/menu/confirm.png"),
   Disabled("images/hud/menu/disabled.png"),
   Music("images/hud/menu/music.png"),
   Quit("images/hud/menu/quit.png"),
