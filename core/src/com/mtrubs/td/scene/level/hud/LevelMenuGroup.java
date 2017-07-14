@@ -91,7 +91,8 @@ public class LevelMenuGroup extends Group {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        // TODO: quit
+        // TODO confirm
+        getStage().quit();
       }
     });
     // add a click event to restart the level
@@ -100,7 +101,8 @@ public class LevelMenuGroup extends Group {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        // TODO: restart
+        // TODO: confirm
+        getStage().restart();
       }
     });
     // add a click event to unpause the level

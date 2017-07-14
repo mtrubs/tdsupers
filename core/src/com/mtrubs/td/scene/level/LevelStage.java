@@ -17,10 +17,12 @@ import com.mtrubs.td.graphics.ActiveTextureRegionManager;
 import com.mtrubs.td.graphics.TextureReference;
 import com.mtrubs.td.graphics.TextureRegionManager;
 import com.mtrubs.td.graphics.level.LevelMap;
+import com.mtrubs.td.scene.GameState;
 import com.mtrubs.td.scene.level.hud.HudGroup;
 import com.mtrubs.td.scene.level.mob.SelectableMover;
 import com.mtrubs.td.scene.level.mob.TowerGroup;
 import com.mtrubs.td.scene.level.mob.TowerState;
+import com.mtrubs.util.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,14 +46,24 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    */
   private static final float PAN_RATE = 0.6F;
 
+  @NonNull
   private final ShapeRenderer shapeRenderer;
+  @NonNull
   private final TweenManager tweenManager;
+  @NonNull
   private final TextureRegionManager textureRegionManager;
+  @NonNull
   private final WaveManager waveManager;
+  @NonNull
   private final CurrencyManager currencyManager;
+  @NonNull
   private final HeroManager heroManager;
+  @NonNull
   private final UnitManager unitManager;
+  @NonNull
   private final SettingsManager settingsManager;
+  @NonNull
+  private final GameState gameState;
 
   private final HudGroup hud;
 
@@ -66,10 +78,11 @@ public class LevelStage extends Stage implements CurrencyWatcher {
    * Creates a new level stage for game play.  We are given the level map, the list of active heroes
    * configurations and the configuration of all the towers.
    */
-  public LevelStage(float worldWidth, float worldHeight, Batch batch,
-                    LevelMap levelMap, HeroManager heroManager, TowerLevelConfig[] towers,
-                    CurrencyManager currencyManager, WaveManager waveManager) {
+  public LevelStage(float worldWidth, float worldHeight, Batch batch, @NonNull GameState gameState,
+                    LevelMap levelMap, @NonNull HeroManager heroManager, TowerLevelConfig[] towers,
+                    @NonNull CurrencyManager currencyManager, @NonNull WaveManager waveManager) {
     super(new ExtendViewport(worldWidth, worldHeight), batch);
+    this.gameState = gameState;
     this.textureRegionManager = new ActiveTextureRegionManager();
     this.tweenManager = new TweenManager();
     this.shapeRenderer = new ShapeRenderer();
@@ -226,6 +239,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     return this.waveManager.isActive();
   }
 
+  @NonNull
   public TweenManager getTweenManager() {
     return this.tweenManager;
   }
@@ -263,6 +277,7 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     }
   }
 
+  @NonNull
   public ShapeRenderer getShapeRenderer() {
     return this.shapeRenderer;
   }
@@ -274,23 +289,36 @@ public class LevelStage extends Stage implements CurrencyWatcher {
     }
   }
 
+  @NonNull
   public WaveManager getWaveManager() {
     return this.waveManager;
   }
 
+  @NonNull
   public HeroManager getHeroManager() {
     return this.heroManager;
   }
 
+  @NonNull
   public CurrencyManager getCurrencyManager() {
     return this.currencyManager;
   }
 
+  @NonNull
   public UnitManager getUnitManager() {
     return this.unitManager;
   }
 
+  @NonNull
   public SettingsManager getSettingsManager() {
     return this.settingsManager;
+  }
+
+  public void restart() {
+    this.gameState.switchToLevel();
+  }
+
+  public void quit() {
+    this.gameState.switchToWorld();
   }
 }

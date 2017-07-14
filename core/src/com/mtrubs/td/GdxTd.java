@@ -37,7 +37,7 @@ public class GdxTd extends ApplicationAdapter {
 
     this.processor = new GameStateInputProcessor();
     Gdx.input.setInputProcessor(this.processor);
-    this.processor.switchToLevel();
+    this.processor.switchToWorld();
   }
 
   @Override

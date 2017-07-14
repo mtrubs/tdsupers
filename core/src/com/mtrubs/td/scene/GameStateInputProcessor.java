@@ -69,7 +69,7 @@ public class GameStateInputProcessor implements InputProcessor, GameState {
 
     disposeStage();
     // the current level
-    this.stage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT, this.batch,
+    this.stage = new LevelStage(WORLD_WIDTH, WORLD_HEIGHT, this.batch, this,
       LevelMap.TestLevel, heroManager, towers.toArray(new TowerLevelConfig[towers.size()]),
       currencyManager, waveManager);
   }
@@ -78,7 +78,7 @@ public class GameStateInputProcessor implements InputProcessor, GameState {
   public void switchToWorld() {
     disposeStage();
     // the world map
-    this.stage = new WorldStage(WORLD_WIDTH, WORLD_HEIGHT, this.batch);
+    this.stage = new WorldStage(WORLD_WIDTH, WORLD_HEIGHT, this.batch, this);
   }
 
   @Override
